@@ -87,7 +87,7 @@ public:
         UnknownTypeKey = -1
     } TypeKey;
 
-    DebconfFrontend(const QString &socketName, QObject *parent = 0);
+    explicit DebconfFrontend(const QString &socketName, QObject *parent = 0);
     ~DebconfFrontend();
 
     QString value(const QString &key) const;

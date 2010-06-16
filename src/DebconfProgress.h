@@ -30,7 +30,7 @@ class DebconfProgress : public DebconfElement, Ui::DebconfProgress
 {
     Q_OBJECT
 public:
-    DebconfProgress(const QString &name, QWidget *parent = 0);
+    explicit DebconfProgress(const QString &name, QWidget *parent = 0);
     ~DebconfProgress();
 
     void initProgress(const QString &description, const QString &extended_description, uint progress_min, uint progress_max);

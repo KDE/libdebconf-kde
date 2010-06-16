@@ -30,7 +30,7 @@ class DebconfBoolean : public DebconfElement, Ui::DebconfBoolean
 {
     Q_OBJECT
 public:
-    DebconfBoolean(const QString &name, QWidget *parent = 0);
+    explicit DebconfBoolean(const QString &name, QWidget *parent = 0);
     ~DebconfBoolean();
 
     void setBoolean(const QString &tip, const QString &extended_description, const QString &description, bool default_boolean);

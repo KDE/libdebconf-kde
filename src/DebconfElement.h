@@ -26,7 +26,7 @@ class DebconfElement : public QWidget
 {
     Q_OBJECT
 public:
-    DebconfElement(const QString &name, QWidget *parent = 0);
+    explicit DebconfElement(const QString &name, QWidget *parent = 0);
     virtual QString value() const { return QString(); };
     virtual QString name() const  { return m_name; };
 

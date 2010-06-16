@@ -117,7 +117,7 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
     myProcess->start("hostname");
     myProcess->waitForFinished();
     QString hostname = myProcess->readAllStandardOutput();
-    setWindowTitle(i18n("Debconf on %1").arg(hostname.trimmed()));
+    setWindowTitle(i18n("Debconf on %1", hostname.trimmed()));
 
     myProcess->start("lsb_release", QStringList() << "-is");
     if (myProcess->waitForFinished()) {
@@ -286,7 +286,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
     }
     DebconfProgress *element = d->elementProgress;
 
-    QStringList commands = cmd.split(" ");
+    QStringList commands = cmd.split(' ');
     kDebug() << "KPROGRESS" << commands;
     if (commands.first() == "START") {
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));

@@ -30,7 +30,7 @@ class DebconfString : public DebconfElement, Ui::DebconfString
 {
     Q_OBJECT
 public:
-    DebconfString(const QString &name, QWidget *parent = 0);
+    explicit DebconfString(const QString &name, QWidget *parent = 0);
     ~DebconfString();
 
     void setString(const QString &tip, const QString &extended_description, const QString &description, const QString &default_string);

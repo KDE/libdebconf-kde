@@ -30,7 +30,7 @@ class DebconfNote : public DebconfElement, Ui::DebconfNote
 {
     Q_OBJECT
 public:
-    DebconfNote(const QString &name, QWidget *parent = 0);
+    explicit DebconfNote(const QString &name, QWidget *parent = 0);
     ~DebconfNote();
 
     void setNote(const QString &description, const QString &note);

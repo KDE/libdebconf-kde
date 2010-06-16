@@ -30,7 +30,7 @@ class DebconfError : public DebconfElement, Ui::DebconfError
 {
     Q_OBJECT
 public:
-    DebconfError(const QString &name, QWidget *parent = 0);
+    explicit DebconfError(const QString &name, QWidget *parent = 0);
     ~DebconfError();
 
     void setError(const QString &description, const QString &error);

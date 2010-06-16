@@ -62,7 +62,7 @@ class KDE_EXPORT DebconfGui : public QWidget
 {
     Q_OBJECT
 public:
-    DebconfGui(const QString &socketName, QWidget *parent = 0);
+    explicit DebconfGui(const QString &socketName, QWidget *parent = 0);
 
 public Q_SLOTS:
     void cmd_go(const QString &title, const QStringList &input);

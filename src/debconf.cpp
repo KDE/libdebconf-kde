@@ -180,7 +180,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
         var = rx.cap(3);
         last = rx.cap(4);
         if (!escape.isEmpty()) {
-            result += "${" + var + "}";
+            result += "${" + var + '}';
         } else {
             result += sub[var];
         }
