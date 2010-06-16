@@ -136,7 +136,7 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
 
     if(enumValue == -1) {
         enumValue = e.keyToValue(QString("Unknown").append(enumName).toAscii().data());
-        qDebug() << "enumFromString (" << enumName << ") : converted" << realName << "to" << QString("Unknown").append(enumName) << ", enum value" << enumValue;
+        kDebug() << "enumFromString (" << enumName << ") : converted" << realName << "to" << QString("Unknown").append(enumName) << ", enum value" << enumValue;
     }
     return enumValue;
 }
@@ -163,7 +163,7 @@ void DebconfFrontend::reset()
 
 void DebconfFrontend::say(const QString &string)
 {
-    kDebug() << "ADEPT ---> " << string;
+    kDebug() << "DEBCONF ---> " << string;
     QTextStream out(m_socket);
     out << string << "\n";
 }
@@ -233,7 +233,7 @@ void DebconfFrontend::cmd_go(const QString &)
 
 void DebconfFrontend::cmd_progress(const QString &param)
 {
-    kDebug() << "ADEPT: PROGRESS " << param;
+    kDebug() << "DEBCONF: PROGRESS " << param;
     emit progress(param);
 }
 
@@ -262,7 +262,7 @@ void DebconfFrontend::cmd_title(const QString &param)
     } else {
         m_title = param;
     }
-    kDebug() << "ADEPT: TITLE " << m_title;
+    kDebug() << "DEBCONF: TITLE " << m_title;
     say("0 ok");
 }
 
@@ -310,7 +310,7 @@ bool DebconfFrontend::process()
     QString command = line.section(' ', 0, 0);
     QString value = line.section(' ', 1);
 
-    kDebug() << "ADEPT <--- [" << command << "] " << value;
+    kDebug() << "DEBCONF <--- [" << command << "] " << value;
     const Cmd *c = commands;
     while (c->cmd != 0) {
         if (command == c->cmd) {
