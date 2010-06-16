@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; see the file COPYING.LIB. If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#include "DebconfMultiselect.h"
+
+#include <KMessageBox>
+#include <QStandardItemModel>
+#include <QStandardItem>
+
+using namespace DebconfKde;
+
+DebconfMultiselect::DebconfMultiselect(const QString &name, QWidget *parent)
+ : DebconfElement(name, parent)
+{
+    setupUi(this);
+
+    helpPB->setIcon(KIcon("help-about"));
+
+    m_model = new QStandardItemModel(this);
+    multiselectLV->setModel(m_model);
+}
+
+DebconfMultiselect::~DebconfMultiselect()
+{
+}
+
+QString DebconfMultiselect::value() const
+{
+    QStringList checked;
+    for (int i = 0; i < m_model->rowCount(); i++) {
+        int state;
+        state = m_model->data(m_model->index(i, 0), Qt::CheckStateRole).toInt();
+        if (state == Qt::Checked) {
+            checked << m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
+        }
+    }
+    return checked.join(", ");
+}
+
+void DebconfMultiselect::setMultiselect(const QString &tip, const QString &extended_description, const QString &description, const QStringList &default_choices, const QStringList &choices)
+{
+    setToolTip(tip);
+    m_extended_description = extended_description;
+    helpPB->setEnabled(!m_extended_description.isEmpty());
+    descriptionL->setText(description);
+
+    m_model->clear();
+    foreach (const QString &choice, choices) {
+        QStandardItem *item;
+        m_model->appendRow(item = new QStandardItem(choice));
+        item->setSelectable(false);
+        item->setCheckable(true);
+        if (default_choices.contains(choice)) {
+            item->setCheckState(Qt::Checked);
+        } else {
+            item->setCheckState(Qt::Unchecked);
+        }
+    }
+}
+
+void DebconfMultiselect::on_helpPB_clicked()
+{
+    KMessageBox::information(this, m_extended_description);
+}
+
+#include "DebconfMultiselect.moc"
