@@ -53,9 +53,11 @@ QString DebconfMultiselect::value() const
     return checked.join(", ");
 }
 
-void DebconfMultiselect::setMultiselect(const QString &tip, const QString &extended_description, const QString &description, const QStringList &default_choices, const QStringList &choices)
+void DebconfMultiselect::setMultiselect(const QString &extended_description,
+                                        const QString &description,
+                                        const QStringList &default_choices,
+                                        const QStringList &choices)
 {
-    setToolTip(tip);
     m_extended_description = extended_description;
     helpPB->setEnabled(!m_extended_description.isEmpty());
     descriptionL->setText(description);

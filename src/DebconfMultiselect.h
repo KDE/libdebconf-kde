@@ -35,7 +35,10 @@ public:
     explicit DebconfMultiselect(const QString &name, QWidget *parent = 0);
     ~DebconfMultiselect();
 
-    void setMultiselect(const QString &tip, const QString &extended_description, const QString &description, const QStringList &default_choices, const QStringList &choices);
+    void setMultiselect(const QString &extended_description,
+                        const QString &description,
+                        const QStringList &default_choices,
+                        const QStringList &choices);
     QString value() const;
 
 private slots:

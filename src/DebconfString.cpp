@@ -39,9 +39,10 @@ QString DebconfString::value() const
     return stringLE->text();
 }
 
-void DebconfString::setString(const QString &tip, const QString &extended_description, const QString &description, const QString &default_string)
+void DebconfString::setString(const QString &extended_description,
+                              const QString &description,
+                              const QString &default_string)
 {
-    setToolTip(tip);
     m_extended_description = extended_description;
     helpPB->setEnabled(!m_extended_description.isEmpty());
     descriptionL->setText(description);

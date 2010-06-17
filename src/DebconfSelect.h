@@ -33,7 +33,10 @@ public:
     explicit DebconfSelect(const QString &name, QWidget *parent = 0);
     ~DebconfSelect();
 
-    void setSelect(const QString &tip, const QString &extended_description, const QString &description, const QString &default_choice, const QStringList &choices);
+    void setSelect(const QString &extended_description,
+                   const QString &description,
+                   const QString &default_choice,
+                   const QStringList &choices);
     QString value() const;
 
 private slots:

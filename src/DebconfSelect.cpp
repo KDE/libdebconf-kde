@@ -39,9 +39,11 @@ QString DebconfSelect::value() const
     return selectCB->currentText();
 }
 
-void DebconfSelect::setSelect(const QString &tip, const QString &extended_description, const QString &description, const QString &default_choice, const QStringList &choices)
+void DebconfSelect::setSelect(const QString &extended_description,
+                              const QString &description,
+                              const QString &default_choice,
+                              const QStringList &choices)
 {
-    setToolTip(tip);
     m_extended_description = extended_description;
     helpPB->setEnabled(!m_extended_description.isEmpty());
     descriptionL->setText(description);

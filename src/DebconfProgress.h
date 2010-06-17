@@ -33,7 +33,10 @@ public:
     explicit DebconfProgress(const QString &name, QWidget *parent = 0);
     ~DebconfProgress();
 
-    void initProgress(const QString &description, const QString &extended_description, uint progress_min, uint progress_max);
+    void startProgress(const QString &extended_description,
+                       uint progress_min,
+                       uint progress_max);
+    void stopProgress();
     void setProgress(uint progress_cur);
     void stepProgress(uint progress_cur);
     void setProgressInfo(const QString &description);

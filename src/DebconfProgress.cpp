@@ -31,13 +31,19 @@ DebconfProgress::~DebconfProgress()
 {
 }
 
-void DebconfProgress::initProgress(const QString &description, const QString &extended_description, uint progress_min, uint progress_max)
+void DebconfProgress::startProgress(const QString &extended_description,
+                                    uint progress_min,
+                                    uint progress_max)
 {
-    Q_UNUSED(description);
     label->setText(extended_description);
     progressBar->setMaximum(progress_max);
     progressBar->setMinimum(progress_min);
     progressBar->setValue(progress_min);
+}
+
+void DebconfProgress::stopProgress()
+{
+    progressBar->setValue(progressBar->maximum());
 }
 
 void DebconfProgress::setProgress(uint progress_cur)

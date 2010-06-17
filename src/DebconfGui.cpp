@@ -153,10 +153,9 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     case DebconfFrontend::Boolean:
     {
         DebconfBoolean *element = new DebconfBoolean(k, parentWidget);
-        element->setBoolean(QString(),
-                                     extendedDescription,
-                                     frontend->property(k, DebconfFrontend::Description),
-                                     frontend->value(k) == "true");
+        element->setBoolean(extendedDescription,
+                            frontend->property(k, DebconfFrontend::Description),
+                            frontend->value(k) == "true");
         return element;
     }
     case DebconfFrontend::Error:
@@ -169,8 +168,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     case DebconfFrontend::Multiselect:
     {
         DebconfMultiselect *element = new DebconfMultiselect(k, parentWidget);
-        element->setMultiselect(QString(),
-                                extendedDescription,
+        element->setMultiselect(extendedDescription,
                                 frontend->property(k, DebconfFrontend::Description),
                                 frontend->value(k).split(", "),
                                 frontend->property(k, DebconfFrontend::Choices).split(", "));
@@ -186,16 +184,14 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     case DebconfFrontend::Password:
     {
         DebconfPassword *element = new DebconfPassword(k, parentWidget);
-        element->setPassword(QString(),
-                             extendedDescription,
+        element->setPassword(extendedDescription,
                              frontend->property(k, DebconfFrontend::Description));
         return element;
     }
     case DebconfFrontend::Select:
     {
         DebconfSelect *element = new DebconfSelect(k, parentWidget);
-        element->setSelect(QString(),
-                           extendedDescription,
+        element->setSelect(extendedDescription,
                            frontend->property(k, DebconfFrontend::Description),
                            frontend->value(k),
                            frontend->property(k, DebconfFrontend::Choices).split(", "));
@@ -204,8 +200,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     case DebconfFrontend::String:
     {
         DebconfString *element = new DebconfString(k, parentWidget);
-        element->setString(QString(),
-                           extendedDescription,
+        element->setString(extendedDescription,
                            frontend->property(k, DebconfFrontend::Description),
                            frontend->value(k));
         return element;
@@ -292,16 +287,17 @@ void DebconfGui::cmd_progress(const QString &cmd)
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));
         int progress_min = commands.at(1).toInt();
         int progress_max = commands.at(2).toInt();
-        element->initProgress(d->frontend->property(commands.at(3), DebconfFrontend::Description),
-                              d->frontend->property(commands.at(3), DebconfFrontend::ExtendedDescription),
-                              progress_min,
-                              progress_max);
+        element->startProgress(d->frontend->property(commands.at(3), DebconfFrontend::ExtendedDescription),
+                               progress_min,
+                               progress_max);
     } else if (commands.first() == "SET") {
         element->setProgress(commands.at(1).toInt());
     } else if (commands.first() == "STEP") {
         element->stepProgress(commands.at(1).toInt());
     } else if (commands.first() == "INFO") {
         element->setProgressInfo(d->frontend->property(commands.at(1), DebconfFrontend::Description));
+    } else if (commands.first() == "STOP") {
+        element->stopProgress();
     }
     emit activated();
     d->frontend->say("0 ok");
@@ -310,6 +306,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
 void DebconfGuiPrivate::cleanup()
 {
     delete parentWidget;
+    elementProgress = 0;
     elements.clear();
 
     parentWidget = new QWidget(scrollArea);

@@ -33,7 +33,9 @@ public:
     explicit DebconfBoolean(const QString &name, QWidget *parent = 0);
     ~DebconfBoolean();
 
-    void setBoolean(const QString &tip, const QString &extended_description, const QString &description, bool default_boolean);
+    void setBoolean(const QString &extended_description,
+                    const QString &description,
+                    bool default_boolean);
     QString value() const;
 
 private slots:

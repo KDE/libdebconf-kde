@@ -33,7 +33,7 @@ public:
     explicit DebconfPassword(const QString &name, QWidget *parent = 0);
     ~DebconfPassword();
 
-    void setPassword(const QString &tip, const QString &extended_description, const QString &description);
+    void setPassword(const QString &extended_description, const QString &description);
     QString value() const;
 
 private slots:

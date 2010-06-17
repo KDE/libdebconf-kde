@@ -39,13 +39,12 @@ QString DebconfPassword::value() const
     return passwordLE->text();
 }
 
-void DebconfPassword::setPassword(const QString &tip, const QString &extended_description, const QString &description)
+void DebconfPassword::setPassword(const QString &extended_description,
+                                  const QString &description)
 {
-    setToolTip(tip);
     m_extended_description = extended_description;
     helpPB->setEnabled(!m_extended_description.isEmpty());
     descriptionL->setText(description);
-    passwordLE->setText("");
 }
 
 void DebconfPassword::on_helpPB_clicked()

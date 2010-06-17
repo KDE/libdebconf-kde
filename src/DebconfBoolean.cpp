@@ -39,9 +39,10 @@ QString DebconfBoolean::value() const
     return radioButton->isChecked() ? "true" : "false";
 }
 
-void DebconfBoolean::setBoolean(const QString &tip, const QString &extended_description, const QString &description, bool default_boolean)
+void DebconfBoolean::setBoolean(const QString &extended_description,
+                                const QString &description,
+                                bool default_boolean)
 {
-    setToolTip(tip);
     m_extended_description = extended_description;
     helpPB->setEnabled(!m_extended_description.isEmpty());
     descriptionL->setText(description);
