@@ -34,3 +34,5 @@ target_link_libraries(debconf-kde
 )
 
 install(TARGETS debconf-kde ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES DebconfGui.h
+    DESTINATION ${INCLUDE_INSTALL_DIR})
