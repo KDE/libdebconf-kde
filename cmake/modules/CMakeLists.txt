@@ -1,3 +1,3 @@
-install(FILES FindDebconfKDE.cmake
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/share/libdeconf-kde/cmake/modules/
+install(FILES DebconfKDEConfig.cmake
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/DebconfKDE
         COMPONENT Devel) 
