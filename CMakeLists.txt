@@ -2,6 +2,11 @@ project(libdebconf-kde)
 
 cmake_minimum_required(VERSION 2.6.0)
 
+set(DEBCONF_VERSION 0.1.0)
+
+set(DEBCONF_LIB_SOVERSION 0)
+set(DEBCONF_LIB_VERSION ${DEBCONF_LIB_SOVERSION}.1.0)
+
 find_package(KDE4 REQUIRED)
 
 include(KDE4Defaults)

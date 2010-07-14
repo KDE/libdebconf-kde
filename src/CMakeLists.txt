@@ -33,6 +33,11 @@ target_link_libraries(debconf-kde
     ${KDE4_KDEUI_LIBS}
 )
 
+set_target_properties(debconf-kde PROPERTIES
+                      VERSION ${DEBCONF_LIB_VERSION}
+                      SOVERSION ${DEBCONF_LIB_SOVERSION}
+)
+
 install(TARGETS debconf-kde ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES DebconfGui.h
     DESTINATION ${INCLUDE_INSTALL_DIR})
