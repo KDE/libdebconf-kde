@@ -100,6 +100,7 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
     d->nextPB->setIcon(KIcon("go-next"));
     d->backPB->setIcon(KIcon("go-previous"));
     d->cancelPB->setIcon(KIcon("dialog-cancel"));
+    d->cancelPB->setVisible(false);
 
     connect(d->frontend, SIGNAL(go(const QString &, const QStringList &)),
             this, SLOT(cmd_go(const QString &, const QStringList &)));
