@@ -17,7 +17,7 @@ add_definitions(
 
 include_directories(
     ${KDE4_INCLUDES}
-    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
