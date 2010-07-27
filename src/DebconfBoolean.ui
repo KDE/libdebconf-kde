@@ -93,7 +93,7 @@
       <number>10</number>
      </property>
      <property name="buddy">
-      <cstring>multiselectLV</cstring>
+      <cstring>radioButton</cstring>
      </property>
     </widget>
    </item>

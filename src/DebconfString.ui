@@ -58,7 +58,7 @@
       <number>10</number>
      </property>
      <property name="buddy">
-      <cstring>multiselectLV</cstring>
+      <cstring>stringLE</cstring>
      </property>
     </widget>
    </item>
