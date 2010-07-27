@@ -19,15 +19,12 @@
 
 #include "DebconfPassword.h"
 
-#include <KMessageBox>
-
 using namespace DebconfKde;
 
 DebconfPassword::DebconfPassword(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    helpPB->setIcon(KIcon("help-about"));
 }
 
 DebconfPassword::~DebconfPassword()
@@ -42,14 +39,8 @@ QString DebconfPassword::value() const
 void DebconfPassword::setPassword(const QString &extended_description,
                                   const QString &description)
 {
-    m_extended_description = extended_description;
-    helpPB->setEnabled(!m_extended_description.isEmpty());
+    extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
-}
-
-void DebconfPassword::on_helpPB_clicked()
-{
-    KMessageBox::information(this, m_extended_description);
 }
 
 #include "DebconfPassword.moc"

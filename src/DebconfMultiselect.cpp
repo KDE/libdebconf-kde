@@ -19,7 +19,6 @@
 
 #include "DebconfMultiselect.h"
 
-#include <KMessageBox>
 #include <QStandardItemModel>
 #include <QStandardItem>
 
@@ -29,8 +28,6 @@ DebconfMultiselect::DebconfMultiselect(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-
-    helpPB->setIcon(KIcon("help-about"));
 
     m_model = new QStandardItemModel(this);
     multiselectLV->setModel(m_model);
@@ -58,8 +55,7 @@ void DebconfMultiselect::setMultiselect(const QString &extended_description,
                                         const QStringList &default_choices,
                                         const QStringList &choices)
 {
-    m_extended_description = extended_description;
-    helpPB->setEnabled(!m_extended_description.isEmpty());
+    extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
 
     m_model->clear();
@@ -74,11 +70,6 @@ void DebconfMultiselect::setMultiselect(const QString &extended_description,
             item->setCheckState(Qt::Unchecked);
         }
     }
-}
-
-void DebconfMultiselect::on_helpPB_clicked()
-{
-    KMessageBox::information(this, m_extended_description);
 }
 
 #include "DebconfMultiselect.moc"

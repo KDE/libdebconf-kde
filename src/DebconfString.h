@@ -37,12 +37,6 @@ public:
                    const QString &description,
                    const QString &default_string);
     QString value() const;
-
-private slots:
-    void on_helpPB_clicked();
-
-private:
-    QString m_extended_description;
 };
 
 }

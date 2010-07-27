@@ -38,12 +38,6 @@ public:
                    const QString &default_choice,
                    const QStringList &choices);
     QString value() const;
-
-private slots:
-    void on_helpPB_clicked();
-
-private:
-    QString m_extended_description;
 };
 
 

@@ -19,15 +19,12 @@
 
 #include "DebconfString.h"
 
-#include <KMessageBox>
-
 using namespace DebconfKde;
 
 DebconfString::DebconfString(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    helpPB->setIcon(KIcon("help-about"));
 }
 
 DebconfString::~DebconfString()
@@ -43,15 +40,9 @@ void DebconfString::setString(const QString &extended_description,
                               const QString &description,
                               const QString &default_string)
 {
-    m_extended_description = extended_description;
-    helpPB->setEnabled(!m_extended_description.isEmpty());
+    extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
     stringLE->setText(default_string);
-}
-
-void DebconfString::on_helpPB_clicked()
-{
-    KMessageBox::information(this, m_extended_description);
 }
 
 #include "DebconfString.moc"

@@ -41,11 +41,7 @@ public:
                         const QStringList &choices);
     QString value() const;
 
-private slots:
-    void on_helpPB_clicked();
-
 private:
-    QString m_extended_description;
     QStandardItemModel *m_model;
 };
 

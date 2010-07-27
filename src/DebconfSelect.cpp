@@ -19,15 +19,12 @@
 
 #include "DebconfSelect.h"
 
-#include <KMessageBox>
-
 using namespace DebconfKde;
 
 DebconfSelect::DebconfSelect(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    helpPB->setIcon(KIcon("help-about"));
 }
 
 DebconfSelect::~DebconfSelect()
@@ -44,19 +41,13 @@ void DebconfSelect::setSelect(const QString &extended_description,
                               const QString &default_choice,
                               const QStringList &choices)
 {
-    m_extended_description = extended_description;
-    helpPB->setEnabled(!m_extended_description.isEmpty());
+    extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
 
     selectCB->clear();
     selectCB->addItems(choices);
     int index = selectCB->findText(default_choice);
     selectCB->setCurrentIndex(index != -1 ? index : 0);
-}
-
-void DebconfSelect::on_helpPB_clicked()
-{
-    KMessageBox::information(this, m_extended_description);
 }
 
 #include "DebconfSelect.moc"

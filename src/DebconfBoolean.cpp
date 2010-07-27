@@ -19,15 +19,12 @@
 
 #include "DebconfBoolean.h"
 
-#include <KMessageBox>
-
 using namespace DebconfKde;
 
 DebconfBoolean::DebconfBoolean(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    helpPB->setIcon(KIcon("help-about"));
 }
 
 DebconfBoolean::~DebconfBoolean()
@@ -43,15 +40,9 @@ void DebconfBoolean::setBoolean(const QString &extended_description,
                                 const QString &description,
                                 bool default_boolean)
 {
-    m_extended_description = extended_description;
-    helpPB->setEnabled(!m_extended_description.isEmpty());
+    extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
     radioButton->setChecked(default_boolean);
-}
-
-void DebconfBoolean::on_helpPB_clicked()
-{
-    KMessageBox::information(this, m_extended_description);
 }
 
 #include "DebconfBoolean.moc"

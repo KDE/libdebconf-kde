@@ -35,12 +35,6 @@ public:
 
     void setPassword(const QString &extended_description, const QString &description);
     QString value() const;
-
-private slots:
-    void on_helpPB_clicked();
-
-private:
-    QString m_extended_description;
 };
 
 
