@@ -339,4 +339,13 @@ void DebconfGui::on_cancelPB_clicked()
     d->frontend->cancel();
 }
 
+void DebconfGui::closeEvent(QCloseEvent *event)
+{
+    Q_D(DebconfGui);
+    // It would be better to hid the close button on
+    // on the window decoration:
+    d->frontend->cancel();
+    QWidget::closeEvent(event);
+}
+
 #include "DebconfGui.moc"

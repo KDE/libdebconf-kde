@@ -78,6 +78,8 @@ private Q_SLOTS:
     void on_cancelPB_clicked();
 
 protected:
+    virtual void closeEvent(QCloseEvent *event);
+
     DebconfGuiPrivate * const d_ptr;
 
 private:
