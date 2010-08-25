@@ -99,6 +99,7 @@ void DebconfFrontend::newConnection()
 
 DebconfFrontend::~DebconfFrontend()
 {
+    QFile::remove(m_server->fullServerName());
 }
 
 void DebconfFrontend::disconnected()
