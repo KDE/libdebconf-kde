@@ -97,9 +97,9 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
     d->parentWidget = 0;
     d->setupUi(this);
     setMinimumSize(500, 400);
-    d->nextPB->setIcon(KIcon("go-next"));
-    d->backPB->setIcon(KIcon("go-previous"));
-    d->cancelPB->setIcon(KIcon("dialog-cancel"));
+    d->nextPB->setIcon(KIcon(QLatin1String( "go-next" )));
+    d->backPB->setIcon(KIcon(QLatin1String( "go-previous" )));
+    d->cancelPB->setIcon(KIcon(QLatin1String( "dialog-cancel" )));
     d->cancelPB->setVisible(false);
 
     connect(d->frontend, SIGNAL(go(const QString &, const QStringList &)),
@@ -112,19 +112,19 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
             d->backPB, SLOT(setEnabled(bool)));
 
     // find out the distribution logo
-    QString distro_logo("/usr/share/pixmaps/debian-logo.png");
+    QString distro_logo(QLatin1String( "/usr/share/pixmaps/debian-logo.png" ));
     QProcess *myProcess = new QProcess(this);
 
-    myProcess->start("hostname");
+    myProcess->start(QLatin1String( "hostname" ));
     myProcess->waitForFinished();
-    QString hostname = myProcess->readAllStandardOutput();
+    QString hostname = QString::fromLatin1( myProcess->readAllStandardOutput() );
     setWindowTitle(i18n("Debconf on %1", hostname.trimmed()));
 
-    myProcess->start("lsb_release", QStringList() << "-is");
+    myProcess->start(QLatin1String( "lsb_release" ), QStringList() << QLatin1String( "-is" ));
     if (myProcess->waitForFinished()) {
         if (myProcess->exitCode() == 0){
             QString data = myProcess->readAllStandardOutput();
-            data = QString("/usr/share/pixmaps/%1-logo.png").arg(data.trimmed().toLower());
+            data = QString(QLatin1String( "/usr/share/pixmaps/%1-logo.png" )).arg(data.trimmed().toLower());
             if (QFile::exists(data)) {
                 distro_logo = data;
             }
@@ -148,7 +148,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     kDebug() << "creating widget for " << k;
 
     QString extendedDescription = frontend->property(k, DebconfFrontend::ExtendedDescription);
-    extendedDescription.replace("\\n", "\n");
+    extendedDescription.replace(QLatin1String( "\\n" ), QLatin1String( "\n" ));
 
     switch (frontend->type(k)) {
     case DebconfFrontend::Boolean:
@@ -156,7 +156,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
         DebconfBoolean *element = new DebconfBoolean(k, parentWidget);
         element->setBoolean(extendedDescription,
                             frontend->property(k, DebconfFrontend::Description),
-                            frontend->value(k) == "true");
+                            frontend->value(k) == QLatin1String( "true" ));
         return element;
     }
     case DebconfFrontend::Error:
@@ -171,8 +171,8 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
         DebconfMultiselect *element = new DebconfMultiselect(k, parentWidget);
         element->setMultiselect(extendedDescription,
                                 frontend->property(k, DebconfFrontend::Description),
-                                frontend->value(k).split(", "),
-                                frontend->property(k, DebconfFrontend::Choices).split(", "));
+                                frontend->value(k).split(QLatin1String( ", " )),
+                                frontend->property(k, DebconfFrontend::Choices).split(QLatin1String( ", " )));
         return element;
     }
     case DebconfFrontend::Note:
@@ -195,7 +195,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
         element->setSelect(extendedDescription,
                            frontend->property(k, DebconfFrontend::Description),
                            frontend->value(k),
-                           frontend->property(k, DebconfFrontend::Choices).split(", "));
+                           frontend->property(k, DebconfFrontend::Choices).split(QLatin1String( ", " )));
         return element;
     }
     case DebconfFrontend::String:
@@ -282,26 +282,26 @@ void DebconfGui::cmd_progress(const QString &cmd)
     }
     DebconfProgress *element = d->elementProgress;
 
-    QStringList commands = cmd.split(' ');
+    QStringList commands = cmd.split(QLatin1Char( ' ' ));
     kDebug() << "KPROGRESS" << commands;
-    if (commands.first() == "START") {
+    if (commands.first() == QLatin1String( "START" )) {
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));
         int progress_min = commands.at(1).toInt();
         int progress_max = commands.at(2).toInt();
         element->startProgress(d->frontend->property(commands.at(3), DebconfFrontend::ExtendedDescription),
                                progress_min,
                                progress_max);
-    } else if (commands.first() == "SET") {
+    } else if (commands.first() == QLatin1String( "SET" )) {
         element->setProgress(commands.at(1).toInt());
-    } else if (commands.first() == "STEP") {
+    } else if (commands.first() == QLatin1String( "STEP" )) {
         element->stepProgress(commands.at(1).toInt());
-    } else if (commands.first() == "INFO") {
+    } else if (commands.first() == QLatin1String( "INFO" )) {
         element->setProgressInfo(d->frontend->property(commands.at(1), DebconfFrontend::Description));
-    } else if (commands.first() == "STOP") {
+    } else if (commands.first() == QLatin1String( "STOP" )) {
         element->stopProgress();
     }
     emit activated();
-    d->frontend->say("0 ok");
+    d->frontend->say(QLatin1String( "0 ok" ));
 }
 
 void DebconfGuiPrivate::cleanup()

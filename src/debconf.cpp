@@ -123,7 +123,7 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     QString realName(str);
     realName.replace(0, 1, str.at(0).toUpper());
     int pos;
-    while ((pos = realName.indexOf('_')) != -1) {
+    while ((pos = realName.indexOf(QLatin1Char( '_' ))) != -1) {
         if (pos + 1 > realName.size()) {
             realName.chop(pos);
         } else{
@@ -136,15 +136,15 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     int enumValue = e.keyToValue(realName.toAscii().data());
 
     if(enumValue == -1) {
-        enumValue = e.keyToValue(QString("Unknown").append(enumName).toAscii().data());
-        kDebug() << "enumFromString (" << enumName << ") : converted" << realName << "to" << QString("Unknown").append(enumName) << ", enum value" << enumValue;
+        enumValue = e.keyToValue(QString(QLatin1String( "Unknown" )).append(enumName).toAscii().data());
+        kDebug() << "enumFromString (" << enumName << ") : converted" << realName << "to" << QString(QLatin1String( "Unknown" )).append(enumName) << ", enum value" << enumValue;
     }
     return enumValue;
 }
 
 DebconfFrontend::PropertyKey DebconfFrontend::propertyKeyFromString(const QString &string)
 {
-    return static_cast<PropertyKey>(enumFromString<DebconfFrontend>(string, "PropertyKey"));
+    return static_cast<PropertyKey>(enumFromString<DebconfFrontend>(string, "PropertyKey" ));
 }
 
 DebconfFrontend::TypeKey DebconfFrontend::type(const QString &string) const
@@ -173,7 +173,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 {
     Substitutions sub = m_subst[key];
     QString result, var, escape;
-    QRegExp rx("^(.*?)(\\\\)?\\$\\{([^{}]+)\\}(.*)$");
+    QRegExp rx(QLatin1String( "^(.*?)(\\\\)?\\$\\{([^{}]+)\\}(.*)$" ));
     QString last(rest);
     while (rx.indexIn(rest) != -1) {
         result += rx.cap(1);
@@ -181,7 +181,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
         var = rx.cap(3);
         last = rx.cap(4);
         if (!escape.isEmpty()) {
-            result += "${" + var + '}';
+            result += QLatin1String( "${" ) + var + QLatin1Char( '}' );
         } else {
             result += sub[var];
         }
@@ -200,28 +200,28 @@ QString DebconfFrontend::property(const QString &key, PropertyKey p) const
 
 void DebconfFrontend::cmd_capb(const QString &caps)
 {
-    emit backup(caps.split(", ").contains("backup"));
-    say("0 backup");
+    emit backup(caps.split(QLatin1String( ", " )).contains(QLatin1String( "backup" )));
+    say(QLatin1String( "0 backup" ));
 }
 
 void DebconfFrontend::cmd_set(const QString &param)
 {
-    QString item = param.section(' ', 0, 0);
-    QString value = param.section(' ', 1);
+    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
+    QString value = param.section(QLatin1Char( ' ' ), 1);
     m_values[item] = value;
     kDebug() << "# SET: [" << item << "] " << value;
-    say("0 ok");
+    say(QLatin1String( "0 ok" ));
 }
 
 void DebconfFrontend::cmd_get(const QString &param)
 {
-    say("0 " + m_values[param]);
+    say(QLatin1String( "0 " ) + m_values[param]);
 }
 
 void DebconfFrontend::cmd_input(const QString &param)
 {
-    m_input.append(param.section(' ', 1));
-    say("0 will ask");
+    m_input.append(param.section(QLatin1Char( ' ' ), 1));
+    say(QLatin1String( "0 will ask" ));
 }
 
 void DebconfFrontend::cmd_go(const QString &)
@@ -241,13 +241,13 @@ void DebconfFrontend::cmd_progress(const QString &param)
 void DebconfFrontend::next()
 {
     m_input.clear();
-    say("0 ok, got the answers");
+    say(QLatin1String( "0 ok, got the answers" ));
 }
 
 void DebconfFrontend::back()
 {
     m_input.clear();
-    say("30 go back");
+    say(QLatin1String( "30 go back" ));
 }
 
 void DebconfFrontend::cancel()
@@ -264,7 +264,7 @@ void DebconfFrontend::cmd_title(const QString &param)
         m_title = param;
     }
     kDebug() << "DEBCONF: TITLE " << m_title;
-    say("0 ok");
+    say(QLatin1String( "0 ok" ));
 }
 
 void DebconfFrontend::cmd_data(const QString &param)
@@ -274,13 +274,13 @@ void DebconfFrontend::cmd_data(const QString &param)
     // item = "aiccu/brokername"
     // type = "description"
     // rest = "Tunnel broker:"
-    QString item = param.section(' ', 0, 0);
-    QString type = param.section(' ', 1, 1);
-    QString value = param.section(' ', 2);
+    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
+    QString type = param.section(QLatin1Char( ' ' ), 1, 1);
+    QString value = param.section(QLatin1Char( ' ' ), 2);
 
     m_data[item][propertyKeyFromString(type)] = value;
     kDebug() << "# NOTED: [" << item << "] [" << type << "] " << value;
-    say("0 ok");
+    say(QLatin1String( "0 ok" ));
 }
 
 void DebconfFrontend::cmd_subst(const QString &param)
@@ -290,13 +290,13 @@ void DebconfFrontend::cmd_subst(const QString &param)
     // item = "aiccu/brokername"
     // type = "brokers"
     // value = "AARNet, Hexago / Freenet6, SixXS, Wanadoo France"
-    QString item = param.section(' ', 0, 0);
-    QString type = param.section(' ', 1, 1);
-    QString value = param.section(' ', 2);
+    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
+    QString type = param.section(QLatin1Char( ' ' ), 1, 1);
+    QString value = param.section(QLatin1Char( ' ' ), 2);
 
     m_subst[item][type] = value;
     kDebug() << "# SUBST: [" << item << "] [" << type << "] " << value;
-    say("0 ok");
+    say(QLatin1String( "0 ok" ));
 }
 
 bool DebconfFrontend::process()
@@ -308,13 +308,13 @@ bool DebconfFrontend::process()
         return false;
     }
 
-    QString command = line.section(' ', 0, 0);
-    QString value = line.section(' ', 1);
+    QString command = line.section(QLatin1Char( ' ' ), 0, 0);
+    QString value = line.section(QLatin1Char( ' ' ), 1);
 
     kDebug() << "DEBCONF <--- [" << command << "] " << value;
     const Cmd *c = commands;
     while (c->cmd != 0) {
-        if (command == c->cmd) {
+        if (command == QLatin1String( c->cmd )) {
             (this->*(c->run))(value);
             return true;
         }
