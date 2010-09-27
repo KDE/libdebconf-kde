@@ -136,8 +136,8 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     int enumValue = e.keyToValue(realName.toAscii().data());
 
     if(enumValue == -1) {
-        enumValue = e.keyToValue(QString(QLatin1String( "Unknown" )).append(enumName).toAscii().data());
-        kDebug() << "enumFromString (" << enumName << ") : converted" << realName << "to" << QString(QLatin1String( "Unknown" )).append(enumName) << ", enum value" << enumValue;
+        enumValue = e.keyToValue(QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )).toAscii().data());
+        kDebug() << "enumFromString (" <<QLatin1String( enumName ) << ") : converted" << realName << "to" << QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )) << ", enum value" << enumValue;
     }
     return enumValue;
 }
@@ -149,7 +149,7 @@ DebconfFrontend::PropertyKey DebconfFrontend::propertyKeyFromString(const QStrin
 
 DebconfFrontend::TypeKey DebconfFrontend::type(const QString &string) const
 {
-    return static_cast<TypeKey>(enumFromString<DebconfFrontend>(property(string, Type), "TypeKey"));
+    return static_cast<TypeKey>(enumFromString<DebconfFrontend>(property(string, Type), "TypeKey" ));
 }
 
 void DebconfFrontend::reset()

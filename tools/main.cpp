@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     KCmdLineArgs::init( argc, argv, &aboutData );
 
     KApplication app;
-    DebconfGui *dcf = new DebconfGui("/tmp/debkonf-sock");
+    DebconfGui *dcf = new DebconfGui(QLatin1String( "/tmp/debkonf-sock" ));
     app.setTopWidget(dcf);
 
     dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));

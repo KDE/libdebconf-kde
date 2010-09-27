@@ -123,7 +123,7 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
     myProcess->start(QLatin1String( "lsb_release" ), QStringList() << QLatin1String( "-is" ));
     if (myProcess->waitForFinished()) {
         if (myProcess->exitCode() == 0){
-            QString data = myProcess->readAllStandardOutput();
+            QString data = QLatin1String( myProcess->readAllStandardOutput() );
             data = QString(QLatin1String( "/usr/share/pixmaps/%1-logo.png" )).arg(data.trimmed().toLower());
             if (QFile::exists(data)) {
                 distro_logo = data;
