@@ -57,28 +57,73 @@
 
 namespace DebconfKde {
 
+/**
+ * \class DebconfGui DebconfGui.h DebconfGui
+ * \author Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ *
+ * \brief Widget to present debconf elements
+ *
+ * This class provides a widget subclass that
+ * can present Debconf elements (questions), using
+ * a socket file.
+ *
+ * For this class to be useful the programs that are going
+ * to use debconf to present questions must have the enviroment
+ * variables DEBIAN_FRONTEND set to passthrough and DEBCONF_PIPE
+ * to the path set on the constructor (\p socketName). Then when
+ * a new connection arrives this class will take care of
+ * talking the debconf protocol and emit activated() so that
+ * this widget should be shown, and deactivated() when it should
+ * be hidden.
+ *
+ * \note It is possible to let this class work automatically by
+ * connecting the activated() signal on the QWidget::show() slot and
+ * deactivated() on the QWidget::hide() slot.
+ *
+ * \note This class must not be deleted after deactivated() signal
+ * is emitted, since new packages need to talk to the same socket.
+ * Only delete it after you are sure no more operations ended.
+ */
 class DebconfGuiPrivate;
 class KDE_EXPORT DebconfGui : public QWidget
 {
     Q_OBJECT
 public:
+    /**
+     * Contructor that takes a file path (\p socketName) to create
+     * a new socket.
+     * \warning Be adivised that this class will delete the path pointed
+     * by \p socketName. A good location would be /tmp/debconf-$PID.
+     */
     explicit DebconfGui(const QString &socketName, QWidget *parent = 0);
 
-public Q_SLOTS:
-    void cmd_go(const QString &title, const QStringList &input);
-    void cmd_progress(const QString &param);
-
 Q_SIGNALS:
+    /**
+     * This signal is emitted when a new debconf element (question)
+     * needs to be displayed.
+     */
     void activated();
+    /**
+     * This signal is emitted when there are no more debconf element
+     * (questions) to show. This does not mean that there will not be
+     * more questions in future so do not delete this class.
+     */
     void deactivated();
 
 private Q_SLOTS:
+    void cmd_go(const QString &title, const QStringList &input);
+    void cmd_progress(const QString &param);
+
     void on_nextPB_clicked();
     void on_backPB_clicked();
     void on_cancelPB_clicked();
 
 protected:
-    virtual void closeEvent(QCloseEvent *event);
+    /**
+     * Reimplemented function to cancel the question if the user closes
+     * the window.
+     */
+    void closeEvent(QCloseEvent *event);
 
     DebconfGuiPrivate * const d_ptr;
 
