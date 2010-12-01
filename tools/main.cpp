@@ -36,17 +36,30 @@ int main(int argc, char **argv)
                          ki18n("Debconf frontend for KDE"),
                          KAboutData::License_LGPL);
 
-    KCmdLineArgs::init( argc, argv, &aboutData );
+    KCmdLineArgs::init(argc, argv, &aboutData);
+
+    KCmdLineOptions options;
+    options.add("socket-path <path_to_socket>", ki18n("Path to where the socket should be created"));
+    KCmdLineArgs::addCmdLineOptions(options);
+
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
+    QString path;
+    if (args->isSet("socket-path")) {
+        path = args->getOption("socket-path");
+    } else {
+        path = QLatin1String("/tmp/debkonf-sock");
+    }
 
     KApplication app;
-    DebconfGui *dcf = new DebconfGui(QLatin1String( "/tmp/debkonf-sock" ));
+    DebconfGui *dcf = new DebconfGui(path);
     app.setTopWidget(dcf);
 
     dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
     dcf->connect(dcf, SIGNAL(deactivated()), SLOT(hide()));
 
     std::cout << "export DEBIAN_FRONTEND=passthrough" << std::endl;
-    std::cout << "export DEBCONF_PIPE=/tmp/debkonf-sock" << std::endl;
+    std::cout << "export DEBCONF_PIPE=" << path.toUtf8().data() << std::endl;
 
     return app.exec();
 }
