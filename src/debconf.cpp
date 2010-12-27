@@ -52,6 +52,7 @@
 
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QRegExp>
+#include <QtCore/QStringBuilder>
 #include <QtCore/QFile>
 
 #include <KDebug>
@@ -181,7 +182,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
         var = rx.cap(3);
         last = rx.cap(4);
         if (!escape.isEmpty()) {
-            result += QLatin1String( "${" ) + var + QLatin1Char( '}' );
+            result += QString(QLatin1Literal( "${" ) % var % QLatin1Char( '}' ));
         } else {
             result += sub[var];
         }
