@@ -184,7 +184,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
         if (!escape.isEmpty()) {
             result += QString(QLatin1Literal( "${" ) % var % QLatin1Char( '}' ));
         } else {
-            result += sub[var];
+            result += sub.value(var);
         }
     }
     return result + last;
@@ -192,7 +192,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 
 QString DebconfFrontend::property(const QString &key, PropertyKey p) const
 {
-    QString r = m_data[key][p];
+    QString r = m_data.value(key).value(p);
     if (p == Description || p == Choices) {
         return substitute(key, r);
     }
@@ -216,7 +216,7 @@ void DebconfFrontend::cmd_set(const QString &param)
 
 void DebconfFrontend::cmd_get(const QString &param)
 {
-    say(QLatin1String( "0 " ) + m_values[param]);
+    say(QLatin1String( "0 " ) + m_values.value(param));
 }
 
 void DebconfFrontend::cmd_input(const QString &param)
