@@ -170,6 +170,7 @@ private:
     void cmd_data(const QString &param);
     void cmd_subst(const QString &param);
     void cmd_progress(const QString &param);
+    void cmd_x_ping(const QString &param);
     struct Cmd {
         const char *cmd;
         void (DebconfFrontend::*run)(const QString &);

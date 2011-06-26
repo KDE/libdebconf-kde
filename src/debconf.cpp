@@ -74,6 +74,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "GET", &DebconfFrontend::cmd_get },
     { "CAPB", &DebconfFrontend::cmd_capb },
     { "PROGRESS", &DebconfFrontend::cmd_progress },
+    { "X_PING", &DebconfFrontend::cmd_x_ping },
     { 0, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
@@ -278,6 +279,12 @@ void DebconfFrontend::cmd_subst(const QString &param)
     m_subst[item][type] = value;
     kDebug() << "# SUBST: [" << item << "] [" << type << "] " << value;
     say(QLatin1String( "0 ok" ));
+}
+
+void DebconfFrontend::cmd_x_ping(const QString &param)
+{
+    Q_UNUSED(param);
+    say(QLatin1String( "0 pong" ));
 }
 
 bool DebconfFrontend::process()
