@@ -1,5 +1,6 @@
 // This license reflects the original Adept code:
 // -*- C++ -*- (c) 2008 Petr Rockai <me@mornfall.net>
+//             (c) 2011 Modestas Vainius <modax@debian.org>
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -55,8 +56,11 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMetaEnum>
 #include <QtCore/QMetaObject>
+#include <QtCore/QFile>
 #include <QtNetwork/QLocalSocket>
 #include <QtNetwork/QLocalServer>
+
+class QSocketNotifier;
 
 namespace DebconfKde {
 
@@ -122,6 +126,9 @@ public:
 signals:
     void go(const QString &title, const QStringList &input);
     void progress(const QString &param);
+    /**
+      * Emitted when connection with Debconf is terminated.
+      */
     void finished();
     void backup(bool capable);
 
@@ -188,7 +195,9 @@ private:
 };
 
 /**
-  * DebconfFrontend which communicates with Debconf over UNIX socket.
+  * DebconfFrontend which communicates with Debconf over UNIX socket. Even when
+  * finished signal is emitted, DeconfFrontend will reset and continue to
+  * listen for new connections on the socket.
   */
 class DebconfFrontendSocket : public DebconfFrontend {
     Q_OBJECT
@@ -226,6 +235,37 @@ private Q_SLOTS:
 private:
     QLocalServer *m_server;
     QLocalSocket *m_socket;
+};
+
+/**
+  * DebconfFrontend which communicates with Debconf over FIFO pipes. Once
+  * finished signal is emitted, the frontend is no longer usable as pipes
+  * have been been closed by then.
+  */
+class DebconfFrontendFifo : public DebconfFrontend {
+
+public:
+    /**
+      * Instantiates the class and prepares for communication with Debconf over
+      * \p readfd (read) and \p writefd (write) FIFO file descriptors.
+      */
+    explicit DebconfFrontendFifo(int readfd, int writefd, QObject *parent = 0);
+
+    /**
+      * Overriden to trigger full disconnection
+      */
+    void cancel();
+
+protected:
+    QIODevice* getReadDevice() const { return m_readf; }
+    QIODevice* getWriteDevice() const { return m_writef; }
+    void reset();
+    bool process();
+
+private:
+    QFile *m_readf;
+    QFile *m_writef;
+    QSocketNotifier *m_readnotifier;
 };
 
 }

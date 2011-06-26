@@ -93,6 +93,21 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
 {
     Q_D(DebconfGui);
     d->frontend = new DebconfFrontendSocket(socketName, this);
+    init();
+}
+
+DebconfGui::DebconfGui(int readfd, int writefd, QWidget *parent)
+ : QWidget(parent),
+   d_ptr(new DebconfGuiPrivate)
+{
+    Q_D(DebconfGui);
+    d->frontend = new DebconfFrontendFifo(readfd, writefd, this);
+    init();
+}
+
+void DebconfGui::init()
+{
+    Q_D(DebconfGui);
     d->elementProgress = 0;
     d->parentWidget = 0;
     d->setupUi(this);

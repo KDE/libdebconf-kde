@@ -97,6 +97,13 @@ public:
      */
     explicit DebconfGui(const QString &socketName, QWidget *parent = 0);
 
+    /**
+     * Constructor that prepares for communication with Debconf via FIFO pipes.
+     * Read (\p readfd) and write (\p writefd) file descriptors should be open
+     * and connected to Debconf which speaks Passthrough frontend protocol.
+     */
+    explicit DebconfGui(int readfd, int writefd, QWidget *parent = 0);
+
 Q_SIGNALS:
     /**
      * This signal is emitted when a new debconf element (question)
@@ -105,8 +112,10 @@ Q_SIGNALS:
     void activated();
     /**
      * This signal is emitted when there are no more debconf element
-     * (questions) to show. This does not mean that there will not be
-     * more questions in future so do not delete this class.
+     * (questions) to show. If FIFO pipes are used for communication, it means
+     * that pipes were closed and futher communication is no longer possible.
+     * If socket is used, more questions might still be shown in future so do
+     * not delete this class.
      */
     void deactivated();
 
@@ -129,6 +138,12 @@ protected:
 
 private:
     Q_DECLARE_PRIVATE(DebconfGui)
+
+    /**
+      * This routine is called by all constructors to perform common
+      * initialization.
+      */
+    void init();
 };
 
 

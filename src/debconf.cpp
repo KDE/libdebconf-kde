@@ -1,5 +1,6 @@
 // This license reflects the original Adept code:
 // -*- C++ -*- (c) 2008 Petr Rockai <me@mornfall.net>
+//             (c) 2011 Modestas Vainius <modax@debian.org>
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
@@ -54,6 +55,9 @@
 #include <QtCore/QRegExp>
 #include <QtCore/QStringBuilder>
 #include <QtCore/QFile>
+#include <QtCore/QSocketNotifier>
+#include <cstdio>
+#include <unistd.h>
 
 #include <KDebug>
 
@@ -83,8 +87,8 @@ DebconfFrontend::~DebconfFrontend()
 
 void DebconfFrontend::disconnected()
 {
-    emit finished();
     reset();
+    emit finished();
 }
 
 QString DebconfFrontend::value(const QString &key) const
@@ -346,6 +350,57 @@ void DebconfFrontendSocket::cancel()
         m_socket->disconnectFromServer();
     }
     DebconfFrontend::cancel();
+}
+
+DebconfFrontendFifo::DebconfFrontendFifo(int readfd, int writefd, QObject *parent)
+  : DebconfFrontend(parent)
+{
+    m_readf = new QFile(this);
+    // Use QFile::open(fh,mode) method for opening read file descriptor as
+    // sequential files opened with QFile::open(fd,mode) are not handled
+    // properly.
+    FILE *readfh = ::fdopen(readfd, "rb");
+    m_readf->open(readfh, QIODevice::ReadOnly);
+
+    m_writef = new QFile(this);
+    m_writef->open(writefd, QIODevice::WriteOnly);
+    // QIODevice::readyReady() does not work with QFile
+    // http://bugreports.qt.nokia.com/browse/QTBUG-16089
+    m_readnotifier = new QSocketNotifier(readfd, QSocketNotifier::Read, this);
+    connect(m_readnotifier, SIGNAL(activated(int)), this, SLOT(process()));
+}
+
+void DebconfFrontendFifo::reset()
+{
+    if (m_readf) {
+        // Close file descriptors
+        int readfd = m_readf->handle();
+        int writefd = m_writef->handle();
+        m_readnotifier->setEnabled(false);
+        m_readf->close();
+        m_writef->close();
+        m_readf = m_writef = 0;
+
+        // Use C library calls because QFile::close() won't close them actually
+        ::close(readfd);
+        ::close(writefd);
+    }
+    DebconfFrontend::reset();
+}
+
+void DebconfFrontendFifo::cancel()
+{
+    disconnected();
+}
+
+bool DebconfFrontendFifo::process()
+{
+    // We will get notification when the other end is closed
+    if (m_readf->atEnd()) {
+        cancel();
+        return false;
+    }
+    return DebconfFrontend::process();
 }
 
 }
