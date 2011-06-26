@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ *           (C) 2011 Modestas Vainius <modax@debian.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -20,6 +21,7 @@
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
+#include <KDebug>
 
 #include <iostream>
 
@@ -40,26 +42,48 @@ int main(int argc, char **argv)
 
     KCmdLineOptions options;
     options.add("socket-path <path_to_socket>", ki18n("Path to where the socket should be created"));
+    options.add("fifo-fds <read_fd,write_fd>", ki18n("FIFO file descriptors for communication with Debconf"));
     KCmdLineArgs::addCmdLineOptions(options);
 
     KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
 
-    QString path;
-    if (args->isSet("socket-path")) {
-        path = args->getOption("socket-path");
+    KApplication app;
+    DebconfGui *dcf = 0;
+
+    if (args->isSet("fifo-fds")) {
+        int readfd, writefd;
+        QRegExp regex(QLatin1String("(\\d+),(\\d+)"));
+        if (regex.exactMatch(args->getOption("fifo-fds"))) {
+            readfd = regex.cap(1).toInt();
+            writefd = regex.cap(2).toInt();
+
+            dcf = new DebconfGui(readfd, writefd);
+            dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
+            // Once FIFO pipes are closed, it cannot be reopened. Hence we
+            // should terminate as well.
+            dcf->connect(dcf, SIGNAL(deactivated()), SLOT(close()));
+        } else {
+            kFatal() << "Incorrect value of the --fifo-fds parameter";
+        }
     } else {
-        path = QLatin1String("/tmp/debkonf-sock");
+        QString path;
+        if (args->isSet("socket-path")) {
+            path = args->getOption("socket-path");
+        } else {
+            path = QLatin1String("/tmp/debkonf-sock");
+        }
+        dcf = new DebconfGui(path);
+        std::cout << "export DEBIAN_FRONTEND=passthrough" << std::endl;
+        std::cout << "export DEBCONF_PIPE=" << path.toUtf8().data() << std::endl;
+
+        dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
+        dcf->connect(dcf, SIGNAL(deactivated()), SLOT(hide()));
     }
 
-    KApplication app;
-    DebconfGui *dcf = new DebconfGui(path);
+    if (!dcf)
+        return 1;
+
     app.setTopWidget(dcf);
-
-    dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
-    dcf->connect(dcf, SIGNAL(deactivated()), SLOT(hide()));
-
-    std::cout << "export DEBIAN_FRONTEND=passthrough" << std::endl;
-    std::cout << "export DEBCONF_PIPE=" << path.toUtf8().data() << std::endl;
 
     return app.exec();
 }
