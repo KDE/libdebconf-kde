@@ -72,35 +72,13 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "PROGRESS", &DebconfFrontend::cmd_progress },
     { 0, 0 } };
 
-DebconfFrontend::DebconfFrontend(const QString &socketName, QObject *parent)
-  : QObject(parent), m_socket(0)
+DebconfFrontend::DebconfFrontend(QObject *parent)
+  : QObject(parent)
 {
-    m_server = new QLocalServer(this);
-    QFile::remove(socketName);
-    m_server->listen(socketName);
-    connect(m_server, SIGNAL(newConnection()), this, SLOT(newConnection()));
-}
-
-void DebconfFrontend::newConnection()
-{
-    kDebug();
-    if (m_socket) {
-        QLocalSocket *socket = m_server->nextPendingConnection();
-        socket->disconnectFromServer();
-        socket->deleteLater();
-        return;
-    }
-
-    m_socket = m_server->nextPendingConnection();
-    if (m_socket) {
-        connect(m_socket, SIGNAL(readyRead()), this, SLOT(process()));
-        connect(m_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    }
 }
 
 DebconfFrontend::~DebconfFrontend()
 {
-    QFile::remove(m_server->fullServerName());
 }
 
 void DebconfFrontend::disconnected()
@@ -156,8 +134,6 @@ DebconfFrontend::TypeKey DebconfFrontend::type(const QString &string) const
 void DebconfFrontend::reset()
 {
     emit backup(false);
-    m_socket->deleteLater();
-    m_socket = 0;
     m_data.clear();
     m_subst.clear();
     m_values.clear();
@@ -166,7 +142,7 @@ void DebconfFrontend::reset()
 void DebconfFrontend::say(const QString &string)
 {
     kDebug() << "DEBCONF ---> " << string;
-    QTextStream out(m_socket);
+    QTextStream out(getWriteDevice());
     out << string << "\n";
 }
 
@@ -253,7 +229,6 @@ void DebconfFrontend::back()
 
 void DebconfFrontend::cancel()
 {
-    m_socket->disconnectFromServer();
     reset();
 }
 
@@ -302,7 +277,7 @@ void DebconfFrontend::cmd_subst(const QString &param)
 
 bool DebconfFrontend::process()
 {
-    QTextStream in(m_socket);
+    QTextStream in(getReadDevice());
     QString line = in.readLine();
 
     if (line.isEmpty()) {
@@ -324,5 +299,51 @@ bool DebconfFrontend::process()
     return false;
 }
 
+DebconfFrontendSocket::DebconfFrontendSocket(const QString &socketName, QObject *parent)
+  : DebconfFrontend(parent), m_socket(0)
+{
+    m_server = new QLocalServer(this);
+    QFile::remove(socketName);
+    m_server->listen(socketName);
+    connect(m_server, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
+
+DebconfFrontendSocket::~DebconfFrontendSocket()
+{
+    QFile::remove(m_server->fullServerName());
+}
+
+void DebconfFrontendSocket::newConnection()
+{
+    kDebug();
+    if (m_socket) {
+        QLocalSocket *socket = m_server->nextPendingConnection();
+        socket->disconnectFromServer();
+        socket->deleteLater();
+        return;
+    }
+
+    m_socket = m_server->nextPendingConnection();
+    if (m_socket) {
+        connect(m_socket, SIGNAL(readyRead()), this, SLOT(process()));
+        connect(m_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    }
+}
+
+void DebconfFrontendSocket::reset()
+{
+    m_socket->deleteLater();
+    m_socket = 0;
+
+    DebconfFrontend::reset();
+}
+
+void DebconfFrontendSocket::cancel()
+{
+    m_socket->disconnectFromServer();
+    DebconfFrontend::cancel();
+}
+
+}
+
 #include "debconf.moc"

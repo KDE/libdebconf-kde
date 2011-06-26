@@ -92,7 +92,7 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
    d_ptr(new DebconfGuiPrivate)
 {
     Q_D(DebconfGui);
-    d->frontend = new DebconfFrontend(socketName, this);
+    d->frontend = new DebconfFrontendSocket(socketName, this);
     d->elementProgress = 0;
     d->parentWidget = 0;
     d->setupUi(this);

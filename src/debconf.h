@@ -60,6 +60,10 @@
 
 namespace DebconfKde {
 
+/**
+  * An abstract class which talks Debconf Passthrough frontend protocol. It
+  * does not implement underlying I/O method specifics.
+  */
 class DebconfFrontend : public QObject {
     Q_OBJECT
     Q_ENUMS(PropertyKey)
@@ -87,8 +91,8 @@ public:
         UnknownTypeKey = -1
     } TypeKey;
 
-    explicit DebconfFrontend(const QString &socketName, QObject *parent = 0);
-    ~DebconfFrontend();
+    explicit DebconfFrontend(QObject *parent = 0);
+    virtual ~DebconfFrontend();
 
     QString value(const QString &key) const;
     void setValue(const QString &key, const QString &value);
@@ -97,6 +101,9 @@ public:
 
     TypeKey type(const QString &string) const;
 
+    /**
+      * Send \p string to Debconf over established connection
+      */
     void say(const QString &string);
 
     /**
@@ -110,7 +117,7 @@ public:
     /**
      * Closes the current connection, canceling all questions
      */
-    void cancel();
+    virtual void cancel();
 
 signals:
     void go(const QString &title, const QStringList &input);
@@ -118,21 +125,33 @@ signals:
     void finished();
     void backup(bool capable);
 
-private slots:
+protected Q_SLOTS:
     /**
-     * This slot is called when the socket has new data
+     * This slot should be called when there is new data available.
      */
-    bool process();
+    virtual bool process();
+
     /**
-     * Called when a new connection is received on the socket
-     * If we are already handlyng a connection we refuse the others
+     * This slot should be called when connection with Debconf is terminated.
      */
-    void newConnection();
+    virtual void disconnected();
+
+protected:
     /**
-     * When the client disconnects we need to hide the GUI and clean
-     * our internal data
+      * This method must be overriden by the derivative class and return
+      * current QIODevice which should be used to read data from Debconf.
+      */
+    virtual QIODevice* getReadDevice() const = 0;
+    /**
+      * This method must be overriden by the derivative class and return
+      * current QIODevice which should be used to write data to Debconf.
+      */
+    virtual QIODevice* getWriteDevice() const = 0;
+    /**
+     * This is called to clean up internal data once connection with
+     * Debconf is terminated.
      */
-    void disconnected();
+    virtual void reset();
 
 private:
     void cmd_capb(const QString &caps);
@@ -150,8 +169,6 @@ private:
     };
     static const Cmd commands[];
 
-    void reset();
-
     // TODO this is apparently very much untested
     QString substitute(const QString &key, const QString &rest) const;
     /**
@@ -163,13 +180,52 @@ private:
     typedef QHash<PropertyKey, QString> Properties;
     typedef QHash<QString, QString> Substitutions;
 
-    QLocalSocket *m_socket;
-    QLocalServer *m_server;
     QHash<QString, Properties>    m_data;
     QHash<QString, Substitutions> m_subst;
     QHash<QString, QString>       m_values;
     QString m_title;
     QStringList m_input;
+};
+
+/**
+  * DebconfFrontend which communicates with Debconf over UNIX socket.
+  */
+class DebconfFrontendSocket : public DebconfFrontend {
+    Q_OBJECT
+
+public:
+    /**
+      * Instantiates the class and starts listening for new connections on the
+      * socket at \p socketName path. Please note that any file at \p socketName
+      * will be removed if it exists prior to the call of this constructor.
+      */
+    explicit DebconfFrontendSocket(const QString &socketName, QObject *parent = 0);
+
+    /**
+      * Removes socket when the object is destroyed.
+      */
+    virtual ~DebconfFrontendSocket();
+
+    /**
+      * Overriden to trigger termination of the current connection.
+      */
+    void cancel();
+
+protected:
+    inline QIODevice* getReadDevice() const { return m_socket; }
+    inline QIODevice* getWriteDevice() const { return m_socket; }
+    void reset();
+
+private Q_SLOTS:
+    /**
+     * Called when a new connection is received on the socket
+     * If we are already handlyng a connection we refuse the others
+     */
+    void newConnection();
+
+private:
+    QLocalServer *m_server;
+    QLocalSocket *m_socket;
 };
 
 }
