@@ -333,15 +333,18 @@ void DebconfFrontendSocket::newConnection()
 
 void DebconfFrontendSocket::reset()
 {
-    m_socket->deleteLater();
-    m_socket = 0;
-
+    if (m_socket) {
+        m_socket->deleteLater();
+        m_socket = 0;
+    }
     DebconfFrontend::reset();
 }
 
 void DebconfFrontendSocket::cancel()
 {
-    m_socket->disconnectFromServer();
+    if (m_socket) {
+        m_socket->disconnectFromServer();
+    }
     DebconfFrontend::cancel();
 }
 
