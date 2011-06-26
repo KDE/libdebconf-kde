@@ -90,7 +90,7 @@ class KDE_EXPORT DebconfGui : public QWidget
     Q_OBJECT
 public:
     /**
-     * Contructor that takes a file path (\p socketName) to create
+     * Constructor that takes a file path (\p socketName) to create
      * a new socket.
      * \warning Be adivised that this class will delete the path pointed
      * by \p socketName. A good location would be /tmp/debconf-$PID.
