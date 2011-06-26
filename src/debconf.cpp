@@ -144,6 +144,7 @@ void DebconfFrontend::say(const QString &string)
     kDebug() << "DEBCONF ---> " << string;
     QTextStream out(getWriteDevice());
     out << string << "\n";
+    out.flush();
 }
 
 QString DebconfFrontend::substitute(const QString &key, const QString &rest) const
