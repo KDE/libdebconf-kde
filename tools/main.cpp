@@ -18,6 +18,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include <QtCore/QRegExp>
+
 #include <KApplication>
 #include <KAboutData>
 #include <KCmdLineArgs>
@@ -59,7 +61,7 @@ int main(int argc, char **argv)
 
             dcf = new DebconfGui(readfd, writefd);
             dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
-            // Once FIFO pipes are closed, it cannot be reopened. Hence we
+            // Once FIFO pipes are closed, they cannot be reopened. Hence we
             // should terminate as well.
             dcf->connect(dcf, SIGNAL(deactivated()), SLOT(close()));
         } else {
