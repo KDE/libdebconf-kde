@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
  *           (C) 2011 Modestas Vainius <modax@debian.org>
  *
  * This library is free software; you can redistribute it and/or

@@ -30,7 +30,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * All the modifications below are licensed under this license
- * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -59,7 +59,7 @@ namespace DebconfKde {
 
 /**
  * \class DebconfGui DebconfGui.h DebconfGui
- * \author Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * \author Daniel Nicoletti <dantti12@gmail.com>
  *
  * \brief Widget to present debconf elements
  *
@@ -68,7 +68,7 @@ namespace DebconfKde {
  * a socket file.
  *
  * For this class to be useful the programs that are going
- * to use debconf to present questions must have the enviroment
+ * to use debconf to present questions must have the environment
  * variables DEBIAN_FRONTEND set to passthrough and DEBCONF_PIPE
  * to the path set on the constructor (\p socketName). Then when
  * a new connection arrives this class will take care of

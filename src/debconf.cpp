@@ -31,7 +31,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * All the modifications below are licensed under this license
- * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -55,7 +55,6 @@
 #include <QtCore/QRegExp>
 #include <QtCore/QStringBuilder>
 #include <QtCore/QFile>
-#include <QtCore/QSocketNotifier>
 #include <cstdio>
 #include <unistd.h>
 

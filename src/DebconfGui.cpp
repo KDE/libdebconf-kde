@@ -30,7 +30,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * All the modifications below are licensed under this license
- * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -117,12 +117,12 @@ void DebconfGui::init()
     d->cancelPB->setIcon(KIcon(QLatin1String( "dialog-cancel" )));
     d->cancelPB->setVisible(false);
 
-    connect(d->frontend, SIGNAL(go(const QString &, const QStringList &)),
-            this, SLOT(cmd_go(const QString &, const QStringList &)));
+    connect(d->frontend, SIGNAL(go(QString,QStringList)),
+            this, SLOT(cmd_go(QString,QStringList)));
     connect(d->frontend, SIGNAL(finished()),
             this, SIGNAL(deactivated()));
-    connect(d->frontend, SIGNAL(progress(const QString &)),
-            this, SLOT(cmd_progress(const QString &)));
+    connect(d->frontend, SIGNAL(progress(QString)),
+            this, SLOT(cmd_progress(QString)));
     connect(d->frontend, SIGNAL(backup(bool)),
             d->backPB, SLOT(setEnabled(bool)));
 

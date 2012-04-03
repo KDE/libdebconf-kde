@@ -31,7 +31,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * All the modifications below are licensed under this license
- * Copyright (C) 2010 Daniel Nicoletti <dantti85-pk@yahoo.com.br>
+ * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -145,12 +145,12 @@ protected Q_SLOTS:
 
 protected:
     /**
-      * This method must be overriden by the derivative class and return
+      * This method must be overridden by the derivative class and return
       * current QIODevice which should be used to read data from Debconf.
       */
     virtual QIODevice* getReadDevice() const = 0;
     /**
-      * This method must be overriden by the derivative class and return
+      * This method must be overridden by the derivative class and return
       * current QIODevice which should be used to write data to Debconf.
       */
     virtual QIODevice* getWriteDevice() const = 0;
@@ -217,7 +217,7 @@ public:
     virtual ~DebconfFrontendSocket();
 
     /**
-      * Overriden to trigger termination of the current connection.
+      * Overridden to trigger termination of the current connection.
       */
     void cancel();
 
@@ -253,7 +253,7 @@ public:
     explicit DebconfFrontendFifo(int readfd, int writefd, QObject *parent = 0);
 
     /**
-      * Overriden to trigger full disconnection
+      * Overridden to trigger full disconnection
       */
     void cancel();
 
