@@ -104,6 +104,8 @@ public:
      */
     explicit DebconfGui(int readfd, int writefd, QWidget *parent = 0);
 
+    ~DebconfGui();
+
 Q_SIGNALS:
     /**
      * This signal is emitted when a new debconf element (question)
