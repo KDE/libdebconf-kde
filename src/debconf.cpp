@@ -159,9 +159,11 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 {
     Substitutions sub = m_subst[key];
     QString result, var, escape;
-    QRegExp rx(QLatin1String( "^(.*?)(\\\\)?\\$\\{([^{}]+)\\}(.*)$" ));
+    QRegExp rx(QLatin1String( "^(.*)(\\\\)?\\$\\{([^\\{\\}]+)\\}(.*)$" ));
     QString last(rest);
-    while (rx.indexIn(rest) != -1) {
+    int pos = 0;
+    while ( (pos = rx.indexIn(rest, pos)) != -1) {
+	kDebug() << "var found! at" << pos;
         result += rx.cap(1);
         escape = rx.cap(2);
         var = rx.cap(3);
@@ -171,6 +173,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
         } else {
             result += sub.value(var);
         }
+        pos += rx.matchedLength();
     }
     return result + last;
 }
