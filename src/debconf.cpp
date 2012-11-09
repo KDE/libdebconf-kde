@@ -74,6 +74,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "CAPB", &DebconfFrontend::cmd_capb },
     { "PROGRESS", &DebconfFrontend::cmd_progress },
     { "X_PING", &DebconfFrontend::cmd_x_ping },
+    { "VERSION", &DebconfFrontend::cmd_version },
     { 0, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
@@ -284,6 +285,21 @@ void DebconfFrontend::cmd_x_ping(const QString &param)
 {
     Q_UNUSED(param);
     say(QLatin1String( "0 pong" ));
+}
+
+void DebconfFrontend::cmd_version(const QString &param)
+{
+    if ( !param.isEmpty() ) {
+        QString major_version_str = param.section(QLatin1Char( '.' ), 0, 0);
+        bool ok = false;
+        int major_version = major_version_str.toInt( &ok );
+        if ( !ok || (major_version != 2) ) {
+            say(QLatin1String( "30 wrong or too old protocol version" ));
+            return;
+        }
+    }
+    //This debconf frontend is suposed to use the version 2.1 of the protocol.
+    say(QLatin1String( "0 2.1" ));
 }
 
 bool DebconfFrontend::process()
