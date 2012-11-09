@@ -349,7 +349,9 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
                         field_long_value[last_field_name] = line.remove(0, 1);
                     } else {
                         field_long_value[last_field_name].append(QLatin1Char('\n'));
-			field_long_value[last_field_name].append(line.remove(0, 1));
+                        if ( !(line.trimmed() == QLatin1String(".")) ) {
+			    field_long_value[last_field_name].append(line.remove(0, 1));
+                        }
                     }
                 }
             }
