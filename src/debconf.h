@@ -173,6 +173,7 @@ private:
     void cmd_x_ping(const QString &param);
     void cmd_version(const QString &param);
     void cmd_x_loadtemplatefile(const QString &param);
+    void cmd_info(const QString &param);
     struct Cmd {
         const char *cmd;
         void (DebconfFrontend::*run)(const QString &);
