@@ -75,6 +75,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "PROGRESS", &DebconfFrontend::cmd_progress },
     { "X_PING", &DebconfFrontend::cmd_x_ping },
     { "VERSION", &DebconfFrontend::cmd_version },
+    { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile },
     { 0, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
@@ -300,6 +301,59 @@ void DebconfFrontend::cmd_version(const QString &param)
     }
     //This debconf frontend is suposed to use the version 2.1 of the protocol.
     say(QLatin1String( "0 2.1" ));
+}
+
+void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
+{
+    QFile template_file(param);
+    if (template_file.open(QFile::ReadOnly)) {
+        QTextStream template_stream(&template_file);
+        QString line = QLatin1String("");
+        int linecount = 0;
+        QHash <QString,QString> field_short_value;
+        QHash <QString,QString> field_long_value;
+	QString last_field_name;
+        while ( !line.isNull() ) {
+            ++linecount;
+            line = template_stream.readLine();
+            kDebug() << linecount << line;
+            if ( line.isEmpty() ) {
+                if (!last_field_name.isEmpty()) {
+                    //Submit last block values.
+                    kDebug() << "submit" << last_field_name;
+                    QString item = field_short_value[QLatin1String("template")];
+                    QString type = field_short_value[QLatin1String("type")];
+                    QString short_description = field_short_value[QLatin1String("description")];
+                    QString long_description = field_long_value[QLatin1String("description")];
+
+                    m_data[item][DebconfFrontend::Type] = type;
+                    m_data[item][DebconfFrontend::Description] = short_description;
+                    m_data[item][DebconfFrontend::ExtendedDescription] = long_description;
+                    
+                    //Clear data.
+                    field_short_value.clear();
+                    field_long_value.clear();
+                    last_field_name.clear();
+                }
+            } else {
+                if (!line.startsWith(QLatin1Char(' '))) {
+                    last_field_name = line.section(QLatin1String(": "), 0, 0).toLower();
+                    field_short_value[last_field_name] = line.section(QLatin1String(": "), 1);
+                } else {
+		    if ( field_long_value[last_field_name].isEmpty() ){
+                        field_long_value[last_field_name] = line.remove(0, 1);
+                    } else {
+                        field_long_value[last_field_name].append(QLatin1Char('\n'));
+			field_long_value[last_field_name].append(line.remove(0, 1));
+                    }
+                }
+            }
+        }
+    } else {
+        say(QLatin1String( "30 couldn't open file" ));
+        return;
+    }
+    say(QLatin1String( "0 ok" ));
 }
 
 bool DebconfFrontend::process()
