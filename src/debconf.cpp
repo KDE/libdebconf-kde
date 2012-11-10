@@ -78,6 +78,8 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile },
     { "INFO", &DebconfFrontend::cmd_info },
     { "FSET", &DebconfFrontend::cmd_fset },
+    { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock },
+    { "ENDBLOCK", &DebconfFrontend::cmd_endblock },
     { 0, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
@@ -371,6 +373,20 @@ void DebconfFrontend::cmd_info(const QString &param)
 }
 
 void DebconfFrontend::cmd_fset(const QString &param)
+{
+    //FIXME: this is a dummy command, we should actually do something
+    //with param.
+    say(QLatin1String( "0 ok" ));
+}
+
+void DebconfFrontend::cmd_beginblock(const QString &param)
+{
+    //FIXME: this is a dummy command, we should actually do something
+    //with param.
+    say(QLatin1String( "0 ok" ));
+}
+
+void DebconfFrontend::cmd_endblock(const QString &param)
 {
     //FIXME: this is a dummy command, we should actually do something
     //with param.
