@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     KAboutData aboutData("debkonf",
                          QByteArray(),
                          ki18n("Debconf KDE"),
-                         "0.2",
+                         "0.3",
                          ki18n("Debconf frontend for KDE"),
                          KAboutData::License_LGPL);
 
