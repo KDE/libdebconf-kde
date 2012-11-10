@@ -163,7 +163,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
     QString last(rest);
     int pos = 0;
     while ( (pos = rx.indexIn(rest, pos)) != -1) {
-	kDebug() << "var found! at" << pos;
+        kDebug() << "var found! at" << pos;
         result += rx.cap(1);
         escape = rx.cap(2);
         var = rx.cap(3);
