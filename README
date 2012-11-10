@@ -1,0 +1,35 @@
+
+-------------------
+General information
+-------------------
+
+This is libdebconf-kde, a library which provides a debconf frontend.
+
+A debconf frontend is something similar to a mail server; it gets commands from
+a client and replies with a status code followed by a human readable message,
+for instance "0 ok". When a program is installed in Debian, the 'config script'
+(see man debconf-devel), acts as a client of a debconf frontend. Thus, different
+frontends with different kind of user interfaces (kde/qt, gtk, text) can be used
+to configure debian packages. This particular frontend is currently used by muon
+and apper to configure packages.
+
+While the clients for this protocol are oftenly the config scripts mentioned
+above, other programs can use this protocol, for instance apt-listchanges has a
+debconf interface, which allows muon to display the apt-listchanges messages
+inside the muon user interface
+
+-----------------------------------
+Protocol used: the debconf protocol
+-----------------------------------
+
+The debconf protocol used by this software is explained here:
+* /usr/share/doc/debian-policy/debconf_specification.html
+* man 7 debconf-devel
+
+There a are a couple of extensions of the protocol implemented in libdebconf-kde,
+specifically these commands:
+* X_PING - see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=631769
+* X_LOADTEMPLATEFILE - this is used by apt-listchanges, so providing it means
+  apt-listchanges messages can be displayed by libdebconf-kde, see:
+  http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678311
+
