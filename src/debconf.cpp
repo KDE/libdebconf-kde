@@ -262,7 +262,7 @@ void DebconfFrontend::cmd_title(const QString &param)
 
 void DebconfFrontend::cmd_data(const QString &param)
 {
-    // We get scrings like
+    // We get strings like
     // aiccu/brokername description Tunnel broker:
     // item = "aiccu/brokername"
     // type = "description"
@@ -278,7 +278,7 @@ void DebconfFrontend::cmd_data(const QString &param)
 
 void DebconfFrontend::cmd_subst(const QString &param)
 {
-    // We get scrings like
+    // We get strings like
     // aiccu/brokername brokers AARNet, Hexago / Freenet6, SixXS, Wanadoo France
     // item = "aiccu/brokername"
     // type = "brokers"
