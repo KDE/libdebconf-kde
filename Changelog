@@ -1,0 +1,19 @@
+libdebconf-kde 0.3:
+  * Fixed commands:
+    - SUBST: Now it actually works.
+  * New commands implemented (some of them are dummy; i.e. they just reply with
+    'O ok'):
+    - VERSION
+    - X_LOADTEMPLATEFILE
+    - INFO (dummy)
+    - FSET
+    - FGET
+    - BEGINBLOCK and ENDBLOCK (both dummy)
+    - STOP
+
+libdebconf-kde 0.2:
+  * This release include a few Krazy fixes and some improvements made by
+    Modestas Vainius.
+
+libdebconf-kde 0.1:
+  * Initial release.

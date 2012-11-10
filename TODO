@@ -1,0 +1,18 @@
+Commands to review/fix:
+ * Dummy commands, right now they just reply with a "O ok", but probably they
+   should do something:
+   - INFO
+   - FSET (actually it stores the flags as specified by the client, so they
+     could be retrieved later by FGET, but we don't do things with them).
+   - BEGINBLOCK
+   - ENDBLOCK
+ * Not yet implemented commands:
+   - CLEAR
+   - RESET
+   - METAGET
+   - REGISTER
+   - UNREGISTER
+   - PURGE
+   - PREVIOUS_MODULE
+     (this one is not documented in the debconf protocol specs, as well as DATA
+     and PROGRESS, wtf?)
