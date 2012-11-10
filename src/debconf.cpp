@@ -77,6 +77,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "VERSION", &DebconfFrontend::cmd_version },
     { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile },
     { "INFO", &DebconfFrontend::cmd_info },
+    { "FGET", &DebconfFrontend::cmd_fget },
     { "FSET", &DebconfFrontend::cmd_fset },
     { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock },
     { "ENDBLOCK", &DebconfFrontend::cmd_endblock },
@@ -148,6 +149,7 @@ void DebconfFrontend::reset()
     m_data.clear();
     m_subst.clear();
     m_values.clear();
+    m_flags.clear();
 }
 
 void DebconfFrontend::say(const QString &string)
@@ -373,10 +375,38 @@ void DebconfFrontend::cmd_info(const QString &param)
     say(QLatin1String( "0 ok" ));
 }
 
+void DebconfFrontend::cmd_fget(const QString &param)
+{
+    // We get strings like
+    // foo/bar seen false
+    // question = "foo/bar"
+    // flag = "seen"
+    QString question = param.section(QLatin1Char( ' ' ), 0, 0);
+    QString flag = param.section(QLatin1Char( ' ' ), 1, 1);
+
+    if (m_flags[question][flag]) {
+        say( QLatin1String("0 true") );
+    } else {
+        say( QLatin1String("0 false") );
+    }
+}
+
 void DebconfFrontend::cmd_fset(const QString &param)
 {
-    //FIXME: this is a dummy command, we should actually do something
-    //with param.
+    // We get strings like
+    // foo/bar seen false
+    // question = "foo/bar"
+    // flag = "seen"
+    // value = "false"
+    QString question = param.section(QLatin1Char( ' ' ), 0, 0);
+    QString flag = param.section(QLatin1Char( ' ' ), 1, 1);
+    QString value = param.section(QLatin1Char( ' ' ), 2, 2);
+
+    if ( value == QLatin1String("false") ) {
+        m_flags[question][flag] = false;
+    } else {
+        m_flags[question][flag] = true;
+    }
     say(QLatin1String( "0 ok" ));
 }
 
