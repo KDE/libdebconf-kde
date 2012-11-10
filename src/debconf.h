@@ -177,6 +177,7 @@ private:
     void cmd_fset(const QString &param);
     void cmd_beginblock(const QString &param);
     void cmd_endblock(const QString &param);
+    void cmd_stop(const QString &param);
     struct Cmd {
         const char *cmd;
         void (DebconfFrontend::*run)(const QString &);

@@ -80,6 +80,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "FSET", &DebconfFrontend::cmd_fset },
     { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock },
     { "ENDBLOCK", &DebconfFrontend::cmd_endblock },
+    { "STOP", &DebconfFrontend::cmd_stop },
     { 0, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
@@ -391,6 +392,12 @@ void DebconfFrontend::cmd_endblock(const QString &param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
     say(QLatin1String( "0 ok" ));
+}
+
+void DebconfFrontend::cmd_stop(const QString &param)
+{
+     Q_UNUSED(param)
+     //Do nothing.
 }
 
 bool DebconfFrontend::process()
