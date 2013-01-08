@@ -370,6 +370,7 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
 
 void DebconfFrontend::cmd_info(const QString &param)
 {
+    Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
     say(QLatin1String( "0 ok" ));
@@ -412,6 +413,7 @@ void DebconfFrontend::cmd_fset(const QString &param)
 
 void DebconfFrontend::cmd_beginblock(const QString &param)
 {
+    Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
     say(QLatin1String( "0 ok" ));
@@ -419,6 +421,7 @@ void DebconfFrontend::cmd_beginblock(const QString &param)
 
 void DebconfFrontend::cmd_endblock(const QString &param)
 {
+    Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
     say(QLatin1String( "0 ok" ));
