@@ -78,14 +78,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="KPushButton" name="cancelPB">
+      <widget class="QPushButton" name="cancelPB">
        <property name="text">
         <string>Cancel</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="KPushButton" name="backPB">
+      <widget class="QPushButton" name="backPB">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -95,7 +95,7 @@
       </widget>
      </item>
      <item>
-      <widget class="KPushButton" name="nextPB">
+      <widget class="QPushButton" name="nextPB">
        <property name="text">
         <string>Continue</string>
        </property>
@@ -122,8 +122,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>440</width>
-        <height>222</height>
+        <width>432</width>
+        <height>211</height>
        </rect>
       </property>
      </widget>
@@ -131,13 +131,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>KPushButton</class>
-   <extends>QPushButton</extends>
-   <header>kpushbutton.h</header>
-  </customwidget>
- </customwidgets>
  <tabstops>
   <tabstop>nextPB</tabstop>
   <tabstop>backPB</tabstop>

@@ -10,10 +10,9 @@ set(libdebconf_SRCS
     DebconfSelect.cpp
     DebconfString.cpp
     DebconfText.cpp
-    DebconfGui.cpp
-)
+    DebconfGui.cpp)
 
-kde4_add_ui_files(libdebconf_SRCS
+qt5_wrap_ui(libdebconf_SRCS
     DebconfBoolean.ui
     DebconfError.ui
     DebconfMultiselect.ui
@@ -23,21 +22,23 @@ kde4_add_ui_files(libdebconf_SRCS
     DebconfSelect.ui
     DebconfString.ui
     DebconfText.ui
-    DebconfGui.ui
-)
+    DebconfGui.ui)
 
-kde4_add_library(debconf-kde SHARED ${libdebconf_SRCS})
+add_library(debconf-kde SHARED ${libdebconf_SRCS})
+add_library(DebconfKDE ALIAS debconf-kde)
 target_link_libraries(debconf-kde
-    ${QT_QTCORE_LIBRARY}
-    ${QT_QTNETWORK_LIBRARY}
-    ${KDE4_KDEUI_LIBS}
-)
+    Qt5::Widgets
+    Qt5::Network
+    KF5::I18n
+    KF5::IconThemes
+    KF5::TextWidgets)
 
-set_target_properties(debconf-kde PROPERTIES
-                      VERSION ${DEBCONF_LIB_VERSION}
-                      SOVERSION ${DEBCONF_LIB_SOVERSION}
-)
+set_target_properties(debconf-kde
+    PROPERTIES
+        VERSION ${DEBCONF_VERSION_STRING}
+        SOVERSION ${DEBCONF_SOVERSION}
+        EXPORT_NAME DebconfKDE)
 
-install(TARGETS debconf-kde ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS debconf-kde EXPORT DebconfKDETargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES DebconfGui.h
     DESTINATION ${INCLUDE_INSTALL_DIR})

@@ -1,0 +1,18 @@
+# DebconfKDEConfig.cmake provides information about the installed DebconfKDE library.
+# It can be used directly from CMake via find_package(DebconfKDE NO_MODULE)
+#
+# The following CMake variables are provided:
+#   DEBCONF_VERSION_MAJOR - the major version number of DebconfKDE
+#   DEBCONF_VERSION_MINOR - the minor version number of DebconfKDE
+#   DEBCONF_VERSION_PATCH - the patch version number of DebconfKDE
+#   DEBCONF_INCLUDE_DIRS  - the include directories to use
+#
+# Additionally, the following imported library targets are created, which may be used directly
+# with target_link_libraries():
+#   DebconfKDE - the debconf-kde library
+
+@PACKAGE_INIT@
+
+# TODO: dependencies
+
+include("${CMAKE_CURRENT_LIST_DIR}/DebconfKDETargets.cmake")

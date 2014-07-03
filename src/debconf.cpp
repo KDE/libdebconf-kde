@@ -58,7 +58,7 @@
 #include <cstdio>
 #include <unistd.h>
 
-#include <KDebug>
+#include <QDebug>
 
 namespace DebconfKde {
 
@@ -124,11 +124,11 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
 
     int id = T::staticMetaObject.indexOfEnumerator(enumName);
     QMetaEnum e = T::staticMetaObject.enumerator(id);
-    int enumValue = e.keyToValue(realName.toAscii().data());
+    int enumValue = e.keyToValue(realName.toLatin1().data());
 
     if(enumValue == -1) {
-        enumValue = e.keyToValue(QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )).toAscii().data());
-        kDebug() << "enumFromString (" <<QLatin1String( enumName ) << ") : converted" << realName << "to" << QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )) << ", enum value" << enumValue;
+        enumValue = e.keyToValue(QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )).toLatin1().data());
+        qDebug() << "enumFromString (" <<QLatin1String( enumName ) << ") : converted" << realName << "to" << QString(QLatin1String( "Unknown" )).append(QLatin1String( enumName )) << ", enum value" << enumValue;
     }
     return enumValue;
 }
@@ -154,7 +154,7 @@ void DebconfFrontend::reset()
 
 void DebconfFrontend::say(const QString &string)
 {
-    kDebug() << "DEBCONF ---> " << string;
+    qDebug() << "DEBCONF ---> " << string;
     QTextStream out(getWriteDevice());
     out << string << "\n";
     out.flush();
@@ -168,7 +168,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
     QString last(rest);
     int pos = 0;
     while ( (pos = rx.indexIn(rest, pos)) != -1) {
-        kDebug() << "var found! at" << pos;
+        qDebug() << "var found! at" << pos;
         result += rx.cap(1);
         escape = rx.cap(2);
         var = rx.cap(3);
@@ -203,7 +203,7 @@ void DebconfFrontend::cmd_set(const QString &param)
     QString item = param.section(QLatin1Char( ' ' ), 0, 0);
     QString value = param.section(QLatin1Char( ' ' ), 1);
     m_values[item] = value;
-    kDebug() << "# SET: [" << item << "] " << value;
+    qDebug() << "# SET: [" << item << "] " << value;
     say(QLatin1String( "0 ok" ));
 }
 
@@ -220,7 +220,7 @@ void DebconfFrontend::cmd_input(const QString &param)
 
 void DebconfFrontend::cmd_go(const QString &)
 {
-    kDebug() << "# GO";
+    qDebug() << "# GO";
     m_input.removeDuplicates();
     emit go(m_title, m_input);
     m_input.clear();
@@ -228,7 +228,7 @@ void DebconfFrontend::cmd_go(const QString &)
 
 void DebconfFrontend::cmd_progress(const QString &param)
 {
-    kDebug() << "DEBCONF: PROGRESS " << param;
+    qDebug() << "DEBCONF: PROGRESS " << param;
     emit progress(param);
 }
 
@@ -256,7 +256,7 @@ void DebconfFrontend::cmd_title(const QString &param)
     } else {
         m_title = param;
     }
-    kDebug() << "DEBCONF: TITLE " << m_title;
+    qDebug() << "DEBCONF: TITLE " << m_title;
     say(QLatin1String( "0 ok" ));
 }
 
@@ -272,7 +272,7 @@ void DebconfFrontend::cmd_data(const QString &param)
     QString value = param.section(QLatin1Char( ' ' ), 2);
 
     m_data[item][propertyKeyFromString(type)] = value;
-    kDebug() << "# NOTED: [" << item << "] [" << type << "] " << value;
+    qDebug() << "# NOTED: [" << item << "] [" << type << "] " << value;
     say(QLatin1String( "0 ok" ));
 }
 
@@ -288,7 +288,7 @@ void DebconfFrontend::cmd_subst(const QString &param)
     QString value = param.section(QLatin1Char( ' ' ), 2);
 
     m_subst[item][type] = value;
-    kDebug() << "# SUBST: [" << item << "] [" << type << "] " << value;
+    qDebug() << "# SUBST: [" << item << "] [" << type << "] " << value;
     say(QLatin1String( "0 ok" ));
 }
 
@@ -326,11 +326,11 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
         while ( !line.isNull() ) {
             ++linecount;
             line = template_stream.readLine();
-            kDebug() << linecount << line;
+            qDebug() << linecount << line;
             if ( line.isEmpty() ) {
                 if (!last_field_name.isEmpty()) {
                     //Submit last block values.
-                    kDebug() << "submit" << last_field_name;
+                    qDebug() << "submit" << last_field_name;
                     QString item = field_short_value[QLatin1String("template")];
                     QString type = field_short_value[QLatin1String("type")];
                     QString short_description = field_short_value[QLatin1String("description")];
@@ -445,7 +445,7 @@ bool DebconfFrontend::process()
     QString command = line.section(QLatin1Char( ' ' ), 0, 0);
     QString value = line.section(QLatin1Char( ' ' ), 1);
 
-    kDebug() << "DEBCONF <--- [" << command << "] " << value;
+    qDebug() << "DEBCONF <--- [" << command << "] " << value;
     const Cmd *c = commands;
     while (c->cmd != 0) {
         if (command == QLatin1String( c->cmd )) {
@@ -473,7 +473,7 @@ DebconfFrontendSocket::~DebconfFrontendSocket()
 
 void DebconfFrontendSocket::newConnection()
 {
-    kDebug();
+    qDebug();
     if (m_socket) {
         QLocalSocket *socket = m_server->nextPendingConnection();
         socket->disconnectFromServer();

@@ -18,12 +18,13 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include <QtCore/QCommandLineParser>
+#include <QtCore/QDebug>
 #include <QtCore/QRegExp>
+#include <QtWidgets/QApplication>
 
-#include <KApplication>
 #include <KAboutData>
-#include <KCmdLineArgs>
-#include <KDebug>
+#include <KLocalizedString>
 
 #include <iostream>
 
@@ -33,29 +34,35 @@ using namespace DebconfKde;
 
 int main(int argc, char **argv)
 {
-    KAboutData aboutData("debkonf",
-                         QByteArray(),
-                         ki18n("Debconf KDE"),
-                         "0.3",
-                         ki18n("Debconf frontend for KDE"),
-                         KAboutData::License_LGPL);
+    QApplication app(argc, argv);
 
-    KCmdLineArgs::init(argc, argv, &aboutData);
+    KAboutData aboutData(QStringLiteral("debkonf"),
+                         i18nc("@title", "Debconf KDE"),
+                         QStringLiteral("0.3"),
+                         i18nc("@info", "Debconf frontend for KDE"),
+                         KAboutLicense::LicenseKey::LGPL);
 
-    KCmdLineOptions options;
-    options.add("socket-path <path_to_socket>", ki18n("Path to where the socket should be created"));
-    options.add("fifo-fds <read_fd,write_fd>", ki18n("FIFO file descriptors for communication with Debconf"));
-    KCmdLineArgs::addCmdLineOptions(options);
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    QCommandLineOption socketOption(QStringLiteral("socket-path"),
+                                    i18nc("@info:shell", "Path to where the socket should be created"),
+                                    i18nc("@info:shell value name", "path_to_socket"),
+                                    QStringLiteral("/tmp/debkonf-sock"));
+    parser.addOption(socketOption);
+    QCommandLineOption fifoFdsOption(QStringLiteral("fifo-fds"),
+                                    i18nc("@info:shell", "FIFO file descriptors for communication with Debconf"),
+                                    i18nc("@info:shell value name", "read_fd,write_fd"));
+    parser.addOption(fifoFdsOption);
+    aboutData.setupCommandLine(&parser);
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-
-    KApplication app;
     DebconfGui *dcf = 0;
-
-    if (args->isSet("fifo-fds")) {
+    if (parser.isSet(fifoFdsOption)) {
         int readfd, writefd;
         QRegExp regex(QLatin1String("(\\d+),(\\d+)"));
-        if (regex.exactMatch(args->getOption("fifo-fds"))) {
+        if (regex.exactMatch(parser.value(fifoFdsOption))) {
             readfd = regex.cap(1).toInt();
             writefd = regex.cap(2).toInt();
 
@@ -65,15 +72,10 @@ int main(int argc, char **argv)
             // should terminate as well.
             dcf->connect(dcf, SIGNAL(deactivated()), SLOT(close()));
         } else {
-            kFatal() << "Incorrect value of the --fifo-fds parameter";
+            qFatal("Incorrect value of the --fifo-fds parameter");
         }
     } else {
-        QString path;
-        if (args->isSet("socket-path")) {
-            path = args->getOption("socket-path");
-        } else {
-            path = QLatin1String("/tmp/debkonf-sock");
-        }
+        QString path = parser.value(socketOption);
         dcf = new DebconfGui(path);
         std::cout << "export DEBIAN_FRONTEND=passthrough" << std::endl;
         std::cout << "export DEBCONF_PIPE=" << path.toUtf8().data() << std::endl;
@@ -84,8 +86,6 @@ int main(int argc, char **argv)
 
     if (!dcf)
         return 1;
-
-    app.setTopWidget(dcf);
 
     return app.exec();
 }

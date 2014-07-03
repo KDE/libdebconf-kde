@@ -62,15 +62,16 @@
 #include "DebconfString.h"
 #include "DebconfText.h"
 
+
+#include <QtCore/QDebug>
 #include <QtCore/QProcess>
 #include <QtCore/QFile>
-#include <QtGui/QLabel>
+#include <QtWidgets/QLabel>
 
-#include <KLocale>
+#include <KIconLoader>
+#include <KLocalizedString>
 
 #include <debconf.h>
-
-#include <KDebug>
 
 using namespace DebconfKde;
 
@@ -117,9 +118,9 @@ void DebconfGui::init()
     d->parentWidget = 0;
     d->setupUi(this);
     setMinimumSize(500, 400);
-    d->nextPB->setIcon(KIcon(QLatin1String( "go-next" )));
-    d->backPB->setIcon(KIcon(QLatin1String( "go-previous" )));
-    d->cancelPB->setIcon(KIcon(QLatin1String( "dialog-cancel" )));
+    d->nextPB->setIcon(QIcon::fromTheme(QLatin1String( "go-next" )));
+    d->backPB->setIcon(QIcon::fromTheme(QLatin1String( "go-previous" )));
+    d->cancelPB->setIcon(QIcon::fromTheme(QLatin1String( "dialog-cancel" )));
     d->cancelPB->setVisible(false);
 
     connect(d->frontend, SIGNAL(go(QString,QStringList)),
@@ -165,7 +166,7 @@ void DebconfGui::init()
 
 DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
 {
-    kDebug() << "creating widget for " << k;
+    qDebug() << "creating widget for " << k;
 
     QString extendedDescription = frontend->property(k, DebconfFrontend::ExtendedDescription);
     extendedDescription.replace(QLatin1String( "\\n" ), QLatin1String( "\n" ));
@@ -233,7 +234,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
         return element;
     }
     default:
-        kWarning() << "Default REACHED!!!";
+        qWarning() << "Default REACHED!!!";
         DebconfElement *element = new DebconfElement(k, parentWidget);
         QLabel *label = new QLabel(element);
         label->setText(i18n("<b>Not implemented</b>: The input widget for data"
@@ -248,7 +249,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
 void DebconfGui::cmd_go(const QString &title, const QStringList &input)
 {
     Q_D(DebconfGui);
-    kDebug() << "# GO GUI";
+    qDebug() << "# GO GUI";
     d->cleanup();
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(d->parentWidget->layout());
     // if we have just one element and we are showing
@@ -303,7 +304,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
     DebconfProgress *element = d->elementProgress;
 
     QStringList commands = cmd.split(QLatin1Char( ' ' ));
-    kDebug() << "KPROGRESS" << commands;
+    qDebug() << "KPROGRESS" << commands;
     if (commands.first() == QLatin1String( "START" )) {
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));
         int progress_min = commands.at(1).toInt();

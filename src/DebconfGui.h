@@ -51,7 +51,7 @@
 #ifndef DEBCONF_GUI_H
 #define DEBCONF_GUI_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include <kdemacros.h>
 
