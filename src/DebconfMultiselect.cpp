@@ -47,7 +47,7 @@ QString DebconfMultiselect::value() const
             checked << m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
         }
     }
-    return checked.join(QLatin1String( ", " ));
+    return checked.join(QStringLiteral( ", " ));
 }
 
 void DebconfMultiselect::setMultiselect(const QString &extended_description,

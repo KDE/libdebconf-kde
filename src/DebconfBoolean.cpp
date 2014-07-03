@@ -33,7 +33,7 @@ DebconfBoolean::~DebconfBoolean()
 
 QString DebconfBoolean::value() const
 {
-    return radioButton->isChecked() ? QLatin1String( "true" ) : QLatin1String( "false" );
+    return radioButton->isChecked() ? QStringLiteral( "true" ) : QStringLiteral( "false" );
 }
 
 void DebconfBoolean::setBoolean(const QString &extended_description,

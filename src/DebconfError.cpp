@@ -27,7 +27,7 @@ DebconfError::DebconfError(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    iconL->setPixmap(QIcon(QLatin1String( "dialog-error" )).pixmap(64, 64));
+    iconL->setPixmap(QIcon(QStringLiteral( "dialog-error" )).pixmap(64, 64));
 }
 
 DebconfError::~DebconfError()
