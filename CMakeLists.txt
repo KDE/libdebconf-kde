@@ -51,8 +51,8 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/DebconfKDEConfig.cmake"
     COMPONENT Devel)
 install(EXPORT DebconfKDETargets
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        FILE DebconfKDETargets.cmake)
-message(WARNING "namespace for targets?")
+        FILE DebconfKDETargets.cmake
+        NAMESPACE DebconfKDE::)
 
 add_subdirectory(src)
 add_subdirectory(tools)

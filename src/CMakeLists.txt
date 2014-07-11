@@ -25,7 +25,7 @@ qt5_wrap_ui(libdebconf_SRCS
     DebconfGui.ui)
 
 add_library(debconf-kde SHARED ${libdebconf_SRCS})
-add_library(DebconfKDE ALIAS debconf-kde)
+add_library(DebconfKDE::Main ALIAS debconf-kde)
 target_link_libraries(debconf-kde
     Qt5::Widgets
     Qt5::Network
@@ -33,12 +33,14 @@ target_link_libraries(debconf-kde
     KF5::IconThemes
     KF5::TextWidgets)
 
+target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/DebconfKDE>")
+
 set_target_properties(debconf-kde
     PROPERTIES
         VERSION ${DEBCONF_VERSION_STRING}
         SOVERSION ${DEBCONF_SOVERSION}
-        EXPORT_NAME DebconfKDE)
+        EXPORT_NAME Main)
 
 install(TARGETS debconf-kde EXPORT DebconfKDETargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES DebconfGui.h
-    DESTINATION ${INCLUDE_INSTALL_DIR})
+    DESTINATION ${INCLUDE_INSTALL_DIR}/DebconfKDE)
