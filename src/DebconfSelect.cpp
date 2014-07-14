@@ -49,5 +49,3 @@ void DebconfSelect::setSelect(const QString &extended_description,
     int index = selectCB->findText(default_choice);
     selectCB->setCurrentIndex(index != -1 ? index : 0);
 }
-
-#include "DebconfSelect.moc"

@@ -368,5 +368,3 @@ void DebconfGui::closeEvent(QCloseEvent *event)
     d->frontend->cancel();
     QWidget::closeEvent(event);
 }
-
-#include "DebconfGui.moc"

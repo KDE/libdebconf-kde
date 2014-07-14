@@ -42,5 +42,3 @@ void DebconfPassword::setPassword(const QString &extended_description,
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
 }
-
-#include "DebconfPassword.moc"

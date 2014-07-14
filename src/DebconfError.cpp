@@ -44,5 +44,3 @@ void DebconfError::setError(const QString &description, const QString &error)
     descriptionL->setText(description);
     textTE->setText(error);
 }
-
-#include "DebconfError.moc"

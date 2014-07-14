@@ -36,5 +36,3 @@ void DebconfNote::setNote(const QString &description, const QString &note)
     descriptionL->setText(description);
     noteTE->setText(note);
 }
-
-#include "DebconfNote.moc"

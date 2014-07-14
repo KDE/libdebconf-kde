@@ -44,5 +44,3 @@ void DebconfBoolean::setBoolean(const QString &extended_description,
     descriptionL->setText(description);
     radioButton->setChecked(default_boolean);
 }
-
-#include "DebconfBoolean.moc"

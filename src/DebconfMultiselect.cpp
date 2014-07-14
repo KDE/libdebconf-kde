@@ -71,5 +71,3 @@ void DebconfMultiselect::setMultiselect(const QString &extended_description,
         }
     }
 }
-
-#include "DebconfMultiselect.moc"

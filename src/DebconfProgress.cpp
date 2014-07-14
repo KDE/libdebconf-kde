@@ -60,5 +60,3 @@ void DebconfProgress::setProgressInfo(const QString &description)
 {
     label->setText(description);
 }
-
-#include "DebconfProgress.moc"

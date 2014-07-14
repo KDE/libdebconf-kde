@@ -557,5 +557,3 @@ bool DebconfFrontendFifo::process()
 }
 
 }
-
-#include "debconf.moc"
