@@ -10,7 +10,8 @@ set(libdebconf_SRCS
     DebconfSelect.cpp
     DebconfString.cpp
     DebconfText.cpp
-    DebconfGui.cpp)
+    DebconfGui.cpp
+    Debug.cpp)
 
 qt5_wrap_ui(libdebconf_SRCS
     DebconfBoolean.ui

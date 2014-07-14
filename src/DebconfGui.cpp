@@ -61,7 +61,7 @@
 #include "DebconfSelect.h"
 #include "DebconfString.h"
 #include "DebconfText.h"
-
+#include "Debug_p.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QProcess>
@@ -166,7 +166,7 @@ void DebconfGui::init()
 
 DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
 {
-    qDebug() << "creating widget for " << k;
+    qCDebug(DEBCONF) << "creating widget for " << k;
 
     QString extendedDescription = frontend->property(k, DebconfFrontend::ExtendedDescription);
     extendedDescription.replace(QStringLiteral( "\\n" ), QStringLiteral( "\n" ));
@@ -249,7 +249,7 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
 void DebconfGui::cmd_go(const QString &title, const QStringList &input)
 {
     Q_D(DebconfGui);
-    qDebug() << "# GO GUI";
+    qCDebug(DEBCONF) << "# GO GUI";
     d->cleanup();
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(d->parentWidget->layout());
     // if we have just one element and we are showing
@@ -304,7 +304,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
     DebconfProgress *element = d->elementProgress;
 
     QStringList commands = cmd.split(QLatin1Char( ' ' ));
-    qDebug() << "KPROGRESS" << commands;
+    qCDebug(DEBCONF) << "KPROGRESS" << commands;
     if (commands.first() == QStringLiteral( "START" )) {
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));
         int progress_min = commands.at(1).toInt();
