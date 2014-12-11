@@ -38,11 +38,12 @@ int main(int argc, char **argv)
 
     KLocalizedString::setApplicationDomain("libdebconf-kde");
 
-    KAboutData aboutData(QStringLiteral("debkonf"),
+    KAboutData aboutData(QStringLiteral("debconf-kde-helper"),
                          i18nc("@title", "Debconf KDE"),
-                         QStringLiteral("0.3"),
+                         QStringLiteral(PROJECT_VERSION),
                          i18nc("@info", "Debconf frontend for KDE"),
                          KAboutLicense::LicenseKey::LGPL);
+    KAboutData::setApplicationData(aboutData);
 
     QCommandLineParser parser;
     parser.addHelpOption();

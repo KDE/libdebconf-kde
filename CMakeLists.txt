@@ -1,5 +1,10 @@
 project(libdebconf-kde)
 
+set(PROJECT_VERSION_MAJOR 1)
+set(PROJECT_VERSION_MINOR 0)
+set(PROJECT_VERSION_PATCH 0)
+set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" )
+
 cmake_minimum_required(VERSION 2.8.12)
 
 find_package(ECM 0.0.14 REQUIRED NO_MODULE)
@@ -23,13 +28,15 @@ find_package(KF5I18n 5.0.0 REQUIRED)
 find_package(KF5IconThemes 5.0.0 REQUIRED)
 find_package(KF5TextWidgets 5.0.0 REQUIRED)
 
-ecm_setup_version(1.0.0 VARIABLE_PREFIX DEBCONF
+ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX DEBCONF
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/DebconfVersion.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/DebconfKDEConfigVersion.cmake"
-    SOVERSION 1)
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+)
 
-add_definitions( -DQT_NO_CAST_FROM_ASCII )
-add_definitions( -DQT_NO_CAST_TO_ASCII )
+add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
+add_definitions(-DQT_NO_CAST_FROM_ASCII)
+add_definitions(-DQT_NO_CAST_TO_ASCII)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
