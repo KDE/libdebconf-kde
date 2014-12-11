@@ -350,12 +350,12 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
                     last_field_name = line.section(QStringLiteral(": "), 0, 0).toLower();
                     field_short_value[last_field_name] = line.section(QStringLiteral(": "), 1);
                 } else {
-		    if ( field_long_value[last_field_name].isEmpty() ){
+                    if ( field_long_value[last_field_name].isEmpty() ){
                         field_long_value[last_field_name] = line.remove(0, 1);
                     } else {
                         field_long_value[last_field_name].append(QLatin1Char('\n'));
                         if ( !(line.trimmed() == QStringLiteral(".")) ) {
-			    field_long_value[last_field_name].append(line.remove(0, 1));
+                            field_long_value[last_field_name].append(line.remove(0, 1));
                         }
                     }
                 }
