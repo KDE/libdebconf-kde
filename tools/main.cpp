@@ -36,6 +36,8 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
+    KLocalizedString::setApplicationDomain("libdebconf-kde");
+
     KAboutData aboutData(QStringLiteral("debkonf"),
                          i18nc("@title", "Debconf KDE"),
                          QStringLiteral("0.3"),
