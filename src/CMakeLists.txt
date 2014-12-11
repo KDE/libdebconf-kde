@@ -13,7 +13,7 @@ set(libdebconf_SRCS
     DebconfGui.cpp
     Debug.cpp)
 
-qt5_wrap_ui(libdebconf_SRCS
+ki18n_wrap_ui(libdebconf_SRCS
     DebconfBoolean.ui
     DebconfError.ui
     DebconfMultiselect.ui
@@ -25,6 +25,7 @@ qt5_wrap_ui(libdebconf_SRCS
     DebconfText.ui
     DebconfGui.ui)
 
+add_definitions(-DTRANSLATION_DOMAIN=\"libdebconf-kde\")
 add_library(debconf-kde SHARED ${libdebconf_SRCS})
 add_library(DebconfKDE::Main ALIAS debconf-kde)
 target_link_libraries(debconf-kde
