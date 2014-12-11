@@ -21,12 +21,19 @@ include(KDECMakeSettings)
 include(KDECompilerSettings)
 
 set(REQUIRED_QT_VERSION 5.2.0) # Used in CMakeConfig to check deps
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets Network)
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED
+    COMPONENTS
+        Widgets
+        Network
+)
 
-find_package(KF5CoreAddons 5.0.0 REQUIRED)
-find_package(KF5I18n 5.0.0 REQUIRED)
-find_package(KF5IconThemes 5.0.0 REQUIRED)
-find_package(KF5TextWidgets 5.0.0 REQUIRED)
+find_package(KF5 5.0.0 REQUIRED
+    COMPONENTS
+        CoreAddons
+        I18n
+        IconThemes
+        TextWidgets
+)
 
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX DEBCONF
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/DebconfVersion.h"
