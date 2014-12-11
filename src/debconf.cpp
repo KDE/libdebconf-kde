@@ -116,7 +116,7 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     int pos;
     while ((pos = realName.indexOf(QLatin1Char( '_' ))) != -1) {
         if (pos + 1 >= realName.size()) { // pos is from 0, size from 1, mustn't go off-by-one
-            realName.chop(pos);
+            realName.chop(1);
         } else{
             realName.replace(pos, 2, realName.at(pos + 1).toUpper());
         }
