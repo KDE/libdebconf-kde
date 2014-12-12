@@ -68,8 +68,10 @@
 #include <QtCore/QFile>
 #include <QtWidgets/QLabel>
 
+#include <KGuiItem>
 #include <KIconLoader>
 #include <KLocalizedString>
+#include <KStandardGuiItem>
 
 #include <debconf.h>
 
@@ -117,10 +119,13 @@ void DebconfGui::init()
     d->elementProgress = 0;
     d->parentWidget = 0;
     d->setupUi(this);
+
+    // Setup buttons. They are marked non-translatable in the UI file.
+    KGuiItem::assign(d->cancelPB, KStandardGuiItem::cancel());
+    KGuiItem::assign(d->backPB, KStandardGuiItem::back());
+    KGuiItem::assign(d->nextPB, KStandardGuiItem::cont());
+
     setMinimumSize(500, 400);
-    d->nextPB->setIcon(QIcon::fromTheme(QStringLiteral( "go-next" )));
-    d->backPB->setIcon(QIcon::fromTheme(QStringLiteral( "go-previous" )));
-    d->cancelPB->setIcon(QIcon::fromTheme(QStringLiteral( "dialog-cancel" )));
     d->cancelPB->setVisible(false);
 
     connect(d->frontend, SIGNAL(go(QString,QStringList)),

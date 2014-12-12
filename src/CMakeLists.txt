@@ -33,7 +33,9 @@ target_link_libraries(debconf-kde
     Qt5::Network
     KF5::I18n
     KF5::IconThemes
-    KF5::TextWidgets)
+    KF5::TextWidgets
+    KF5::WidgetsAddons
+)
 
 target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/DebconfKDE>")
 

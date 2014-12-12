@@ -33,6 +33,7 @@ find_package(KF5 5.0.0 REQUIRED
         I18n
         IconThemes
         TextWidgets
+        WidgetsAddons
 )
 
 ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX DEBCONF

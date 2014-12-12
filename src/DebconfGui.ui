@@ -41,19 +41,12 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Icon</string>
+      <string notr="true">Icon</string>
      </property>
     </widget>
    </item>
    <item row="1" column="1" colspan="3">
     <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1" colspan="3">
-    <widget class="Line" name="line_2">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -80,7 +73,7 @@
      <item>
       <widget class="QPushButton" name="cancelPB">
        <property name="text">
-        <string>Cancel</string>
+        <string notr="true">Cancel</string>
        </property>
       </widget>
      </item>
@@ -90,14 +83,14 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Back</string>
+        <string notr="true">Back</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="nextPB">
        <property name="text">
-        <string>Continue</string>
+        <string notr="true">Continue</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>
@@ -122,11 +115,18 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>432</width>
-        <height>211</height>
+        <width>436</width>
+        <height>195</height>
        </rect>
       </property>
      </widget>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
     </widget>
    </item>
   </layout>
