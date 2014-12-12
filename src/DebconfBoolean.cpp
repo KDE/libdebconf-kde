@@ -19,12 +19,25 @@
 
 #include "DebconfBoolean.h"
 
+#include <KGuiItem>
+#include <KStandardGuiItem>
+
 using namespace DebconfKde;
 
 DebconfBoolean::DebconfBoolean(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
+
+    const KGuiItem yes = KStandardGuiItem::yes();
+    radioButton->setText(yes.text());
+    radioButton->setToolTip(yes.toolTip());
+    radioButton->setWhatsThis(yes.whatsThis());
+
+    const KGuiItem no = KStandardGuiItem::no();
+    radioButton_2->setText(no.text());
+    radioButton_2->setToolTip(no.toolTip());
+    radioButton_2->setWhatsThis(no.whatsThis());
 }
 
 DebconfBoolean::~DebconfBoolean()

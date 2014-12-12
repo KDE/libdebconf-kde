@@ -45,7 +45,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Yes</string>
+      <string notr="true">Yes</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -61,7 +61,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>No</string>
+      <string notr="true">No</string>
      </property>
     </widget>
    </item>
