@@ -21,13 +21,16 @@
 
 #include <QIcon>
 
+#include <KIconLoader>
+
 using namespace DebconfKde;
 
 DebconfError::DebconfError(const QString &name, QWidget *parent)
  : DebconfElement(name, parent)
 {
     setupUi(this);
-    iconL->setPixmap(QIcon::fromTheme(QStringLiteral("dialog-error")).pixmap(64, 64));
+    iconL->setPixmap(QIcon::fromTheme(QStringLiteral("dialog-error")).pixmap(KIconLoader::SizeHuge,
+                                                                             KIconLoader::SizeHuge));
 }
 
 DebconfError::~DebconfError()
