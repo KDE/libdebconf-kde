@@ -20,7 +20,7 @@
    <item row="0" column="0" rowspan="2">
     <widget class="QLabel" name="iconL">
      <property name="text">
-      <string>Icon</string>
+      <string notr="true">Icon</string>
      </property>
      <property name="buddy">
       <cstring>textTE</cstring>
