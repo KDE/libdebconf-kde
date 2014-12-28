@@ -36,10 +36,17 @@ find_package(KF5 5.0.0 REQUIRED
         WidgetsAddons
 )
 
-ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX DEBCONF
+if(ECM_VERSION VERSION_GREATER 1.5.0)
+    # >1.5 has an optional compatibility option for the package version file.
+    # TODO: bump dep and remove this check once 1.7 is out.
+    set(VERSION_COMPAT_OPTION COMPATIBILITY SameMajorVersion)
+endif()
+ecm_setup_version(${PROJECT_VERSION}
+    VARIABLE_PREFIX DEBCONF
+    SOVERSION ${PROJECT_VERSION_MAJOR}
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/DebconfVersion.h"
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/DebconfKDEConfigVersion.cmake"
-    SOVERSION ${PROJECT_VERSION_MAJOR}
+        ${VERSION_COMPAT_OPTION}
 )
 
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
