@@ -16,4 +16,10 @@
 find_dependency(Qt5Widgets @REQUIRED_QT_VERSION@)
 find_dependency(Qt5Network @REQUIRED_QT_VERSION@)
 
+find_dependency(KF5CoreAddons)
+find_dependency(KF5I18n)
+find_dependency(KF5IconThemes)
+find_dependency(KF5TextWidgets)
+find_dependency(KF5WidgetsAddons)
+
 include("${CMAKE_CURRENT_LIST_DIR}/DebconfKDETargets.cmake")
