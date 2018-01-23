@@ -23,3 +23,5 @@ DebconfElement::DebconfElement(const QString &name, QWidget *parent)
  : QWidget(parent), m_name(name)
 {
 }
+
+#include "moc_DebconfElement.cpp"

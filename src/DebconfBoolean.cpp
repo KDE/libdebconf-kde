@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
+ * Copyright (C) 2010-2018 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -46,7 +46,7 @@ DebconfBoolean::~DebconfBoolean()
 
 QString DebconfBoolean::value() const
 {
-    return radioButton->isChecked() ? QStringLiteral( "true" ) : QStringLiteral( "false" );
+    return radioButton->isChecked() ? QLatin1String("true") : QLatin1String("false");
 }
 
 void DebconfBoolean::setBoolean(const QString &extended_description,
@@ -57,3 +57,5 @@ void DebconfBoolean::setBoolean(const QString &extended_description,
     descriptionL->setText(description);
     radioButton->setChecked(default_boolean);
 }
+
+#include "moc_DebconfBoolean.cpp"

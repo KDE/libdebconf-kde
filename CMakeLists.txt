@@ -1,11 +1,14 @@
-project(libdebconf-kde)
+cmake_minimum_required(VERSION 3.1)
+cmake_policy(SET CMP0048 NEW)
 
-set(PROJECT_VERSION_MAJOR 1)
-set(PROJECT_VERSION_MINOR 0)
-set(PROJECT_VERSION_PATCH 2)
-set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" )
+if (POLICY CMP0043)
+  cmake_policy(SET CMP0043 NEW)
+endif()
+if (POLICY CMP0063)
+  cmake_policy(SET CMP0063 NEW)
+endif()
 
-cmake_minimum_required(VERSION 2.8.12)
+project(libdebconf-kde VERSION 1.1.0)
 
 find_package(ECM 0.0.14 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH
@@ -50,8 +53,16 @@ ecm_setup_version(${PROJECT_VERSION}
 )
 
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
-add_definitions(-DQT_NO_CAST_FROM_ASCII)
-add_definitions(-DQT_NO_CAST_TO_ASCII)
+add_definitions(
+    -DQT_NO_KEYWORDS
+    -DQT_NO_CAST_TO_ASCII
+    -DQT_NO_CAST_FROM_ASCII
+    -DQT_STRICT_ITERATORS
+    -DQT_NO_URL_CAST_FROM_STRING
+    -DQT_NO_CAST_FROM_BYTEARRAY
+    -DQT_USE_QSTRINGBUILDER
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x050900
+)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src

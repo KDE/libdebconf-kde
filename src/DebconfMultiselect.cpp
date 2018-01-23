@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
+ * Copyright (C) 2010-2018 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -47,7 +47,7 @@ QString DebconfMultiselect::value() const
             checked << m_model->data(m_model->index(i, 0), Qt::DisplayRole).toString();
         }
     }
-    return checked.join(QStringLiteral( ", " ));
+    return checked.join(QLatin1String(", "));
 }
 
 void DebconfMultiselect::setMultiselect(const QString &extended_description,
@@ -59,9 +59,8 @@ void DebconfMultiselect::setMultiselect(const QString &extended_description,
     descriptionL->setText(description);
 
     m_model->clear();
-    foreach (const QString &choice, choices) {
-        QStandardItem *item;
-        m_model->appendRow(item = new QStandardItem(choice));
+    for (const QString &choice : choices) {
+        auto item = new QStandardItem(choice);
         item->setSelectable(false);
         item->setCheckable(true);
         if (default_choices.contains(choice)) {
@@ -69,5 +68,8 @@ void DebconfMultiselect::setMultiselect(const QString &extended_description,
         } else {
             item->setCheckState(Qt::Unchecked);
         }
+        m_model->appendRow(item);
     }
 }
+
+#include "moc_DebconfMultiselect.cpp"

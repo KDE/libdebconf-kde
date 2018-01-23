@@ -123,7 +123,7 @@ public:
      */
     virtual void cancel();
 
-signals:
+Q_SIGNALS:
     void go(const QString &title, const QStringList &input);
     void progress(const QString &param);
     /**

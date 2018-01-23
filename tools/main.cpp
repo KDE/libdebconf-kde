@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
+ * Copyright (C) 2010-2018 Daniel Nicoletti <dantti12@gmail.com>
  *           (C) 2011 Modestas Vainius <modax@debian.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     parser.process(app);
     aboutData.processCommandLine(&parser);
 
-    DebconfGui *dcf = 0;
+    DebconfGui *dcf = nullptr;
     if (parser.isSet(fifoFdsOption)) {
         int readfd, writefd;
         QRegExp regex(QLatin1String("(\\d+),(\\d+)"));
@@ -70,10 +70,10 @@ int main(int argc, char **argv)
             writefd = regex.cap(2).toInt();
 
             dcf = new DebconfGui(readfd, writefd);
-            dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
+            dcf->connect(dcf, &DebconfGui::activated, dcf, &DebconfGui::show);
             // Once FIFO pipes are closed, they cannot be reopened. Hence we
             // should terminate as well.
-            dcf->connect(dcf, SIGNAL(deactivated()), SLOT(close()));
+            dcf->connect(dcf, &DebconfGui::deactivated, dcf, &DebconfGui::close);
         } else {
             qFatal("Incorrect value of the --fifo-fds parameter");
         }
@@ -83,8 +83,8 @@ int main(int argc, char **argv)
         std::cout << "export DEBIAN_FRONTEND=passthrough" << std::endl;
         std::cout << "export DEBCONF_PIPE=" << path.toUtf8().data() << std::endl;
 
-        dcf->connect(dcf, SIGNAL(activated()), SLOT(show()));
-        dcf->connect(dcf, SIGNAL(deactivated()), SLOT(hide()));
+        dcf->connect(dcf, &DebconfGui::activated, dcf, &DebconfGui::show);
+        dcf->connect(dcf, &DebconfGui::deactivated, dcf, &DebconfGui::hide);
     }
 
     if (!dcf)

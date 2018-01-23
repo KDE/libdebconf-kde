@@ -31,7 +31,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * All the modifications below are licensed under this license
- * Copyright (C) 2010 Daniel Nicoletti <dantti12@gmail.com>
+ * Copyright (C) 2010-2018 Daniel Nicoletti <dantti12@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -53,7 +53,6 @@
 
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QRegExp>
-#include <QtCore/QStringBuilder>
 #include <QtCore/QFile>
 #include <cstdio>
 #include <unistd.h>
@@ -96,7 +95,7 @@ DebconfFrontend::~DebconfFrontend()
 void DebconfFrontend::disconnected()
 {
     reset();
-    emit finished();
+    Q_EMIT finished();
 }
 
 QString DebconfFrontend::value(const QString &key) const
@@ -127,8 +126,8 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     int enumValue = e.keyToValue(realName.toLatin1().data());
 
     if(enumValue == -1) {
-        enumValue = e.keyToValue(QString(QStringLiteral( "Unknown" )).append(QLatin1String( enumName )).toLatin1().data());
-        qCDebug(DEBCONF) << "enumFromString (" <<QLatin1String( enumName ) << ") : converted" << realName << "to" << QString(QStringLiteral( "Unknown" )).append(QLatin1String( enumName )) << ", enum value" << enumValue;
+        enumValue = e.keyToValue(QString(QLatin1String("Unknown") + QLatin1String(enumName)).toLatin1().data());
+        qCDebug(DEBCONF) << "enumFromString (" <<QLatin1String(enumName) << ") : converted" << realName << "to" << QString(QLatin1String("Unknown") + QLatin1String(enumName)) << ", enum value" << enumValue;
     }
     return enumValue;
 }
@@ -145,7 +144,7 @@ DebconfFrontend::TypeKey DebconfFrontend::type(const QString &string) const
 
 void DebconfFrontend::reset()
 {
-    emit backup(false);
+    Q_EMIT backup(false);
     m_data.clear();
     m_subst.clear();
     m_values.clear();
@@ -164,17 +163,17 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 {
     Substitutions sub = m_subst[key];
     QString result, var, escape;
-    QRegExp rx(QStringLiteral( "^(.*)(\\\\)?\\$\\{([^\\{\\}]+)\\}(.*)$" ));
+    QRegExp rx(QLatin1String("^(.*)(\\\\)?\\$\\{([^\\{\\}]+)\\}(.*)$"));
     QString last(rest);
     int pos = 0;
-    while ( (pos = rx.indexIn(rest, pos)) != -1) {
+    while ((pos = rx.indexIn(rest, pos)) != -1) {
         qCDebug(DEBCONF) << "var found! at" << pos;
         result += rx.cap(1);
         escape = rx.cap(2);
         var = rx.cap(3);
         last = rx.cap(4);
         if (!escape.isEmpty()) {
-            result += QString(QLatin1Literal( "${" ) % var % QLatin1Char( '}' ));
+            result += QLatin1Literal("${") + var + QLatin1Char('}');
         } else {
             result += sub.value(var);
         }
@@ -185,7 +184,7 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 
 QString DebconfFrontend::property(const QString &key, PropertyKey p) const
 {
-    QString r = m_data.value(key).value(p);
+    const QString r = m_data.value(key).value(p);
     if (p == Description || p == Choices) {
         return substitute(key, r);
     }
@@ -194,54 +193,54 @@ QString DebconfFrontend::property(const QString &key, PropertyKey p) const
 
 void DebconfFrontend::cmd_capb(const QString &caps)
 {
-    emit backup(caps.split(QStringLiteral( ", " )).contains(QStringLiteral( "backup" )));
-    say(QStringLiteral( "0 backup" ));
+    Q_EMIT backup(caps.split(QLatin1String(", ")).contains(QLatin1String("backup")));
+    say(QLatin1String("0 backup"));
 }
 
 void DebconfFrontend::cmd_set(const QString &param)
 {
-    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
-    QString value = param.section(QLatin1Char( ' ' ), 1);
+    const QString item = param.section(QLatin1Char(' '), 0, 0);
+    const QString value = param.section(QLatin1Char(' '), 1);
     m_values[item] = value;
     qCDebug(DEBCONF) << "# SET: [" << item << "] " << value;
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_get(const QString &param)
 {
-    say(QStringLiteral( "0 " ) + m_values.value(param));
+    say(QLatin1String("0 ") + m_values.value(param));
 }
 
 void DebconfFrontend::cmd_input(const QString &param)
 {
-    m_input.append(param.section(QLatin1Char( ' ' ), 1));
-    say(QStringLiteral( "0 will ask" ));
+    m_input.append(param.section(QLatin1Char(' '), 1));
+    say(QLatin1String("0 will ask" ));
 }
 
 void DebconfFrontend::cmd_go(const QString &)
 {
     qCDebug(DEBCONF) << "# GO";
     m_input.removeDuplicates();
-    emit go(m_title, m_input);
+    Q_EMIT go(m_title, m_input);
     m_input.clear();
 }
 
 void DebconfFrontend::cmd_progress(const QString &param)
 {
     qCDebug(DEBCONF) << "DEBCONF: PROGRESS " << param;
-    emit progress(param);
+    Q_EMIT progress(param);
 }
 
 void DebconfFrontend::next()
 {
     m_input.clear();
-    say(QStringLiteral( "0 ok, got the answers" ));
+    say(QLatin1String("0 ok, got the answers"));
 }
 
 void DebconfFrontend::back()
 {
     m_input.clear();
-    say(QStringLiteral( "30 go back" ));
+    say(QLatin1String("30 go back"));
 }
 
 void DebconfFrontend::cancel()
@@ -257,7 +256,7 @@ void DebconfFrontend::cmd_title(const QString &param)
         m_title = param;
     }
     qCDebug(DEBCONF) << "DEBCONF: TITLE " << m_title;
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_data(const QString &param)
@@ -267,9 +266,9 @@ void DebconfFrontend::cmd_data(const QString &param)
     // item = "aiccu/brokername"
     // type = "description"
     // rest = "Tunnel broker:"
-    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
-    QString type = param.section(QLatin1Char( ' ' ), 1, 1);
-    QString value = param.section(QLatin1Char( ' ' ), 2);
+    const QString item = param.section(QLatin1Char(' '), 0, 0);
+    const QString type = param.section(QLatin1Char(' '), 1, 1);
+    const QString value = param.section(QLatin1Char(' '), 2);
 
     m_data[item][propertyKeyFromString(type)] = value;
     qCDebug(DEBCONF) << "# NOTED: [" << item << "] [" << type << "] " << value;
@@ -283,34 +282,34 @@ void DebconfFrontend::cmd_subst(const QString &param)
     // item = "aiccu/brokername"
     // type = "brokers"
     // value = "AARNet, Hexago / Freenet6, SixXS, Wanadoo France"
-    QString item = param.section(QLatin1Char( ' ' ), 0, 0);
-    QString type = param.section(QLatin1Char( ' ' ), 1, 1);
-    QString value = param.section(QLatin1Char( ' ' ), 2);
+    const QString item = param.section(QLatin1Char(' '), 0, 0);
+    const QString type = param.section(QLatin1Char(' '), 1, 1);
+    const QString value = param.section(QLatin1Char(' '), 2);
 
     m_subst[item][type] = value;
     qCDebug(DEBCONF) << "# SUBST: [" << item << "] [" << type << "] " << value;
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_x_ping(const QString &param)
 {
     Q_UNUSED(param);
-    say(QStringLiteral( "0 pong" ));
+    say(QLatin1String("0 pong"));
 }
 
 void DebconfFrontend::cmd_version(const QString &param)
 {
     if ( !param.isEmpty() ) {
-        QString major_version_str = param.section(QLatin1Char( '.' ), 0, 0);
+        const QString major_version_str = param.section(QLatin1Char('.'), 0, 0);
         bool ok = false;
         int major_version = major_version_str.toInt( &ok );
         if ( !ok || (major_version != 2) ) {
-            say(QStringLiteral( "30 wrong or too old protocol version" ));
+            say(QLatin1String("30 wrong or too old protocol version"));
             return;
         }
     }
     //This debconf frontend is suposed to use the version 2.1 of the protocol.
-    say(QStringLiteral( "0 2.1" ));
+    say(QLatin1String("0 2.1"));
 }
 
 void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
@@ -318,11 +317,11 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
     QFile template_file(param);
     if (template_file.open(QFile::ReadOnly)) {
         QTextStream template_stream(&template_file);
-        QString line = QStringLiteral("");
+        QString line = QLatin1String("");
         int linecount = 0;
-        QHash <QString,QString> field_short_value;
-        QHash <QString,QString> field_long_value;
-	QString last_field_name;
+        QHash<QString,QString> field_short_value;
+        QHash<QString,QString> field_long_value;
+        QString last_field_name;
         while ( !line.isNull() ) {
             ++linecount;
             line = template_stream.readLine();
@@ -331,10 +330,10 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
                 if (!last_field_name.isEmpty()) {
                     //Submit last block values.
                     qCDebug(DEBCONF) << "submit" << last_field_name;
-                    QString item = field_short_value[QStringLiteral("template")];
-                    QString type = field_short_value[QStringLiteral("type")];
-                    QString short_description = field_short_value[QStringLiteral("description")];
-                    QString long_description = field_long_value[QStringLiteral("description")];
+                    const QString item = field_short_value[QLatin1String("template")];
+                    const QString type = field_short_value[QLatin1String("type")];
+                    const QString short_description = field_short_value[QLatin1String("description")];
+                    const QString long_description = field_long_value[QLatin1String("description")];
 
                     m_data[item][DebconfFrontend::Type] = type;
                     m_data[item][DebconfFrontend::Description] = short_description;
@@ -347,14 +346,14 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
                 }
             } else {
                 if (!line.startsWith(QLatin1Char(' '))) {
-                    last_field_name = line.section(QStringLiteral(": "), 0, 0).toLower();
-                    field_short_value[last_field_name] = line.section(QStringLiteral(": "), 1);
+                    last_field_name = line.section(QLatin1String(": "), 0, 0).toLower();
+                    field_short_value[last_field_name] = line.section(QLatin1String(": "), 1);
                 } else {
                     if ( field_long_value[last_field_name].isEmpty() ){
                         field_long_value[last_field_name] = line.remove(0, 1);
                     } else {
                         field_long_value[last_field_name].append(QLatin1Char('\n'));
-                        if ( !(line.trimmed() == QStringLiteral(".")) ) {
+                        if ( !(line.trimmed() == QLatin1String(".")) ) {
                             field_long_value[last_field_name].append(line.remove(0, 1));
                         }
                     }
@@ -362,10 +361,10 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
             }
         }
     } else {
-        say(QStringLiteral( "30 couldn't open file" ));
+        say(QLatin1String("30 couldn't open file"));
         return;
     }
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_info(const QString &param)
@@ -373,7 +372,7 @@ void DebconfFrontend::cmd_info(const QString &param)
     Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_fget(const QString &param)
@@ -382,13 +381,13 @@ void DebconfFrontend::cmd_fget(const QString &param)
     // foo/bar seen false
     // question = "foo/bar"
     // flag = "seen"
-    QString question = param.section(QLatin1Char( ' ' ), 0, 0);
-    QString flag = param.section(QLatin1Char( ' ' ), 1, 1);
+    const QString question = param.section(QLatin1Char(' '), 0, 0);
+    const QString flag = param.section(QLatin1Char(' '), 1, 1);
 
     if (m_flags[question][flag]) {
-        say( QStringLiteral("0 true") );
+        say(QLatin1String("0 true"));
     } else {
-        say( QStringLiteral("0 false") );
+        say(QLatin1String("0 false"));
     }
 }
 
@@ -399,16 +398,16 @@ void DebconfFrontend::cmd_fset(const QString &param)
     // question = "foo/bar"
     // flag = "seen"
     // value = "false"
-    QString question = param.section(QLatin1Char( ' ' ), 0, 0);
-    QString flag = param.section(QLatin1Char( ' ' ), 1, 1);
-    QString value = param.section(QLatin1Char( ' ' ), 2, 2);
+    const QString question = param.section(QLatin1Char(' '), 0, 0);
+    const QString flag = param.section(QLatin1Char(' '), 1, 1);
+    const QString value = param.section(QLatin1Char(' '), 2, 2);
 
-    if ( value == QStringLiteral("false") ) {
+    if ( value == QLatin1String("false") ) {
         m_flags[question][flag] = false;
     } else {
         m_flags[question][flag] = true;
     }
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_beginblock(const QString &param)
@@ -416,7 +415,7 @@ void DebconfFrontend::cmd_beginblock(const QString &param)
     Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_endblock(const QString &param)
@@ -424,7 +423,7 @@ void DebconfFrontend::cmd_endblock(const QString &param)
     Q_UNUSED(param)
     //FIXME: this is a dummy command, we should actually do something
     //with param.
-    say(QStringLiteral( "0 ok" ));
+    say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_stop(const QString &param)
@@ -442,13 +441,13 @@ bool DebconfFrontend::process()
         return false;
     }
 
-    QString command = line.section(QLatin1Char( ' ' ), 0, 0);
-    QString value = line.section(QLatin1Char( ' ' ), 1);
+    const QString command = line.section(QLatin1Char(' '), 0, 0);
+    const QString value = line.section(QLatin1Char(' '), 1);
 
     qCDebug(DEBCONF) << "DEBCONF <--- [" << command << "] " << value;
     const Cmd *c = commands;
     while (c->cmd != 0) {
-        if (command == QLatin1String( c->cmd )) {
+        if (command == QLatin1String(c->cmd)) {
             (this->*(c->run))(value);
             return true;
         }
@@ -463,7 +462,7 @@ DebconfFrontendSocket::DebconfFrontendSocket(const QString &socketName, QObject 
     m_server = new QLocalServer(this);
     QFile::remove(socketName);
     m_server->listen(socketName);
-    connect(m_server, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    connect(m_server, &QLocalServer::newConnection, this, &DebconfFrontendSocket::newConnection);
 }
 
 DebconfFrontendSocket::~DebconfFrontendSocket()
@@ -483,8 +482,8 @@ void DebconfFrontendSocket::newConnection()
 
     m_socket = m_server->nextPendingConnection();
     if (m_socket) {
-        connect(m_socket, SIGNAL(readyRead()), this, SLOT(process()));
-        connect(m_socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+        connect(m_socket, &QLocalSocket::readyRead, this, &DebconfFrontendSocket::process);
+        connect(m_socket, &QLocalSocket::disconnected, this, &DebconfFrontendSocket::disconnected);
     }
 }
 
@@ -520,7 +519,7 @@ DebconfFrontendFifo::DebconfFrontendFifo(int readfd, int writefd, QObject *paren
     // QIODevice::readyReady() does not work with QFile
     // http://bugreports.qt.nokia.com/browse/QTBUG-16089
     m_readnotifier = new QSocketNotifier(readfd, QSocketNotifier::Read, this);
-    connect(m_readnotifier, SIGNAL(activated(int)), this, SLOT(process()));
+    connect(m_readnotifier, &QSocketNotifier::activated, this, &DebconfFrontendFifo::process);
 }
 
 void DebconfFrontendFifo::reset()
@@ -557,3 +556,5 @@ bool DebconfFrontendFifo::process()
 }
 
 }
+
+#include "moc_debconf.cpp"

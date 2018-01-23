@@ -35,3 +35,5 @@ void DebconfText::setText(const QString &text)
 {
     textTE->setText(text);
 }
+
+#include "moc_DebconfText.cpp"

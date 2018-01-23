@@ -44,3 +44,5 @@ void DebconfString::setString(const QString &extended_description,
     descriptionL->setText(description);
     stringLE->setText(default_string);
 }
+
+#include "moc_DebconfString.cpp"

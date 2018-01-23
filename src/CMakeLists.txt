@@ -43,7 +43,7 @@ target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_
 
 set_target_properties(debconf-kde
     PROPERTIES
-        VERSION ${DEBCONF_VERSION_STRING}
+        VERSION ${PROJECT_VERSION}
         SOVERSION ${DEBCONF_SOVERSION}
         EXPORT_NAME Main)
 
