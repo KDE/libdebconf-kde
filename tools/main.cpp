@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     KAboutData aboutData(QStringLiteral("debconf-kde-helper"),
                          i18nc("@title", "Debconf KDE"),
                          QStringLiteral(PROJECT_VERSION),
-                         i18nc("@info", "Debconf frontend for KDE"),
+                         i18nc("@info", "Debconf frontend based on Qt"),
                          KAboutLicense::LicenseKey::LGPL);
     KAboutData::setApplicationData(aboutData);
 
