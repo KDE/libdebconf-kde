@@ -1,9 +1,12 @@
+Debconf-KDE
+-----------
 
 -------------------
 General information
 -------------------
 
-This is libdebconf-kde, a library which provides a debconf frontend.
+This is libdebconf-kde, a library which provides a debconf frontend to present
+questions asked during package installation on Debian-based systems.
 
 A debconf frontend is something similar to a mail server; it gets commands from
 a client and replies with a status code followed by a human readable message,
@@ -32,4 +35,3 @@ specifically these commands:
 * X_LOADTEMPLATEFILE - this is used by apt-listchanges, so providing it means
   apt-listchanges messages can be displayed by libdebconf-kde, see:
   http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678311
-
