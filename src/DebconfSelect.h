@@ -37,7 +37,7 @@ public:
                    const QString &description,
                    const QString &default_choice,
                    const QStringList &choices);
-    QString value() const;
+    QString value() const override;
 };
 
 

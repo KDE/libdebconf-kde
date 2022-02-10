@@ -33,6 +33,7 @@ target_link_libraries(debconf-kde
         Qt5::Widgets
     PRIVATE
         Qt5::Network
+        KF5::CoreAddons
         KF5::I18n
         KF5::IconThemes
         KF5::TextWidgets

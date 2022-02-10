@@ -67,11 +67,13 @@
 #include <QtCore/QProcess>
 #include <QtCore/QFile>
 #include <QtWidgets/QLabel>
+#include <QHostInfo>
 
 #include <KGuiItem>
 #include <KIconLoader>
 #include <KLocalizedString>
 #include <KStandardGuiItem>
+#include <KOSRelease>
 
 #include <debconf.h>
 
@@ -131,27 +133,15 @@ void DebconfGui::init()
     connect(d->frontend, &DebconfFrontend::progress, this, &DebconfGui::cmd_progress);
     connect(d->frontend, &DebconfFrontend::backup, d->backPB, &QPushButton::setEnabled);
 
+    setWindowTitle(i18n("Debconf on %1", QHostInfo::localHostName()));
+
     // find out the distribution logo
-    QString distro_logo(QLatin1String("/usr/share/pixmaps/debian-logo.png"));
-    auto myProcess = new QProcess(this);
+    QString distroLogo(QLatin1String("/usr/share/pixmaps/debian-logo.png"));
+    KOSRelease osInfo;
+    if (!osInfo.logo().isEmpty())
+        distroLogo = osInfo.logo();
 
-    myProcess->start(QLatin1String("hostname"));
-    myProcess->waitForFinished();
-    const QString hostname = QString::fromLatin1(myProcess->readAllStandardOutput());
-    setWindowTitle(i18n("Debconf on %1", hostname.trimmed()));
-
-    myProcess->start(QLatin1String("lsb_release"), { QLatin1String("-is") });
-    if (myProcess->waitForFinished()) {
-        if (myProcess->exitCode() == 0){
-            QString data = QString::fromLatin1(myProcess->readAllStandardOutput());
-            data = QString(QLatin1String("/usr/share/pixmaps/%1-logo.png")).arg(data.trimmed().toLower());
-            if (QFile::exists(data)) {
-                distro_logo = data;
-            }
-        }
-    }
-
-    const QPixmap icon = KIconLoader::global()->loadIcon(distro_logo,
+    const QPixmap icon = KIconLoader::global()->loadIcon(distroLogo,
                                                          KIconLoader::NoGroup,
                                                          KIconLoader::SizeLarge,
                                                          KIconLoader::DefaultState);

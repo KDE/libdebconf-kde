@@ -229,12 +229,12 @@ public:
     /**
       * Overridden to trigger termination of the current connection.
       */
-    void cancel();
+    void cancel() override;
 
 protected:
-    inline QIODevice* getReadDevice() const { return m_socket; }
-    inline QIODevice* getWriteDevice() const { return m_socket; }
-    void reset();
+    inline QIODevice* getReadDevice() const override { return m_socket; }
+    inline QIODevice* getWriteDevice() const override { return m_socket; }
+    void reset() override;
 
 private Q_SLOTS:
     /**
@@ -265,13 +265,13 @@ public:
     /**
       * Overridden to trigger full disconnection
       */
-    void cancel();
+    void cancel() override;
 
 protected:
-    QIODevice* getReadDevice() const { return m_readf; }
-    QIODevice* getWriteDevice() const { return m_writef; }
-    void reset();
-    bool process();
+    QIODevice* getReadDevice() const override { return m_readf; }
+    QIODevice* getWriteDevice() const override { return m_writef; }
+    void reset() override;
+    bool process() override;
 
 private:
     QFile *m_readf;

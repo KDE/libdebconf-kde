@@ -34,7 +34,7 @@ public:
     ~DebconfPassword();
 
     void setPassword(const QString &extended_description, const QString &description);
-    QString value() const;
+    QString value() const override;
 };
 
 

@@ -39,7 +39,7 @@ public:
                         const QString &description,
                         const QStringList &default_choices,
                         const QStringList &choices);
-    QString value() const;
+    QString value() const override;
 
 private:
     QStandardItemModel *m_model;

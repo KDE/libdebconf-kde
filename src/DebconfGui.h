@@ -132,7 +132,7 @@ protected:
      * Reimplemented function to cancel the question if the user closes
      * the window.
      */
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 
     DebconfGuiPrivate * const d_ptr;
 

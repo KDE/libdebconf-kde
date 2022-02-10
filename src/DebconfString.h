@@ -36,7 +36,7 @@ public:
     void setString(const QString &extended_description,
                    const QString &description,
                    const QString &default_string);
-    QString value() const;
+    QString value() const override;
 };
 
 }
