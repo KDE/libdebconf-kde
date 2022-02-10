@@ -86,8 +86,6 @@ int main(int argc, char **argv)
     KAboutData::setApplicationData(aboutData);
 
     QCommandLineParser parser;
-    parser.addHelpOption();
-    parser.addVersionOption();
     QCommandLineOption socketOption(QStringLiteral("socket-path"),
                                     i18nc("@info:shell", "Path to where the socket should be created"),
                                     i18nc("@info:shell value name", "path_to_socket"),
