@@ -1,7 +1,4 @@
-
--------------------
-General information
--------------------
+# General information
 
 This is libdebconf-kde, a library which provides a debconf frontend.
 
@@ -18,9 +15,7 @@ above, other programs can use this protocol, for instance apt-listchanges has a
 debconf interface, which allows muon to display the apt-listchanges messages
 inside the muon user interface
 
------------------------------------
-Protocol used: the debconf protocol
------------------------------------
+# Protocol used: the debconf protocol
 
 The debconf protocol used by this software is explained here:
 * /usr/share/doc/debian-policy/debconf_specification.html
