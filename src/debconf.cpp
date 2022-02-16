@@ -472,7 +472,6 @@ DebconfFrontendSocket::~DebconfFrontendSocket()
 
 void DebconfFrontendSocket::newConnection()
 {
-    qCDebug(DEBCONF);
     if (m_socket) {
         QLocalSocket *socket = m_server->nextPendingConnection();
         socket->disconnectFromServer();
