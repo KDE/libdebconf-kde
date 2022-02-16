@@ -30,14 +30,14 @@ DebconfBoolean::DebconfBoolean(const QString &name, QWidget *parent)
     setupUi(this);
 
     const KGuiItem yes = KStandardGuiItem::yes();
-    radioButton->setText(yes.text());
-    radioButton->setToolTip(yes.toolTip());
-    radioButton->setWhatsThis(yes.whatsThis());
+    radioButtonYes->setText(yes.text());
+    radioButtonYes->setToolTip(yes.toolTip());
+    radioButtonYes->setWhatsThis(yes.whatsThis());
 
     const KGuiItem no = KStandardGuiItem::no();
-    radioButton_2->setText(no.text());
-    radioButton_2->setToolTip(no.toolTip());
-    radioButton_2->setWhatsThis(no.whatsThis());
+    radioButtonNo->setText(no.text());
+    radioButtonNo->setToolTip(no.toolTip());
+    radioButtonNo->setWhatsThis(no.whatsThis());
 }
 
 DebconfBoolean::~DebconfBoolean()
@@ -46,7 +46,7 @@ DebconfBoolean::~DebconfBoolean()
 
 QString DebconfBoolean::value() const
 {
-    return radioButton->isChecked() ? QLatin1String("true") : QLatin1String("false");
+    return radioButtonYes->isChecked() ? QLatin1String("true") : QLatin1String("false");
 }
 
 void DebconfBoolean::setBoolean(const QString &extended_description,
@@ -55,7 +55,10 @@ void DebconfBoolean::setBoolean(const QString &extended_description,
 {
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
-    radioButton->setChecked(default_boolean);
+    if (default_boolean)
+        radioButtonYes->setChecked(true);
+    else
+        radioButtonNo->setChecked(true);
 }
 
 #include "moc_DebconfBoolean.cpp"
