@@ -33,7 +33,7 @@ public:
     explicit DebconfError(const QString &name, QWidget *parent = 0);
     ~DebconfError();
 
-    void setError(const QString &description, const QString &error);
+    void setError(const QString &description, const QString &title);
     int nextId() const;
 };
 

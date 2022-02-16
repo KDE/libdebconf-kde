@@ -42,10 +42,10 @@ int DebconfError::nextId() const
     return 0;
 }
 
-void DebconfError::setError(const QString &description, const QString &error)
+void DebconfError::setError(const QString &description, const QString &title)
 {
-    descriptionL->setText(description);
-    textTE->setText(error);
+    descriptionL->setText(title);
+    textTE->setText(description);
 }
 
 #include "moc_DebconfError.cpp"
