@@ -40,7 +40,7 @@ target_link_libraries(debconf-kde
         KF5::WidgetsAddons
 )
 
-target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/DebconfKDE>")
+target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/DebconfKDE>")
 
 set_target_properties(debconf-kde
     PROPERTIES
@@ -48,6 +48,6 @@ set_target_properties(debconf-kde
         SOVERSION ${DEBCONF_SOVERSION}
         EXPORT_NAME Main)
 
-install(TARGETS debconf-kde EXPORT DebconfKDETargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS debconf-kde EXPORT DebconfKDETargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES DebconfGui.h
-    DESTINATION ${INCLUDE_INSTALL_DIR}/DebconfKDE)
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/DebconfKDE)

@@ -5,4 +5,4 @@ target_link_libraries(debconf-kde-helper
     DebconfKDE::Main
 )
 
-install(TARGETS debconf-kde-helper ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS debconf-kde-helper ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
