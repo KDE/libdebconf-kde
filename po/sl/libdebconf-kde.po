@@ -1,0 +1,100 @@
+# Slovenian translation of libdebconf-kde
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Jure Repinc <jlp@holodeck1.com>, 2010.
+# Andrej Mernik <andrejm@ubuntu.si>, 2012, 2014.
+# Matjaž Jeran <matjaz.jeran@amis.net>, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-12 00:46+0000\n"
+"PO-Revision-Date: 2020-01-23 15:53+0100\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
+"Language-Team: Slovenian <lugos-slo@lugos.si>\n"
+"Language: sl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
+"X-Generator: Poedit 2.2.4\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Jure Repinc,Andrej Mernik,Matjaž Jeran"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "jlp@holodeck1.com,andrejm@ubuntu.si,matjaz.jeran@amis.net"
+
+#: src/DebconfGui.cpp:136
+#, kde-format
+msgid "Debconf on %1"
+msgstr "Debconf na %1"
+
+#: src/DebconfGui.cpp:229
+#, kde-format
+msgid ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+msgstr ""
+"<b>Še ni podprto</b>: vnosni gradnik za podatkovno vrsto »%1« še ni podprt. "
+"Uporabljena bo privzeta vrednost »%2«."
+
+#: tools/main.cpp:82
+#, kde-format
+msgctxt "@title"
+msgid "Debconf KDE"
+msgstr "KDE-jev Debconf"
+
+#: tools/main.cpp:84
+#, kde-format
+msgctxt "@info"
+msgid "Debconf frontend based on Qt"
+msgstr "Začelje Debkonf na osnovi Qt"
+
+#: tools/main.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Path to where the socket should be created"
+msgstr "Pot do mesta, kjer se naj ustvari vtič"
+
+#: tools/main.cpp:91
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "path_to_socket"
+msgstr "pot_do_vtiča"
+
+#: tools/main.cpp:95
+#, kde-format
+msgctxt "@info:shell"
+msgid "FIFO file descriptors for communication with Debconf"
+msgstr "Opisi datotek FIFO za sporazumevanje z Debconf-om"
+
+#: tools/main.cpp:96
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "read_fd,write_fd"
+msgstr "read_fd,write_fd"
+
+#~ msgid "Icon"
+#~ msgstr "Ikona"
+
+#~ msgid "Yes"
+#~ msgstr "Da"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "Cancel"
+#~ msgstr "Prekliči"
+
+#~ msgid "Back"
+#~ msgstr "Nazaj"
+
+#~ msgid "Continue"
+#~ msgstr "Nadaljuj"

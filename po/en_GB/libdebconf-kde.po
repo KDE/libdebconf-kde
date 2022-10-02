@@ -1,0 +1,106 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Andrew Coles <andrew_coles@yahoo.co.uk>, 2010.
+# Steve Allewell <steve.allewell@gmail.com>, 2014, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-12 00:46+0000\n"
+"PO-Revision-Date: 2018-06-30 13:25+0000\n"
+"Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
+"Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Andrew Coles, Steve Allewell"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "andrew_coles@yahoo.co.uk, steve.allewell@gmail.com"
+
+#: src/DebconfGui.cpp:136
+#, kde-format
+msgid "Debconf on %1"
+msgstr "Debconf on %1"
+
+#: src/DebconfGui.cpp:229
+#, kde-format
+msgid ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+msgstr ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+
+#: tools/main.cpp:82
+#, kde-format
+msgctxt "@title"
+msgid "Debconf KDE"
+msgstr "Debconf KDE"
+
+#: tools/main.cpp:84
+#, kde-format
+msgctxt "@info"
+msgid "Debconf frontend based on Qt"
+msgstr "Debconf frontend based on Qt"
+
+#: tools/main.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Path to where the socket should be created"
+msgstr "Path to where the socket should be created"
+
+#: tools/main.cpp:91
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "path_to_socket"
+msgstr "path_to_socket"
+
+#: tools/main.cpp:95
+#, kde-format
+msgctxt "@info:shell"
+msgid "FIFO file descriptors for communication with Debconf"
+msgstr "FIFO file descriptors for communication with Debconf"
+
+#: tools/main.cpp:96
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "read_fd,write_fd"
+msgstr "read_fd,write_fd"
+
+#~ msgid "Icon"
+#~ msgstr "Icon"
+
+#~ msgid "Yes"
+#~ msgstr "Yes"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Back"
+#~ msgstr "Back"
+
+#~ msgid "Continue"
+#~ msgstr "Continue"
+
+#~ msgid "Form"
+#~ msgstr "Form"
+
+#~ msgid "Label"
+#~ msgstr "Label"
+
+#~ msgid "TextLabel"
+#~ msgstr "TextLabel"

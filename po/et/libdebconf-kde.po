@@ -1,0 +1,96 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Marek Laane <bald@smail.ee>, 2010, 2011, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-12 00:46+0000\n"
+"PO-Revision-Date: 2019-12-07 14:24+0200\n"
+"Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
+"Language-Team: Estonian <kde-et@lists.linux.ee>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 19.08.1\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Marek Laane"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "qiilaq69@gmail.com"
+
+#: src/DebconfGui.cpp:136
+#, kde-format
+msgid "Debconf on %1"
+msgstr "Debconf masinas %1"
+
+#: src/DebconfGui.cpp:229
+#, kde-format
+msgid ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+msgstr ""
+"<b>Pole teostatud</b>: andmetüübi \"%1\" sisendvidin pole veel teostatud. "
+"Kasutatakse tüübi \"%2\" vaikesisendit."
+
+#: tools/main.cpp:82
+#, kde-format
+msgctxt "@title"
+msgid "Debconf KDE"
+msgstr "KDE Debconf"
+
+#: tools/main.cpp:84
+#, kde-format
+msgctxt "@info"
+msgid "Debconf frontend based on Qt"
+msgstr "KDE Debconfi kasutajaliides Qt põhjal"
+
+#: tools/main.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Path to where the socket should be created"
+msgstr "Sokli loomise asukoht"
+
+#: tools/main.cpp:91
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "path_to_socket"
+msgstr "path_to_socket"
+
+#: tools/main.cpp:95
+#, kde-format
+msgctxt "@info:shell"
+msgid "FIFO file descriptors for communication with Debconf"
+msgstr "FIFO failideskriptorid suhtlemiseks Debconf'iga"
+
+#: tools/main.cpp:96
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "read_fd,write_fd"
+msgstr "read_fd,write_fd"
+
+#~ msgid "Icon"
+#~ msgstr "Ikoon"
+
+#~ msgid "Yes"
+#~ msgstr "Jah"
+
+#~ msgid "No"
+#~ msgstr "Ei"
+
+#~ msgid "Cancel"
+#~ msgstr "Loobu"
+
+#~ msgid "Back"
+#~ msgstr "Tagasi"
+
+#~ msgid "Continue"
+#~ msgstr "Jätka"
