@@ -47,7 +47,7 @@ msgstr ""
 #, kde-format
 msgctxt "@title"
 msgid "Debconf KDE"
-msgstr "كدي Debconf"
+msgstr "كِيدِي Debconf"
 
 #: tools/main.cpp:84
 #, kde-format
