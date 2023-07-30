@@ -1,0 +1,79 @@
+# translation of libdebconf-kde.pot to esperanto
+# Copyright (C) 2022 Free Software Foundation, Inc.
+# This file is distributed under the same license as the libdebconf-kde package.
+# Oliver Kellogg <okellogg@users.sourceforge.net, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: libdebconf-kde\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2022-02-12 00:46+0000\n"
+"PO-Revision-Date: 2023-07-29 12:25+0100\n"
+"Last-Translator: Oliver Kellogg <okellogg@users.sourceforge.net>\n"
+"Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: translate-po (https://github.com/zcribe/translate-po)\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Oliver Kellogg"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "okellogg@users.sourceforge.net"
+
+#: src/DebconfGui.cpp:136
+#, kde-format
+msgid "Debconf on %1"
+msgstr "Debconf sur %1"
+
+#: src/DebconfGui.cpp:229
+#, kde-format
+msgid ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+msgstr ""
+"<b>Ne efektivigita</b>: La eniga fenestraĵo por datumtipo '%1' ne estas "
+"efektivigita. Uzos defaŭlton de '%2'."
+
+#: tools/main.cpp:82
+#, kde-format
+msgctxt "@title"
+msgid "Debconf KDE"
+msgstr "Debconf KDE"
+
+#: tools/main.cpp:84
+#, kde-format
+msgctxt "@info"
+msgid "Debconf frontend based on Qt"
+msgstr "Debconf fasado bazita sur Qt"
+
+#: tools/main.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Path to where the socket should be created"
+msgstr "Vojo al kie la ingo devus esti kreita"
+
+#: tools/main.cpp:91
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "path_to_socket"
+msgstr "path_to_socket"
+
+#: tools/main.cpp:95
+#, kde-format
+msgctxt "@info:shell"
+msgid "FIFO file descriptors for communication with Debconf"
+msgstr "FIFO-dosierpriskribiloj por komunikado kun Debconf"
+
+#: tools/main.cpp:96
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "read_fd,write_fd"
+msgstr "read_fd,write_fd"
