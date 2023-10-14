@@ -61,7 +61,7 @@ msgstr "Frontal de Debconf basat en les Qt"
 #, kde-format
 msgctxt "@info:shell"
 msgid "Path to where the socket should be created"
-msgstr "Camí a on s'ha de crear el sòcol"
+msgstr "Camí cap a on s'ha de crear el sòcol"
 
 #: tools/main.cpp:91
 #, kde-format
