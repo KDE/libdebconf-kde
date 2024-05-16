@@ -14,7 +14,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string comment="KDE::DoNotExtract">Label</string>
+      <string notr="true">Label</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
