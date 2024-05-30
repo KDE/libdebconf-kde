@@ -1,0 +1,78 @@
+# Copyright (C) 2024 This file is copyright:
+# This file is distributed under the same license as the libdebconf-kde package.
+#
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
+msgid ""
+msgstr ""
+"Project-Id-Version: libdebconf-kde\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2023-11-05 12:39+0000\n"
+"PO-Revision-Date: 2024-05-29 09:01+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 24.02.2\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "צוות התרגום של KDE ישראל"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "kde-l10n-he@kde.org"
+
+#: src/DebconfGui.cpp:136
+#, kde-format
+msgid "Debconf on %1"
+msgstr "Debconf על %1"
+
+#: src/DebconfGui.cpp:229
+#, kde-format
+msgid ""
+"<b>Not implemented</b>: The input widget for data type '%1' is not "
+"implemented. Will use default of '%2'."
+msgstr ""
+"<b>לא מוש</b>: וידג׳ט הקלט לסוג הנתונים ‚%1’ לא מומש. ייעשה שימוש בברירת "
+"המחדל ‚%2’."
+
+#: tools/main.cpp:82
+#, kde-format
+msgctxt "@title"
+msgid "Debconf KDE"
+msgstr "Debconf KDE"
+
+#: tools/main.cpp:84
+#, kde-format
+msgctxt "@info"
+msgid "Debconf frontend based on Qt"
+msgstr "ממשק ל־Debconf מבוסס Qt"
+
+#: tools/main.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Path to where the socket should be created"
+msgstr "נתיב ליצירת השקע"
+
+#: tools/main.cpp:91
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "path_to_socket"
+msgstr "נתיב_לשקע"
+
+#: tools/main.cpp:95
+#, kde-format
+msgctxt "@info:shell"
+msgid "FIFO file descriptors for communication with Debconf"
+msgstr "ציין קובץ FIFO לתקשורת עם Debconf"
+
+#: tools/main.cpp:96
+#, kde-format
+msgctxt "@info:shell value name"
+msgid "read_fd,write_fd"
+msgstr "ציין_קובץ_קריאה,ציין_קובץ_כתיבה"
