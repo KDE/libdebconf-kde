@@ -10,7 +10,10 @@ endif()
 
 project(libdebconf-kde VERSION 1.1.1)
 
-find_package(ECM 0.0.14 REQUIRED NO_MODULE)
+set(QT_MIN_VERSION "5.8.0")
+set(KF5_MIN_VERSION "5.96.0")
+
+find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH
     ${ECM_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
@@ -18,18 +21,29 @@ set(CMAKE_MODULE_PATH
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
+include(GenerateExportHeader)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings)
 
 set(REQUIRED_QT_VERSION 5.2.0) # Used in CMakeConfig to check deps
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED
+
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(QT_REQUIRED_VERSION "6.4.0")
+    set(QT_MIN_VERSION "${QT_REQUIRED_VERSION}")
+    set(KF_MIN_VERSION "5.240.0")
+    set(KF_MAJOR_VERSION "6")
+else()
+    set(KF_MAJOR_VERSION "5")
+endif()
+
+find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED
     COMPONENTS
         Widgets
         Network
 )
 
-find_package(KF5 5.0.0 REQUIRED
+find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED
     COMPONENTS
         CoreAddons
         I18n

@@ -30,15 +30,16 @@ add_library(debconf-kde SHARED ${libdebconf_SRCS})
 add_library(DebconfKDE::Main ALIAS debconf-kde)
 target_link_libraries(debconf-kde
     PUBLIC
-        Qt5::Widgets
+        Qt${QT_MAJOR_VERSION}::Widgets
     PRIVATE
-        Qt5::Network
-        KF5::CoreAddons
-        KF5::I18n
-        KF5::IconThemes
-        KF5::TextWidgets
-        KF5::WidgetsAddons
+        Qt${QT_MAJOR_VERSION}::Network
+        KF${KF_MAJOR_VERSION}::CoreAddons
+        KF${KF_MAJOR_VERSION}::I18n
+        KF${KF_MAJOR_VERSION}::IconThemes
+        KF${KF_MAJOR_VERSION}::TextWidgets
+        KF${KF_MAJOR_VERSION}::WidgetsAddons
 )
+generate_export_header(debconf-kde)
 
 target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/DebconfKDE>")
 

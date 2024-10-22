@@ -53,6 +53,8 @@
 
 #include <QWidget>
 
+#include "debconf-kde_export.h"
+
 namespace DebconfKde {
 
 /**
@@ -83,7 +85,7 @@ namespace DebconfKde {
  * Only delete it after you are sure no more operations ended.
  */
 class DebconfGuiPrivate;
-class Q_DECL_EXPORT DebconfGui : public QWidget
+class DEBCONF_KDE_EXPORT DebconfGui : public QWidget
 {
     Q_OBJECT
 public:
