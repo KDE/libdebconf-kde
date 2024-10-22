@@ -66,7 +66,7 @@ static void setupQuitHandler() {
     sa.sa_flags = 0;
     sa.sa_flags |= SA_RESTART;
 
-    if (sigaction(SIGQUIT, &sa, 0) != 0) {
+    if (sigaction(SIGQUIT, &sa, nullptr) != 0) {
        qErrnoWarning("Failed to set quit handler");
     }
 }

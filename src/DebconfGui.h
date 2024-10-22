@@ -95,14 +95,14 @@ public:
      * \warning Be adivised that this class will delete the path pointed
      * by \p socketName. A good location would be /tmp/debconf-$PID.
      */
-    explicit DebconfGui(const QString &socketName, QWidget *parent = 0);
+    explicit DebconfGui(const QString &socketName, QWidget *parent = nullptr);
 
     /**
      * Constructor that prepares for communication with Debconf via FIFO pipes.
      * Read (\p readfd) and write (\p writefd) file descriptors should be open
      * and connected to Debconf which speaks Passthrough frontend protocol.
      */
-    explicit DebconfGui(int readfd, int writefd, QWidget *parent = 0);
+    explicit DebconfGui(int readfd, int writefd, QWidget *parent = nullptr);
 
     ~DebconfGui();
 

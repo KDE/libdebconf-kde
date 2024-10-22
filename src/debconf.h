@@ -95,7 +95,7 @@ public:
         UnknownTypeKey = -1
     } TypeKey;
 
-    explicit DebconfFrontend(QObject *parent = 0);
+    explicit DebconfFrontend(QObject *parent = nullptr);
     virtual ~DebconfFrontend();
 
     QString value(const QString &key) const;
@@ -219,7 +219,7 @@ public:
       * socket at \p socketName path. Please note that any file at \p socketName
       * will be removed if it exists prior to the call of this constructor.
       */
-    explicit DebconfFrontendSocket(const QString &socketName, QObject *parent = 0);
+    explicit DebconfFrontendSocket(const QString &socketName, QObject *parent = nullptr);
 
     /**
       * Removes socket when the object is destroyed.
@@ -260,7 +260,7 @@ public:
       * Instantiates the class and prepares for communication with Debconf over
       * \p readfd (read) and \p writefd (write) FIFO file descriptors.
       */
-    explicit DebconfFrontendFifo(int readfd, int writefd, QObject *parent = 0);
+    explicit DebconfFrontendFifo(int readfd, int writefd, QObject *parent = nullptr);
 
     /**
       * Overridden to trigger full disconnection

@@ -81,7 +81,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
     { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock },
     { "ENDBLOCK", &DebconfFrontend::cmd_endblock },
     { "STOP", &DebconfFrontend::cmd_stop },
-    { 0, 0 } };
+    { nullptr, nullptr } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
   : QObject(parent)
@@ -445,7 +445,7 @@ bool DebconfFrontend::process()
 
     qCDebug(DEBCONF) << "DEBCONF <--- [" << command << "] " << value;
     const Cmd *c = commands;
-    while (c->cmd != 0) {
+    while (c->cmd != nullptr) {
         if (command == QLatin1String(c->cmd)) {
             (this->*(c->run))(value);
             return true;
@@ -456,7 +456,7 @@ bool DebconfFrontend::process()
 }
 
 DebconfFrontendSocket::DebconfFrontendSocket(const QString &socketName, QObject *parent)
-  : DebconfFrontend(parent), m_socket(0)
+  : DebconfFrontend(parent), m_socket(nullptr)
 {
     m_server = new QLocalServer(this);
     QFile::remove(socketName);
@@ -489,7 +489,7 @@ void DebconfFrontendSocket::reset()
 {
     if (m_socket) {
         m_socket->deleteLater();
-        m_socket = 0;
+        m_socket = nullptr;
     }
     DebconfFrontend::reset();
 }
@@ -529,7 +529,7 @@ void DebconfFrontendFifo::reset()
         m_readnotifier->setEnabled(false);
         m_readf->close();
         m_writef->close();
-        m_readf = m_writef = 0;
+        m_readf = m_writef = nullptr;
 
         // Use C library calls because QFile::close() won't close them actually
         ::close(readfd);

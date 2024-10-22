@@ -30,7 +30,7 @@ class DebconfPassword : public DebconfElement, Ui::DebconfPassword
 {
     Q_OBJECT
 public:
-    explicit DebconfPassword(const QString &name, QWidget *parent = 0);
+    explicit DebconfPassword(const QString &name, QWidget *parent = nullptr);
     ~DebconfPassword();
 
     void setPassword(const QString &extended_description, const QString &description);

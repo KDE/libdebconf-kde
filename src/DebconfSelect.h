@@ -30,7 +30,7 @@ class DebconfSelect : public DebconfElement, Ui::DebconfSelect
 {
     Q_OBJECT
 public:
-    explicit DebconfSelect(const QString &name, QWidget *parent = 0);
+    explicit DebconfSelect(const QString &name, QWidget *parent = nullptr);
     ~DebconfSelect();
 
     void setSelect(const QString &extended_description,

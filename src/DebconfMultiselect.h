@@ -32,7 +32,7 @@ class DebconfMultiselect : public DebconfElement, Ui::DebconfMultiselect
 {
     Q_OBJECT
 public:
-    explicit DebconfMultiselect(const QString &name, QWidget *parent = 0);
+    explicit DebconfMultiselect(const QString &name, QWidget *parent = nullptr);
     ~DebconfMultiselect();
 
     void setMultiselect(const QString &extended_description,
