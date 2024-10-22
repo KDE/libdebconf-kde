@@ -29,12 +29,12 @@ DebconfBoolean::DebconfBoolean(const QString &name, QWidget *parent)
 {
     setupUi(this);
 
-    const KGuiItem yes = KStandardGuiItem::yes();
+    const KGuiItem yes = KStandardGuiItem::ok();
     radioButtonYes->setText(yes.text());
     radioButtonYes->setToolTip(yes.toolTip());
     radioButtonYes->setWhatsThis(yes.whatsThis());
 
-    const KGuiItem no = KStandardGuiItem::no();
+    const KGuiItem no = KStandardGuiItem::cancel();
     radioButtonNo->setText(no.text());
     radioButtonNo->setToolTip(no.toolTip());
     radioButtonNo->setWhatsThis(no.whatsThis());
