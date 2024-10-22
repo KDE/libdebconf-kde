@@ -52,7 +52,7 @@
 #include "debconf.h"
 
 #include <QtCore/QSocketNotifier>
-#include <QtCore/QRegExp>
+#include <QtCore/QRegularExpression>
 #include <QtCore/QFile>
 #include <cstdio>
 #include <unistd.h>
@@ -163,21 +163,20 @@ QString DebconfFrontend::substitute(const QString &key, const QString &rest) con
 {
     Substitutions sub = m_subst[key];
     QString result, var, escape;
-    QRegExp rx(QLatin1String("^(.*)(\\\\)?\\$\\{([^\\{\\}]+)\\}(.*)$"));
+    QRegularExpression rx(QLatin1String("^(.*)(\\\\)?\\$\\{([^\\{\\}]+)\\}(.*)$"), QRegularExpression::DotMatchesEverythingOption);
     QString last(rest);
-    int pos = 0;
-    while ((pos = rx.indexIn(rest, pos)) != -1) {
-        qCDebug(DEBCONF) << "var found! at" << pos;
-        result += rx.cap(1);
-        escape = rx.cap(2);
-        var = rx.cap(3);
-        last = rx.cap(4);
+    QRegularExpressionMatch rxMatch = rx.match(rest);
+    while (rxMatch.hasMatch()) {
+        result += rxMatch.captured(1);
+        escape = rxMatch.captured(2);
+        var = rxMatch.captured(3);
+        last = rxMatch.captured(4);
         if (!escape.isEmpty()) {
-            result += QLatin1Literal("${") + var + QLatin1Char('}');
+            result += QLatin1String("${") + var + QLatin1Char('}');
         } else {
             result += sub.value(var);
         }
-        pos += rx.matchedLength();
+        rxMatch = rx.match(last);
     }
     return result + last;
 }

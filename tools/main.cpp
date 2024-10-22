@@ -22,7 +22,7 @@
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSocketNotifier>
 
 #include <KAboutData>
@@ -102,10 +102,11 @@ int main(int argc, char **argv)
     DebconfGui *dcf = nullptr;
     if (parser.isSet(fifoFdsOption)) {
         int readfd, writefd;
-        QRegExp regex(QLatin1String("(\\d+),(\\d+)"));
-        if (regex.exactMatch(parser.value(fifoFdsOption))) {
-            readfd = regex.cap(1).toInt();
-            writefd = regex.cap(2).toInt();
+        QRegularExpression regex(QLatin1String("^(\\d+),(\\d+)$"));
+        const QRegularExpressionMatch match = regex.match(parser.value(fifoFdsOption));
+        if (match.hasMatch()) {
+            readfd = match.captured(1).toInt();
+            writefd = match.captured(2).toInt();
 
             dcf = new DebconfGui(readfd, writefd);
             dcf->connect(dcf, &DebconfGui::activated, dcf, &DebconfGui::show);
