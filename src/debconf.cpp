@@ -368,9 +368,8 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
 
 void DebconfFrontend::cmd_info(const QString &param)
 {
-    Q_UNUSED(param)
-    //FIXME: this is a dummy command, we should actually do something
-    //with param.
+    m_side_info = m_data[param][PropertyKey::Description];
+    // TODO: error handling
     say(QLatin1String("0 ok"));
 }
 

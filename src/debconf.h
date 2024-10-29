@@ -123,6 +123,8 @@ public:
      */
     virtual void cancel();
 
+    inline QString getSideInfo() const { return m_side_info; }
+
 Q_SIGNALS:
     void go(const QString &title, const QStringList &input);
     void progress(const QString &param);
@@ -202,6 +204,7 @@ private:
     QHash<QString, QString>       m_values;
     QHash<QString, Flags>         m_flags;
     QString m_title;
+    QString m_side_info;
     QStringList m_input;
     bool m_making_block;
 };

@@ -264,6 +264,12 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
         layout->addStretch();
     }
 
+    const QString side_info = d->frontend->getSideInfo();
+    if (!side_info.isEmpty()) {
+        QLabel *label = new QLabel(side_info);
+        layout->addWidget(label);
+    }
+
     for (const QString &elementName : input) {
         if (elementName == QLatin1String("div")) {
             QFrame *divider = new QFrame(d->parentWidget);
