@@ -235,6 +235,58 @@ void DebconfFrontend::cmd_progress(const QStringList &args)
     Q_EMIT progress(param);
 }
 
+void DebconfFrontend::cmd_register(const QStringList &args)
+{
+    const QString templateName = args[0];
+    const QString question = args[1];
+
+    if (!m_data.contains(templateName)) {
+        say(QLatin1String("20 No such template, \"%1\"").arg(templateName));
+        return;
+    }
+    m_data[question] = m_data[templateName];
+    say(QLatin1String("0 ok"));
+}
+
+void DebconfFrontend::cmd_unregister(const QStringList &args)
+{
+    const QString question = args[0];
+    if (!m_data.contains(question)) {
+        say(QLatin1String("20 %1 doesn't exist").arg(question));
+        return;
+    }
+    if (m_input.contains(question)) {
+        say(QLatin1String("20 %1 is busy, cannot unregister right now").arg(question));
+        return;
+    }
+    m_data.remove(question);
+    say(QLatin1String("0 ok"));
+}
+
+void DebconfFrontend::cmd_metaget(const QStringList &args)
+{
+    const QString question = args[0];
+    const QString fieldName = args[1];
+    if (!m_data.contains(question)) {
+        say(QLatin1String("20 %1 doesn't exist").arg(question));
+        return;
+    }
+    const auto properties = m_data[question];
+    const auto key = propertyKeyFromString(fieldName);
+    if (!properties.contains(key)) {
+        say(QLatin1String("20 %1 does not exist").arg(fieldName));
+        return;
+    }
+    const QString data = properties[key];
+    say(QLatin1String("0 ") + data);
+}
+
+void DebconfFrontend::cmd_exist(const QStringList &args)
+{
+    const QString question = args[0];
+    say(QLatin1String("0 ") + (m_data.contains(question) ? QLatin1String("true") : QLatin1String("false")));
+}
+
 void DebconfFrontend::next()
 {
     m_input.clear();
