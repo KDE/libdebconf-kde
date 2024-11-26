@@ -12,21 +12,19 @@ project(libdebconf-kde VERSION 1.1.1)
 
 set(QT_MIN_VERSION "5.8.0")
 set(KF_MIN_VERSION "5.96.0")
+set(KDE_COMPILERSETTINGS_LEVEL "5.85.0")
 
-find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH
     ${ECM_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
-include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
 include(GenerateExportHeader)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings)
-
-set(REQUIRED_QT_VERSION 5.2.0) # Used in CMakeConfig to check deps
 
 if (QT_MAJOR_VERSION STREQUAL "6")
     set(QT_REQUIRED_VERSION "6.4.0")
@@ -36,6 +34,8 @@ if (QT_MAJOR_VERSION STREQUAL "6")
 else()
     set(KF_MAJOR_VERSION "5")
 endif()
+
+set(REQUIRED_QT_VERSION "${QT_MIN_VERSION}") # Used in CMakeConfig to check deps
 
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED
     COMPONENTS
@@ -67,13 +67,6 @@ ecm_setup_version(${PROJECT_VERSION}
 
 add_definitions(-DPROJECT_VERSION=\"${PROJECT_VERSION}\")
 add_definitions(
-    -DQT_NO_KEYWORDS
-    -DQT_NO_CAST_TO_ASCII
-    -DQT_NO_CAST_FROM_ASCII
-    -DQT_STRICT_ITERATORS
-    -DQT_NO_URL_CAST_FROM_STRING
-    -DQT_NO_CAST_FROM_BYTEARRAY
-    -DQT_USE_QSTRINGBUILDER
     -DQT_DISABLE_DEPRECATED_BEFORE=0x050900
 )
 
@@ -86,7 +79,7 @@ include_directories(
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/DebconfKDE")
 
-ecm_configure_package_config_file(
+configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/DebconfKDEConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/DebconfKDEConfig.cmake"
     INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR})
@@ -102,5 +95,7 @@ install(EXPORT DebconfKDETargets
 
 add_subdirectory(src)
 add_subdirectory(tools)
+
+ki18n_install(po)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
