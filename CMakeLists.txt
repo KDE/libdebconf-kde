@@ -11,7 +11,7 @@ endif()
 project(libdebconf-kde VERSION 1.1.1)
 
 set(QT_MIN_VERSION "5.8.0")
-set(KF5_MIN_VERSION "5.96.0")
+set(KF_MIN_VERSION "5.96.0")
 
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH
@@ -43,7 +43,7 @@ find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED
         Network
 )
 
-find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED
+find_package(KF${KF_MAJOR_VERSION} ${KF_MIN_VERSION} REQUIRED
     COMPONENTS
         CoreAddons
         I18n
