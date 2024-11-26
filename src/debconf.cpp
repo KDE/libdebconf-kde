@@ -62,26 +62,29 @@
 namespace DebconfKde {
 
 const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
-    { "SET", &DebconfFrontend::cmd_set },
-    { "GO", &DebconfFrontend::cmd_go },
-    { "TITLE", &DebconfFrontend::cmd_title },
-    { "SETTITLE", &DebconfFrontend::cmd_title },
-    { "DATA", &DebconfFrontend::cmd_data },
-    { "SUBST", &DebconfFrontend::cmd_subst },
-    { "INPUT", &DebconfFrontend::cmd_input },
-    { "GET", &DebconfFrontend::cmd_get },
-    { "CAPB", &DebconfFrontend::cmd_capb },
-    { "PROGRESS", &DebconfFrontend::cmd_progress },
-    { "X_PING", &DebconfFrontend::cmd_x_ping },
-    { "VERSION", &DebconfFrontend::cmd_version },
-    { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile },
-    { "INFO", &DebconfFrontend::cmd_info },
-    { "FGET", &DebconfFrontend::cmd_fget },
-    { "FSET", &DebconfFrontend::cmd_fset },
-    { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock },
-    { "ENDBLOCK", &DebconfFrontend::cmd_endblock },
-    { "STOP", &DebconfFrontend::cmd_stop },
-    { nullptr, nullptr } };
+    { "SET", &DebconfFrontend::cmd_set, 2 },
+    { "GO", &DebconfFrontend::cmd_go, 0 },
+    { "TITLE", &DebconfFrontend::cmd_title, 1 },
+    { "SETTITLE", &DebconfFrontend::cmd_title, 1 },
+    { "DATA", &DebconfFrontend::cmd_data, 3 },
+    { "SUBST", &DebconfFrontend::cmd_subst, 3 },
+    { "INPUT", &DebconfFrontend::cmd_input, 1 },
+    { "GET", &DebconfFrontend::cmd_get, 1 },
+    { "CAPB", &DebconfFrontend::cmd_capb, 1 },
+    { "PROGRESS", &DebconfFrontend::cmd_progress, 1 },
+    { "X_PING", &DebconfFrontend::cmd_x_ping, 0 },
+    { "VERSION", &DebconfFrontend::cmd_version, 0 },
+    { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile, 1 },
+    { "INFO", &DebconfFrontend::cmd_info, 0 },
+    { "FGET", &DebconfFrontend::cmd_fget, 2 },
+    { "FSET", &DebconfFrontend::cmd_fset, 3 },
+    { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock, 0 },
+    { "ENDBLOCK", &DebconfFrontend::cmd_endblock, 0 },
+    { "STOP", &DebconfFrontend::cmd_stop, 0 },
+    { "REGISTER", &DebconfFrontend::cmd_register, 2 },
+    { "UNREGISTER", &DebconfFrontend::cmd_unregister, 1 },
+    { "EXIST", &DebconfFrontend::cmd_exist, 1 },
+    { nullptr, nullptr, 0 } };
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
   : QObject(parent)
@@ -190,33 +193,34 @@ QString DebconfFrontend::property(const QString &key, PropertyKey p) const
     return r;
 }
 
-void DebconfFrontend::cmd_capb(const QString &caps)
+void DebconfFrontend::cmd_capb(const QStringList &args)
 {
+    const QString caps = args[0];
     Q_EMIT backup(caps.split(QLatin1String(", ")).contains(QLatin1String("backup")));
     say(QLatin1String("0 backup"));
 }
 
-void DebconfFrontend::cmd_set(const QString &param)
+void DebconfFrontend::cmd_set(const QStringList &args)
 {
-    const QString item = param.section(QLatin1Char(' '), 0, 0);
-    const QString value = param.section(QLatin1Char(' '), 1);
+    const QString item = args[0];
+    const QString value = args[1];
     m_values[item] = value;
     qCDebug(DEBCONF) << "# SET: [" << item << "] " << value;
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_get(const QString &param)
+void DebconfFrontend::cmd_get(const QStringList &args)
 {
-    say(QLatin1String("0 ") + m_values.value(param));
+    say(QLatin1String("0 ") + m_values.value(args[0]));
 }
 
-void DebconfFrontend::cmd_input(const QString &param)
+void DebconfFrontend::cmd_input(const QStringList &args)
 {
-    m_input.append(param.section(QLatin1Char(' '), 1));
+    m_input.append(args[0]);
     say(QLatin1String("0 will ask" ));
 }
 
-void DebconfFrontend::cmd_go(const QString &)
+void DebconfFrontend::cmd_go(const QStringList &)
 {
     qCDebug(DEBCONF) << "# GO";
     m_input.removeDuplicates();
@@ -224,8 +228,9 @@ void DebconfFrontend::cmd_go(const QString &)
     m_input.clear();
 }
 
-void DebconfFrontend::cmd_progress(const QString &param)
+void DebconfFrontend::cmd_progress(const QStringList &args)
 {
+    const QString param = args[0];
     qCDebug(DEBCONF) << "DEBCONF: PROGRESS " << param;
     Q_EMIT progress(param);
 }
@@ -247,8 +252,9 @@ void DebconfFrontend::cancel()
     reset();
 }
 
-void DebconfFrontend::cmd_title(const QString &param)
+void DebconfFrontend::cmd_title(const QStringList &args)
 {
+    const QString param = args[0];
     if (!property(param, Description).isEmpty()) {
         m_title = property(param, Description);
     } else {
@@ -258,46 +264,47 @@ void DebconfFrontend::cmd_title(const QString &param)
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_data(const QString &param)
+void DebconfFrontend::cmd_data(const QStringList &args)
 {
     // We get strings like
     // aiccu/brokername description Tunnel broker:
     // item = "aiccu/brokername"
     // type = "description"
     // rest = "Tunnel broker:"
-    const QString item = param.section(QLatin1Char(' '), 0, 0);
-    const QString type = param.section(QLatin1Char(' '), 1, 1);
-    const QString value = param.section(QLatin1Char(' '), 2);
+    const QString item = args[0];
+    const QString type = args[1];
+    const QString value = args[2];
 
     m_data[item][propertyKeyFromString(type)] = value;
     qCDebug(DEBCONF) << "# NOTED: [" << item << "] [" << type << "] " << value;
     say(QStringLiteral( "0 ok" ));
 }
 
-void DebconfFrontend::cmd_subst(const QString &param)
+void DebconfFrontend::cmd_subst(const QStringList &args)
 {
     // We get strings like
     // aiccu/brokername brokers AARNet, Hexago / Freenet6, SixXS, Wanadoo France
     // item = "aiccu/brokername"
     // type = "brokers"
     // value = "AARNet, Hexago / Freenet6, SixXS, Wanadoo France"
-    const QString item = param.section(QLatin1Char(' '), 0, 0);
-    const QString type = param.section(QLatin1Char(' '), 1, 1);
-    const QString value = param.section(QLatin1Char(' '), 2);
+    const QString item = args[0];
+    const QString type = args[1];
+    const QString value = args[2];
 
     m_subst[item][type] = value;
     qCDebug(DEBCONF) << "# SUBST: [" << item << "] [" << type << "] " << value;
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_x_ping(const QString &param)
+void DebconfFrontend::cmd_x_ping(const QStringList &args)
 {
-    Q_UNUSED(param);
+    Q_UNUSED(args);
     say(QLatin1String("0 pong"));
 }
 
-void DebconfFrontend::cmd_version(const QString &param)
+void DebconfFrontend::cmd_version(const QStringList &args)
 {
+    const QString param = args[0];
     if ( !param.isEmpty() ) {
         const QString major_version_str = param.section(QLatin1Char('.'), 0, 0);
         bool ok = false;
@@ -311,9 +318,9 @@ void DebconfFrontend::cmd_version(const QString &param)
     say(QLatin1String("0 2.1"));
 }
 
-void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
+void DebconfFrontend::cmd_x_loadtemplatefile(const QStringList &args)
 {
-    QFile template_file(param);
+    QFile template_file(args[0]);
     if (template_file.open(QFile::ReadOnly)) {
         QTextStream template_stream(&template_file);
         QString line = QLatin1String("");
@@ -366,21 +373,30 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QString &param)
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_info(const QString &param)
+void DebconfFrontend::cmd_info(const QStringList &args)
 {
-    m_side_info = m_data[param][PropertyKey::Description];
-    // TODO: error handling
+    const QString &key = args[0];
+    if (key.isEmpty()) {
+        // this is the Perl debconf behaviour
+        say(QLatin1String("0 ok"));
+        return;
+    }
+    if (!m_data.contains(key)) {
+        say(QLatin1String("20 question doesn't exist"));
+        return;
+    }
+    m_side_info = m_data[key][PropertyKey::Description];
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_fget(const QString &param)
+void DebconfFrontend::cmd_fget(const QStringList &args)
 {
     // We get strings like
     // foo/bar seen false
     // question = "foo/bar"
     // flag = "seen"
-    const QString question = param.section(QLatin1Char(' '), 0, 0);
-    const QString flag = param.section(QLatin1Char(' '), 1, 1);
+    const QString question = args[0];
+    const QString flag = args[1];
 
     if (m_flags[question][flag]) {
         say(QLatin1String("0 true"));
@@ -389,16 +405,16 @@ void DebconfFrontend::cmd_fget(const QString &param)
     }
 }
 
-void DebconfFrontend::cmd_fset(const QString &param)
+void DebconfFrontend::cmd_fset(const QStringList &args)
 {
     // We get strings like
     // foo/bar seen false
     // question = "foo/bar"
     // flag = "seen"
     // value = "false"
-    const QString question = param.section(QLatin1Char(' '), 0, 0);
-    const QString flag = param.section(QLatin1Char(' '), 1, 1);
-    const QString value = param.section(QLatin1Char(' '), 2, 2);
+    const QString question = args[0];
+    const QString flag = args[1];
+    const QString value = args[2];
 
     if ( value == QLatin1String("false") ) {
         m_flags[question][flag] = false;
@@ -408,25 +424,25 @@ void DebconfFrontend::cmd_fset(const QString &param)
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_beginblock(const QString &param)
+void DebconfFrontend::cmd_beginblock(const QStringList &args)
 {
-    Q_UNUSED(param)
+    Q_UNUSED(args)
     m_making_block = true;
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_endblock(const QString &param)
+void DebconfFrontend::cmd_endblock(const QStringList &args)
 {
-    Q_UNUSED(param)
+    Q_UNUSED(args)
     if (m_making_block)
         m_input.append(QStringLiteral("div"));
     m_making_block = false;
     say(QLatin1String("0 ok"));
 }
 
-void DebconfFrontend::cmd_stop(const QString &param)
+void DebconfFrontend::cmd_stop(const QStringList &args)
 {
-     Q_UNUSED(param)
+     Q_UNUSED(args)
      //Do nothing.
 }
 
@@ -446,11 +462,29 @@ bool DebconfFrontend::process()
     const Cmd *c = commands;
     while (c->cmd != nullptr) {
         if (command == QLatin1String(c->cmd)) {
-            (this->*(c->run))(value);
+            QStringList args{};
+            if (c->num_args_min > 0) {
+                int args_scanned = 0;
+                for (int i = 0; i < c->num_args_min; i++) {
+                    const int end_index = (i < (c->num_args_min - 1)) ? i : -1;
+                    const QString arg = value.section(QLatin1Char(' '), i, end_index);
+                    if (!arg.isEmpty()) args_scanned++;
+                    args.append(arg);
+                }
+
+                if (args_scanned < c->num_args_min) {
+                    say(QLatin1String("20 Incorrect number of arguments"));
+                    return false;
+                }
+            } else {
+                args.append(value);
+            }
+            (this->*(c->run))(args);
             return true;
         }
         ++ c;
     }
+    say(QLatin1String("20 Unsupported command \"%1\" received").arg(command.toLower()));
     return false;
 }
 

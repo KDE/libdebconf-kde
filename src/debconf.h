@@ -163,27 +163,32 @@ protected:
     virtual void reset();
 
 private:
-    void cmd_capb(const QString &caps);
-    void cmd_set(const QString &param);
-    void cmd_get(const QString &param);
-    void cmd_input(const QString &param);
-    void cmd_go(const QString &);
-    void cmd_title(const QString &param);
-    void cmd_data(const QString &param);
-    void cmd_subst(const QString &param);
-    void cmd_progress(const QString &param);
-    void cmd_x_ping(const QString &param);
-    void cmd_version(const QString &param);
-    void cmd_x_loadtemplatefile(const QString &param);
-    void cmd_info(const QString &param);
-    void cmd_fget(const QString &param);
-    void cmd_fset(const QString &param);
-    void cmd_beginblock(const QString &param);
-    void cmd_endblock(const QString &param);
-    void cmd_stop(const QString &param);
+    void cmd_capb(const QStringList &args);
+    void cmd_set(const QStringList &args);
+    void cmd_get(const QStringList &args);
+    void cmd_input(const QStringList &args);
+    void cmd_go(const QStringList &);
+    void cmd_title(const QStringList &args);
+    void cmd_data(const QStringList &args);
+    void cmd_subst(const QStringList &args);
+    void cmd_progress(const QStringList &args);
+    void cmd_x_ping(const QStringList &args);
+    void cmd_version(const QStringList &args);
+    void cmd_x_loadtemplatefile(const QStringList &args);
+    void cmd_info(const QStringList &args);
+    void cmd_fget(const QStringList &args);
+    void cmd_fset(const QStringList &args);
+    void cmd_beginblock(const QStringList &args);
+    void cmd_endblock(const QStringList &args);
+    void cmd_stop(const QStringList &args);
+    void cmd_register(const QStringList &args);
+    void cmd_unregister(const QStringList &args);
+    void cmd_metaget(const QStringList &args);
+    void cmd_exist(const QStringList &args);
     struct Cmd {
         const char *cmd;
-        void (DebconfFrontend::*run)(const QString &);
+        void (DebconfFrontend::*run)(const QStringList &);
+        int num_args_min;
     };
     static const Cmd commands[];
 
