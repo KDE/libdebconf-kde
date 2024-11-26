@@ -412,16 +412,16 @@ void DebconfFrontend::cmd_fset(const QString &param)
 void DebconfFrontend::cmd_beginblock(const QString &param)
 {
     Q_UNUSED(param)
-    //FIXME: this is a dummy command, we should actually do something
-    //with param.
+    m_making_block = true;
     say(QLatin1String("0 ok"));
 }
 
 void DebconfFrontend::cmd_endblock(const QString &param)
 {
     Q_UNUSED(param)
-    //FIXME: this is a dummy command, we should actually do something
-    //with param.
+    if (m_making_block)
+        m_input.append(QStringLiteral("div"));
+    m_making_block = false;
     say(QLatin1String("0 ok"));
 }
 

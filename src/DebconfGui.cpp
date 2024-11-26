@@ -68,6 +68,7 @@
 #include <QtCore/QFile>
 #include <QtWidgets/QLabel>
 #include <QHostInfo>
+#include <QFrame>
 
 #include <KGuiItem>
 #include <KIconLoader>
@@ -247,11 +248,15 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
     bool needStretch = true;
     if (input.size() == 1) {
         const QString key = input.first();
-        if (d->frontend->type(key) == DebconfFrontend::Text &&
-            d->frontend->type(key) == DebconfFrontend::Note &&
-            d->frontend->type(key) == DebconfFrontend::Error &&
-            d->frontend->type(key) == DebconfFrontend::Multiselect) {
-            needStretch = false;
+        switch (d->frontend->type(key)) {
+            case DebconfFrontend::Text:
+            case DebconfFrontend::Note:
+            case DebconfFrontend::Error:
+            case DebconfFrontend::Multiselect:
+                needStretch = false;
+                break;
+            default:
+                break;
         }
     }
 
@@ -260,6 +265,13 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
     }
 
     for (const QString &elementName : input) {
+        if (elementName == QLatin1String("div")) {
+            QFrame *divider = new QFrame(d->parentWidget);
+            divider->setFrameShape(QFrame::HLine);
+            divider->setFrameShadow(QFrame::Sunken);
+            layout->addWidget(divider);
+            continue;
+        }
         DebconfElement *element =  d->createElement(elementName);
         d->elements.append(element);
         layout->addWidget(element);

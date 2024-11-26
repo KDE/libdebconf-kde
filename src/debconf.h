@@ -203,6 +203,7 @@ private:
     QHash<QString, Flags>         m_flags;
     QString m_title;
     QStringList m_input;
+    bool m_making_block;
 };
 
 /**
