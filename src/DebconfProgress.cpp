@@ -22,7 +22,7 @@
 using namespace DebconfKde;
 
 DebconfProgress::DebconfProgress(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 }
@@ -31,9 +31,7 @@ DebconfProgress::~DebconfProgress()
 {
 }
 
-void DebconfProgress::startProgress(const QString &extended_description,
-                                    uint progress_min,
-                                    uint progress_max)
+void DebconfProgress::startProgress(const QString &extended_description, uint progress_min, uint progress_max)
 {
     label->setText(extended_description);
     progressBar->setMaximum(progress_max);

@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfSelect : public DebconfElement, Ui::DebconfSelect
 {
@@ -33,13 +34,9 @@ public:
     explicit DebconfSelect(const QString &name, QWidget *parent = nullptr);
     ~DebconfSelect();
 
-    void setSelect(const QString &extended_description,
-                   const QString &description,
-                   const QString &default_choice,
-                   const QStringList &choices);
+    void setSelect(const QString &extended_description, const QString &description, const QString &default_choice, const QStringList &choices);
     QString value() const override;
 };
-
 
 }
 

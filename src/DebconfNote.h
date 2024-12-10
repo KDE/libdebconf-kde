@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfNote : public DebconfElement, Ui::DebconfNote
 {
@@ -35,7 +36,6 @@ public:
 
     void setNote(const QString &description, const QString &note);
 };
-
 
 }
 

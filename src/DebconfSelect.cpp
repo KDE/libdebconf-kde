@@ -22,7 +22,7 @@
 using namespace DebconfKde;
 
 DebconfSelect::DebconfSelect(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 }
@@ -36,10 +36,7 @@ QString DebconfSelect::value() const
     return selectCB->currentText();
 }
 
-void DebconfSelect::setSelect(const QString &extended_description,
-                              const QString &description,
-                              const QString &default_choice,
-                              const QStringList &choices)
+void DebconfSelect::setSelect(const QString &extended_description, const QString &description, const QString &default_choice, const QStringList &choices)
 {
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);

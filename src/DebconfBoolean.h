@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfBoolean : public DebconfElement, Ui::DebconfBoolean
 {
@@ -33,12 +34,9 @@ public:
     explicit DebconfBoolean(const QString &name, QWidget *parent = nullptr);
     ~DebconfBoolean();
 
-    void setBoolean(const QString &extended_description,
-                    const QString &description,
-                    bool default_boolean);
+    void setBoolean(const QString &extended_description, const QString &description, bool default_boolean);
     QString value() const override;
 };
-
 
 }
 

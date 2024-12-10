@@ -52,23 +52,25 @@
 #ifndef DEBCONF_H
 #define DEBCONF_H
 
+#include <QtCore/QFile>
 #include <QtCore/QHash>
-#include <QtCore/QStringList>
 #include <QtCore/QMetaEnum>
 #include <QtCore/QMetaObject>
-#include <QtCore/QFile>
-#include <QtNetwork/QLocalSocket>
+#include <QtCore/QStringList>
 #include <QtNetwork/QLocalServer>
+#include <QtNetwork/QLocalSocket>
 
 class QSocketNotifier;
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 /**
-  * An abstract class which talks Debconf Passthrough frontend protocol. It
-  * does not implement underlying I/O method specifics.
-  */
-class DebconfFrontend : public QObject {
+ * An abstract class which talks Debconf Passthrough frontend protocol. It
+ * does not implement underlying I/O method specifics.
+ */
+class DebconfFrontend : public QObject
+{
     Q_OBJECT
     Q_ENUMS(PropertyKey)
     Q_ENUMS(TypeKey)
@@ -106,8 +108,8 @@ public:
     TypeKey type(const QString &string) const;
 
     /**
-      * Send \p string to Debconf over established connection
-      */
+     * Send \p string to Debconf over established connection
+     */
     void say(const QString &string);
 
     /**
@@ -123,14 +125,17 @@ public:
      */
     virtual void cancel();
 
-    inline QString getSideInfo() const { return m_side_info; }
+    inline QString getSideInfo() const
+    {
+        return m_side_info;
+    }
 
 Q_SIGNALS:
     void go(const QString &title, const QStringList &input);
     void progress(const QString &param);
     /**
-      * Emitted when connection with Debconf is terminated.
-      */
+     * Emitted when connection with Debconf is terminated.
+     */
     void finished();
     void backup(bool capable);
 
@@ -147,15 +152,15 @@ protected Q_SLOTS:
 
 protected:
     /**
-      * This method must be overridden by the derivative class and return
-      * current QIODevice which should be used to read data from Debconf.
-      */
-    virtual QIODevice* getReadDevice() const = 0;
+     * This method must be overridden by the derivative class and return
+     * current QIODevice which should be used to read data from Debconf.
+     */
+    virtual QIODevice *getReadDevice() const = 0;
     /**
-      * This method must be overridden by the derivative class and return
-      * current QIODevice which should be used to write data to Debconf.
-      */
-    virtual QIODevice* getWriteDevice() const = 0;
+     * This method must be overridden by the derivative class and return
+     * current QIODevice which should be used to write data to Debconf.
+     */
+    virtual QIODevice *getWriteDevice() const = 0;
     /**
      * This is called to clean up internal data once connection with
      * Debconf is terminated.
@@ -197,17 +202,18 @@ private:
     /**
      * Transforms the string camel cased and return it's enum given the enum name
      */
-    template<class T> static int enumFromString(const QString &str, const char *enumName);
+    template<class T>
+    static int enumFromString(const QString &str, const char *enumName);
     PropertyKey propertyKeyFromString(const QString &string);
 
     typedef QHash<PropertyKey, QString> Properties;
     typedef QHash<QString, QString> Substitutions;
     typedef QHash<QString, bool> Flags;
 
-    QHash<QString, Properties>    m_data;
+    QHash<QString, Properties> m_data;
     QHash<QString, Substitutions> m_subst;
-    QHash<QString, QString>       m_values;
-    QHash<QString, Flags>         m_flags;
+    QHash<QString, QString> m_values;
+    QHash<QString, Flags> m_flags;
     QString m_title;
     QString m_side_info;
     QStringList m_input;
@@ -215,34 +221,41 @@ private:
 };
 
 /**
-  * DebconfFrontend which communicates with Debconf over UNIX socket. Even when
-  * finished signal is emitted, DeconfFrontend will reset and continue to
-  * listen for new connections on the socket.
-  */
-class DebconfFrontendSocket : public DebconfFrontend {
+ * DebconfFrontend which communicates with Debconf over UNIX socket. Even when
+ * finished signal is emitted, DeconfFrontend will reset and continue to
+ * listen for new connections on the socket.
+ */
+class DebconfFrontendSocket : public DebconfFrontend
+{
     Q_OBJECT
 
 public:
     /**
-      * Instantiates the class and starts listening for new connections on the
-      * socket at \p socketName path. Please note that any file at \p socketName
-      * will be removed if it exists prior to the call of this constructor.
-      */
+     * Instantiates the class and starts listening for new connections on the
+     * socket at \p socketName path. Please note that any file at \p socketName
+     * will be removed if it exists prior to the call of this constructor.
+     */
     explicit DebconfFrontendSocket(const QString &socketName, QObject *parent = nullptr);
 
     /**
-      * Removes socket when the object is destroyed.
-      */
+     * Removes socket when the object is destroyed.
+     */
     virtual ~DebconfFrontendSocket();
 
     /**
-      * Overridden to trigger termination of the current connection.
-      */
+     * Overridden to trigger termination of the current connection.
+     */
     void cancel() override;
 
 protected:
-    inline QIODevice* getReadDevice() const override { return m_socket; }
-    inline QIODevice* getWriteDevice() const override { return m_socket; }
+    inline QIODevice *getReadDevice() const override
+    {
+        return m_socket;
+    }
+    inline QIODevice *getWriteDevice() const override
+    {
+        return m_socket;
+    }
     void reset() override;
 
 private Q_SLOTS:
@@ -258,27 +271,33 @@ private:
 };
 
 /**
-  * DebconfFrontend which communicates with Debconf over FIFO pipes. Once
-  * finished signal is emitted, the frontend is no longer usable as pipes
-  * have been been closed by then.
-  */
-class DebconfFrontendFifo : public DebconfFrontend {
-
+ * DebconfFrontend which communicates with Debconf over FIFO pipes. Once
+ * finished signal is emitted, the frontend is no longer usable as pipes
+ * have been been closed by then.
+ */
+class DebconfFrontendFifo : public DebconfFrontend
+{
 public:
     /**
-      * Instantiates the class and prepares for communication with Debconf over
-      * \p readfd (read) and \p writefd (write) FIFO file descriptors.
-      */
+     * Instantiates the class and prepares for communication with Debconf over
+     * \p readfd (read) and \p writefd (write) FIFO file descriptors.
+     */
     explicit DebconfFrontendFifo(int readfd, int writefd, QObject *parent = nullptr);
 
     /**
-      * Overridden to trigger full disconnection
-      */
+     * Overridden to trigger full disconnection
+     */
     void cancel() override;
 
 protected:
-    QIODevice* getReadDevice() const override { return m_readf; }
-    QIODevice* getWriteDevice() const override { return m_writef; }
+    QIODevice *getReadDevice() const override
+    {
+        return m_readf;
+    }
+    QIODevice *getWriteDevice() const override
+    {
+        return m_writef;
+    }
     void reset() override;
     bool process() override;
 

@@ -55,7 +55,8 @@
 
 #include "debconf-kde_export.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 /**
  * \class DebconfGui DebconfGui.h DebconfGui
@@ -136,18 +137,17 @@ protected:
      */
     void closeEvent(QCloseEvent *event) override;
 
-    DebconfGuiPrivate * const d_ptr;
+    DebconfGuiPrivate *const d_ptr;
 
 private:
     Q_DECLARE_PRIVATE(DebconfGui)
 
     /**
-      * This routine is called by all constructors to perform common
-      * initialization.
-      */
+     * This routine is called by all constructors to perform common
+     * initialization.
+     */
     void init();
 };
-
 
 }
 

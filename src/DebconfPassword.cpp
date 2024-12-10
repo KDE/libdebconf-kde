@@ -22,7 +22,7 @@
 using namespace DebconfKde;
 
 DebconfPassword::DebconfPassword(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 }
@@ -36,8 +36,7 @@ QString DebconfPassword::value() const
     return passwordLE->text();
 }
 
-void DebconfPassword::setPassword(const QString &extended_description,
-                                  const QString &description)
+void DebconfPassword::setPassword(const QString &extended_description, const QString &description)
 {
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);

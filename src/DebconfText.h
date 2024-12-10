@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfText : public DebconfElement, Ui::DebconfText
 {
@@ -35,7 +36,6 @@ public:
 
     void setText(const QString &text);
 };
-
 
 }
 

@@ -19,13 +19,13 @@
 
 #include "DebconfMultiselect.h"
 
-#include <QStandardItemModel>
 #include <QStandardItem>
+#include <QStandardItemModel>
 
 using namespace DebconfKde;
 
 DebconfMultiselect::DebconfMultiselect(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 

@@ -63,18 +63,18 @@
 #include "DebconfText.h"
 #include "Debug_p.h"
 
-#include <QtCore/QDebug>
-#include <QtCore/QProcess>
-#include <QtCore/QFile>
-#include <QtWidgets/QLabel>
-#include <QHostInfo>
 #include <QFrame>
+#include <QHostInfo>
+#include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QProcess>
+#include <QtWidgets/QLabel>
 
 #include <KGuiItem>
 #include <KIconLoader>
 #include <KLocalizedString>
-#include <KStandardGuiItem>
 #include <KOSRelease>
+#include <KStandardGuiItem>
 
 #include <debconf.h>
 
@@ -83,19 +83,21 @@ using namespace DebconfKde;
 class DebconfKde::DebconfGuiPrivate : public Ui::DebconfGui
 {
 public:
-    virtual ~DebconfGuiPrivate() { }
+    virtual ~DebconfGuiPrivate()
+    {
+    }
     DebconfFrontend *frontend;
     DebconfProgress *elementProgress = nullptr;
     QWidget *parentWidget = nullptr;
-    QVector<DebconfElement*> elements;
+    QVector<DebconfElement *> elements;
 
-    DebconfElement* createElement(const QString &k);
+    DebconfElement *createElement(const QString &k);
     void cleanup();
 };
 
 DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
- : QWidget(parent),
-   d_ptr(new DebconfGuiPrivate)
+    : QWidget(parent)
+    , d_ptr(new DebconfGuiPrivate)
 {
     Q_D(DebconfGui);
     d->frontend = new DebconfFrontendSocket(socketName, this);
@@ -103,8 +105,8 @@ DebconfGui::DebconfGui(const QString &socketName, QWidget *parent)
 }
 
 DebconfGui::DebconfGui(int readfd, int writefd, QWidget *parent)
- : QWidget(parent),
-   d_ptr(new DebconfGuiPrivate)
+    : QWidget(parent)
+    , d_ptr(new DebconfGuiPrivate)
 {
     Q_D(DebconfGui);
     d->frontend = new DebconfFrontendFifo(readfd, writefd, this);
@@ -142,10 +144,7 @@ void DebconfGui::init()
     if (!osInfo.logo().isEmpty())
         distroLogo = osInfo.logo();
 
-    const QPixmap icon = KIconLoader::global()->loadIcon(distroLogo,
-                                                         KIconLoader::NoGroup,
-                                                         KIconLoader::SizeLarge,
-                                                         KIconLoader::DefaultState);
+    const QPixmap icon = KIconLoader::global()->loadIcon(distroLogo, KIconLoader::NoGroup, KIconLoader::SizeLarge, KIconLoader::DefaultState);
     if (!icon.isNull()) {
         d->iconL->setPixmap(icon);
         setWindowIcon(icon);
@@ -154,7 +153,7 @@ void DebconfGui::init()
     d->scrollArea->viewport()->setAutoFillBackground(false);
 }
 
-DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
+DebconfElement *DebconfGuiPrivate::createElement(const QString &k)
 {
     qCDebug(DEBCONF) << "creating widget for " << k;
 
@@ -162,23 +161,17 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
     extendedDescription.replace(QLatin1String("\\n"), QLatin1String("\n"));
 
     switch (frontend->type(k)) {
-    case DebconfFrontend::Boolean:
-    {
+    case DebconfFrontend::Boolean: {
         auto element = new DebconfBoolean(k, parentWidget);
-        element->setBoolean(extendedDescription,
-                            frontend->property(k, DebconfFrontend::Description),
-                            frontend->value(k) == QLatin1String("true"));
+        element->setBoolean(extendedDescription, frontend->property(k, DebconfFrontend::Description), frontend->value(k) == QLatin1String("true"));
         return element;
     }
-    case DebconfFrontend::Error:
-    {
+    case DebconfFrontend::Error: {
         auto element = new DebconfError(k, parentWidget);
-        element->setError(extendedDescription,
-                          frontend->property(k, DebconfFrontend::Description));
+        element->setError(extendedDescription, frontend->property(k, DebconfFrontend::Description));
         return element;
     }
-    case DebconfFrontend::Multiselect:
-    {
+    case DebconfFrontend::Multiselect: {
         auto element = new DebconfMultiselect(k, parentWidget);
         element->setMultiselect(extendedDescription,
                                 frontend->property(k, DebconfFrontend::Description),
@@ -186,22 +179,17 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
                                 frontend->property(k, DebconfFrontend::Choices).split(QLatin1String(", ")));
         return element;
     }
-    case DebconfFrontend::Note:
-    {
+    case DebconfFrontend::Note: {
         auto element = new DebconfNote(k, parentWidget);
-        element->setNote(extendedDescription,
-                         frontend->property(k, DebconfFrontend::Description));
+        element->setNote(extendedDescription, frontend->property(k, DebconfFrontend::Description));
         return element;
     }
-    case DebconfFrontend::Password:
-    {
+    case DebconfFrontend::Password: {
         auto element = new DebconfPassword(k, parentWidget);
-        element->setPassword(extendedDescription,
-                             frontend->property(k, DebconfFrontend::Description));
+        element->setPassword(extendedDescription, frontend->property(k, DebconfFrontend::Description));
         return element;
     }
-    case DebconfFrontend::Select:
-    {
+    case DebconfFrontend::Select: {
         auto element = new DebconfSelect(k, parentWidget);
         element->setSelect(extendedDescription,
                            frontend->property(k, DebconfFrontend::Description),
@@ -209,16 +197,12 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
                            frontend->property(k, DebconfFrontend::Choices).split(QLatin1String(", ")));
         return element;
     }
-    case DebconfFrontend::String:
-    {
+    case DebconfFrontend::String: {
         auto element = new DebconfString(k, parentWidget);
-        element->setString(extendedDescription,
-                           frontend->property(k, DebconfFrontend::Description),
-                           frontend->value(k));
+        element->setString(extendedDescription, frontend->property(k, DebconfFrontend::Description), frontend->value(k));
         return element;
     }
-    case DebconfFrontend::Text:
-    {
+    case DebconfFrontend::Text: {
         auto element = new DebconfText(k, parentWidget);
         element->setText(frontend->property(k, DebconfFrontend::Description));
         return element;
@@ -227,10 +211,11 @@ DebconfElement* DebconfGuiPrivate::createElement(const QString &k)
         qWarning() << "Default REACHED!!!";
         auto element = new DebconfElement(k, parentWidget);
         auto label = new QLabel(element);
-        label->setText(i18n("<b>Not implemented</b>: The input widget for data"
-                            " type '%1' is not implemented. Will use default of '%2'.",
-                            frontend->property(k, DebconfFrontend::Type),
-                            frontend->value(k)));
+        label->setText(
+            i18n("<b>Not implemented</b>: The input widget for data"
+                 " type '%1' is not implemented. Will use default of '%2'.",
+                 frontend->property(k, DebconfFrontend::Type),
+                 frontend->value(k)));
         label->setWordWrap(true);
         return element;
     }
@@ -241,7 +226,7 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
     Q_D(DebconfGui);
     qCDebug(DEBCONF) << "# GO GUI";
     d->cleanup();
-    auto layout = qobject_cast<QVBoxLayout*>(d->parentWidget->layout());
+    auto layout = qobject_cast<QVBoxLayout *>(d->parentWidget->layout());
     // if we have just one element and we are showing
     // elements that can make use of extra space
     // we don't add stretches
@@ -249,14 +234,14 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
     if (input.size() == 1) {
         const QString key = input.first();
         switch (d->frontend->type(key)) {
-            case DebconfFrontend::Text:
-            case DebconfFrontend::Note:
-            case DebconfFrontend::Error:
-            case DebconfFrontend::Multiselect:
-                needStretch = false;
-                break;
-            default:
-                break;
+        case DebconfFrontend::Text:
+        case DebconfFrontend::Note:
+        case DebconfFrontend::Error:
+        case DebconfFrontend::Multiselect:
+            needStretch = false;
+            break;
+        default:
+            break;
         }
     }
 
@@ -278,7 +263,7 @@ void DebconfGui::cmd_go(const QString &title, const QStringList &input)
             layout->addWidget(divider);
             continue;
         }
-        DebconfElement *element =  d->createElement(elementName);
+        DebconfElement *element = d->createElement(elementName);
         d->elements.append(element);
         layout->addWidget(element);
     }
@@ -300,7 +285,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
     if (!d->elementProgress) {
         d->cleanup();
         d->elementProgress = new DebconfProgress(QString(), d->parentWidget);
-        auto layout = qobject_cast<QVBoxLayout*>(d->parentWidget->layout());
+        auto layout = qobject_cast<QVBoxLayout *>(d->parentWidget->layout());
         layout->addStretch();
         layout->addWidget(d->elementProgress);
         layout->addStretch();
@@ -316,9 +301,7 @@ void DebconfGui::cmd_progress(const QString &cmd)
         d->titleL->setText(d->frontend->property(commands.at(3), DebconfFrontend::Description));
         int progress_min = commands.at(1).toInt();
         int progress_max = commands.at(2).toInt();
-        element->startProgress(d->frontend->property(commands.at(3), DebconfFrontend::ExtendedDescription),
-                               progress_min,
-                               progress_max);
+        element->startProgress(d->frontend->property(commands.at(3), DebconfFrontend::ExtendedDescription), progress_min, progress_max);
     } else if (commands.first() == QLatin1String("SET")) {
         element->setProgress(commands.at(1).toInt());
     } else if (commands.first() == QLatin1String("STEP")) {

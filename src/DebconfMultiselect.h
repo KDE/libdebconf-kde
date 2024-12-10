@@ -26,7 +26,8 @@
 
 class QStandardItemModel;
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfMultiselect : public DebconfElement, Ui::DebconfMultiselect
 {
@@ -35,16 +36,12 @@ public:
     explicit DebconfMultiselect(const QString &name, QWidget *parent = nullptr);
     ~DebconfMultiselect();
 
-    void setMultiselect(const QString &extended_description,
-                        const QString &description,
-                        const QStringList &default_choices,
-                        const QStringList &choices);
+    void setMultiselect(const QString &extended_description, const QString &description, const QStringList &default_choices, const QStringList &choices);
     QString value() const override;
 
 private:
     QStandardItemModel *m_model;
 };
-
 
 }
 

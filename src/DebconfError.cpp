@@ -26,11 +26,10 @@
 using namespace DebconfKde;
 
 DebconfError::DebconfError(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
-    iconL->setPixmap(QIcon::fromTheme(QLatin1String("dialog-error")).pixmap(KIconLoader::SizeHuge,
-                                                                            KIconLoader::SizeHuge));
+    iconL->setPixmap(QIcon::fromTheme(QLatin1String("dialog-error")).pixmap(KIconLoader::SizeHuge, KIconLoader::SizeHuge));
 }
 
 DebconfError::~DebconfError()

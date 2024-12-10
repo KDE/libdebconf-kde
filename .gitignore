@@ -26,3 +26,4 @@ CMakeLists.txt.user*
 /cmake-build*
 .cache
 .directory
+.clang-format

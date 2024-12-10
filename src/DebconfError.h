@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfError : public DebconfElement, Ui::DebconfError
 {
@@ -36,7 +37,6 @@ public:
     void setError(const QString &description, const QString &title);
     int nextId() const;
 };
-
 
 }
 

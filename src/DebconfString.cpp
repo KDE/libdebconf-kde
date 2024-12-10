@@ -22,7 +22,7 @@
 using namespace DebconfKde;
 
 DebconfString::DebconfString(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 }
@@ -36,9 +36,7 @@ QString DebconfString::value() const
     return stringLE->text();
 }
 
-void DebconfString::setString(const QString &extended_description,
-                              const QString &description,
-                              const QString &default_string)
+void DebconfString::setString(const QString &extended_description, const QString &description, const QString &default_string)
 {
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);

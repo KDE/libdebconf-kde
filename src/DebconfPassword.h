@@ -24,7 +24,8 @@
 
 #include "DebconfElement.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
 class DebconfPassword : public DebconfElement, Ui::DebconfPassword
 {
@@ -36,7 +37,6 @@ public:
     void setPassword(const QString &extended_description, const QString &description);
     QString value() const override;
 };
-
 
 }
 

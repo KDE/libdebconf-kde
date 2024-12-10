@@ -51,43 +51,43 @@
 
 #include "debconf.h"
 
-#include <QtCore/QSocketNotifier>
-#include <QtCore/QRegularExpression>
 #include <QtCore/QFile>
+#include <QtCore/QRegularExpression>
+#include <QtCore/QSocketNotifier>
 #include <cstdio>
 #include <unistd.h>
 
 #include "Debug_p.h"
 
-namespace DebconfKde {
+namespace DebconfKde
+{
 
-const DebconfFrontend::Cmd DebconfFrontend::commands[] = {
-    { "SET", &DebconfFrontend::cmd_set, 2 },
-    { "GO", &DebconfFrontend::cmd_go, 0 },
-    { "TITLE", &DebconfFrontend::cmd_title, 1 },
-    { "SETTITLE", &DebconfFrontend::cmd_title, 1 },
-    { "DATA", &DebconfFrontend::cmd_data, 3 },
-    { "SUBST", &DebconfFrontend::cmd_subst, 3 },
-    { "INPUT", &DebconfFrontend::cmd_input, 1 },
-    { "GET", &DebconfFrontend::cmd_get, 1 },
-    { "CAPB", &DebconfFrontend::cmd_capb, 1 },
-    { "PROGRESS", &DebconfFrontend::cmd_progress, 1 },
-    { "X_PING", &DebconfFrontend::cmd_x_ping, 0 },
-    { "VERSION", &DebconfFrontend::cmd_version, 0 },
-    { "X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile, 1 },
-    { "INFO", &DebconfFrontend::cmd_info, 0 },
-    { "FGET", &DebconfFrontend::cmd_fget, 2 },
-    { "FSET", &DebconfFrontend::cmd_fset, 3 },
-    { "BEGINBLOCK", &DebconfFrontend::cmd_beginblock, 0 },
-    { "ENDBLOCK", &DebconfFrontend::cmd_endblock, 0 },
-    { "STOP", &DebconfFrontend::cmd_stop, 0 },
-    { "REGISTER", &DebconfFrontend::cmd_register, 2 },
-    { "UNREGISTER", &DebconfFrontend::cmd_unregister, 1 },
-    { "EXIST", &DebconfFrontend::cmd_exist, 1 },
-    { nullptr, nullptr, 0 } };
+const DebconfFrontend::Cmd DebconfFrontend::commands[] = {{"SET", &DebconfFrontend::cmd_set, 2},
+                                                          {"GO", &DebconfFrontend::cmd_go, 0},
+                                                          {"TITLE", &DebconfFrontend::cmd_title, 1},
+                                                          {"SETTITLE", &DebconfFrontend::cmd_title, 1},
+                                                          {"DATA", &DebconfFrontend::cmd_data, 3},
+                                                          {"SUBST", &DebconfFrontend::cmd_subst, 3},
+                                                          {"INPUT", &DebconfFrontend::cmd_input, 1},
+                                                          {"GET", &DebconfFrontend::cmd_get, 1},
+                                                          {"CAPB", &DebconfFrontend::cmd_capb, 1},
+                                                          {"PROGRESS", &DebconfFrontend::cmd_progress, 1},
+                                                          {"X_PING", &DebconfFrontend::cmd_x_ping, 0},
+                                                          {"VERSION", &DebconfFrontend::cmd_version, 0},
+                                                          {"X_LOADTEMPLATEFILE", &DebconfFrontend::cmd_x_loadtemplatefile, 1},
+                                                          {"INFO", &DebconfFrontend::cmd_info, 0},
+                                                          {"FGET", &DebconfFrontend::cmd_fget, 2},
+                                                          {"FSET", &DebconfFrontend::cmd_fset, 3},
+                                                          {"BEGINBLOCK", &DebconfFrontend::cmd_beginblock, 0},
+                                                          {"ENDBLOCK", &DebconfFrontend::cmd_endblock, 0},
+                                                          {"STOP", &DebconfFrontend::cmd_stop, 0},
+                                                          {"REGISTER", &DebconfFrontend::cmd_register, 2},
+                                                          {"UNREGISTER", &DebconfFrontend::cmd_unregister, 1},
+                                                          {"EXIST", &DebconfFrontend::cmd_exist, 1},
+                                                          {nullptr, nullptr, 0}};
 
 DebconfFrontend::DebconfFrontend(QObject *parent)
-  : QObject(parent)
+    : QObject(parent)
 {
 }
 
@@ -111,15 +111,16 @@ void DebconfFrontend::setValue(const QString &key, const QString &value)
     m_values[key] = value;
 }
 
-template<class T> int DebconfFrontend::enumFromString(const QString &str, const char *enumName)
+template<class T>
+int DebconfFrontend::enumFromString(const QString &str, const char *enumName)
 {
     QString realName(str);
     realName.replace(0, 1, str.at(0).toUpper());
     int pos;
-    while ((pos = realName.indexOf(QLatin1Char( '_' ))) != -1) {
+    while ((pos = realName.indexOf(QLatin1Char('_'))) != -1) {
         if (pos + 1 >= realName.size()) { // pos is from 0, size from 1, mustn't go off-by-one
             realName.chop(1);
-        } else{
+        } else {
             realName.replace(pos, 2, realName.at(pos + 1).toUpper());
         }
     }
@@ -128,21 +129,22 @@ template<class T> int DebconfFrontend::enumFromString(const QString &str, const 
     QMetaEnum e = T::staticMetaObject.enumerator(id);
     int enumValue = e.keyToValue(realName.toLatin1().data());
 
-    if(enumValue == -1) {
+    if (enumValue == -1) {
         enumValue = e.keyToValue(QString(QLatin1String("Unknown") + QLatin1String(enumName)).toLatin1().data());
-        qCDebug(DEBCONF) << "enumFromString (" <<QLatin1String(enumName) << ") : converted" << realName << "to" << QString(QLatin1String("Unknown") + QLatin1String(enumName)) << ", enum value" << enumValue;
+        qCDebug(DEBCONF) << "enumFromString (" << QLatin1String(enumName) << ") : converted" << realName << "to"
+                         << QString(QLatin1String("Unknown") + QLatin1String(enumName)) << ", enum value" << enumValue;
     }
     return enumValue;
 }
 
 DebconfFrontend::PropertyKey DebconfFrontend::propertyKeyFromString(const QString &string)
 {
-    return static_cast<PropertyKey>(enumFromString<DebconfFrontend>(string, "PropertyKey" ));
+    return static_cast<PropertyKey>(enumFromString<DebconfFrontend>(string, "PropertyKey"));
 }
 
 DebconfFrontend::TypeKey DebconfFrontend::type(const QString &string) const
 {
-    return static_cast<TypeKey>(enumFromString<DebconfFrontend>(property(string, Type), "TypeKey" ));
+    return static_cast<TypeKey>(enumFromString<DebconfFrontend>(property(string, Type), "TypeKey"));
 }
 
 void DebconfFrontend::reset()
@@ -217,7 +219,7 @@ void DebconfFrontend::cmd_get(const QStringList &args)
 void DebconfFrontend::cmd_input(const QStringList &args)
 {
     m_input.append(args[0]);
-    say(QLatin1String("0 will ask" ));
+    say(QLatin1String("0 will ask"));
 }
 
 void DebconfFrontend::cmd_go(const QStringList &)
@@ -329,7 +331,7 @@ void DebconfFrontend::cmd_data(const QStringList &args)
 
     m_data[item][propertyKeyFromString(type)] = value;
     qCDebug(DEBCONF) << "# NOTED: [" << item << "] [" << type << "] " << value;
-    say(QStringLiteral( "0 ok" ));
+    say(QStringLiteral("0 ok"));
 }
 
 void DebconfFrontend::cmd_subst(const QStringList &args)
@@ -357,16 +359,16 @@ void DebconfFrontend::cmd_x_ping(const QStringList &args)
 void DebconfFrontend::cmd_version(const QStringList &args)
 {
     const QString param = args[0];
-    if ( !param.isEmpty() ) {
+    if (!param.isEmpty()) {
         const QString major_version_str = param.section(QLatin1Char('.'), 0, 0);
         bool ok = false;
-        int major_version = major_version_str.toInt( &ok );
-        if ( !ok || (major_version != 2) ) {
+        int major_version = major_version_str.toInt(&ok);
+        if (!ok || (major_version != 2)) {
             say(QLatin1String("30 wrong or too old protocol version"));
             return;
         }
     }
-    //This debconf frontend is suposed to use the version 2.1 of the protocol.
+    // This debconf frontend is suposed to use the version 2.1 of the protocol.
     say(QLatin1String("0 2.1"));
 }
 
@@ -377,16 +379,16 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QStringList &args)
         QTextStream template_stream(&template_file);
         QString line = QLatin1String("");
         int linecount = 0;
-        QHash<QString,QString> field_short_value;
-        QHash<QString,QString> field_long_value;
+        QHash<QString, QString> field_short_value;
+        QHash<QString, QString> field_long_value;
         QString last_field_name;
-        while ( !line.isNull() ) {
+        while (!line.isNull()) {
             ++linecount;
             line = template_stream.readLine();
             qCDebug(DEBCONF) << linecount << line;
-            if ( line.isEmpty() ) {
+            if (line.isEmpty()) {
                 if (!last_field_name.isEmpty()) {
-                    //Submit last block values.
+                    // Submit last block values.
                     qCDebug(DEBCONF) << "submit" << last_field_name;
                     const QString item = field_short_value[QLatin1String("template")];
                     const QString type = field_short_value[QLatin1String("type")];
@@ -396,8 +398,8 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QStringList &args)
                     m_data[item][DebconfFrontend::Type] = type;
                     m_data[item][DebconfFrontend::Description] = short_description;
                     m_data[item][DebconfFrontend::ExtendedDescription] = long_description;
-                    
-                    //Clear data.
+
+                    // Clear data.
                     field_short_value.clear();
                     field_long_value.clear();
                     last_field_name.clear();
@@ -407,11 +409,11 @@ void DebconfFrontend::cmd_x_loadtemplatefile(const QStringList &args)
                     last_field_name = line.section(QLatin1String(": "), 0, 0).toLower();
                     field_short_value[last_field_name] = line.section(QLatin1String(": "), 1);
                 } else {
-                    if ( field_long_value[last_field_name].isEmpty() ){
+                    if (field_long_value[last_field_name].isEmpty()) {
                         field_long_value[last_field_name] = line.remove(0, 1);
                     } else {
                         field_long_value[last_field_name].append(QLatin1Char('\n'));
-                        if ( !(line.trimmed() == QLatin1String(".")) ) {
+                        if (!(line.trimmed() == QLatin1String("."))) {
                             field_long_value[last_field_name].append(line.remove(0, 1));
                         }
                     }
@@ -468,7 +470,7 @@ void DebconfFrontend::cmd_fset(const QStringList &args)
     const QString flag = args[1];
     const QString value = args[2];
 
-    if ( value == QLatin1String("false") ) {
+    if (value == QLatin1String("false")) {
         m_flags[question][flag] = false;
     } else {
         m_flags[question][flag] = true;
@@ -494,8 +496,8 @@ void DebconfFrontend::cmd_endblock(const QStringList &args)
 
 void DebconfFrontend::cmd_stop(const QStringList &args)
 {
-     Q_UNUSED(args)
-     //Do nothing.
+    Q_UNUSED(args)
+    // Do nothing.
 }
 
 bool DebconfFrontend::process()
@@ -520,7 +522,8 @@ bool DebconfFrontend::process()
                 for (int i = 0; i < c->num_args_min; i++) {
                     const int end_index = (i < (c->num_args_min - 1)) ? i : -1;
                     const QString arg = value.section(QLatin1Char(' '), i, end_index);
-                    if (!arg.isEmpty()) args_scanned++;
+                    if (!arg.isEmpty())
+                        args_scanned++;
                     args.append(arg);
                 }
 
@@ -534,14 +537,15 @@ bool DebconfFrontend::process()
             (this->*(c->run))(args);
             return true;
         }
-        ++ c;
+        ++c;
     }
     say(QLatin1String("20 Unsupported command \"%1\" received").arg(command.toLower()));
     return false;
 }
 
 DebconfFrontendSocket::DebconfFrontendSocket(const QString &socketName, QObject *parent)
-  : DebconfFrontend(parent), m_socket(nullptr)
+    : DebconfFrontend(parent)
+    , m_socket(nullptr)
 {
     m_server = new QLocalServer(this);
     QFile::remove(socketName);
@@ -588,7 +592,7 @@ void DebconfFrontendSocket::cancel()
 }
 
 DebconfFrontendFifo::DebconfFrontendFifo(int readfd, int writefd, QObject *parent)
-  : DebconfFrontend(parent)
+    : DebconfFrontend(parent)
 {
     m_readf = new QFile(this);
     // Use QFile::open(fh,mode) method for opening read file descriptor as

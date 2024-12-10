@@ -20,7 +20,8 @@
 #include "DebconfElement.h"
 
 DebconfElement::DebconfElement(const QString &name, QWidget *parent)
- : QWidget(parent), m_name(name)
+    : QWidget(parent)
+    , m_name(name)
 {
 }
 

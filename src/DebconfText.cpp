@@ -22,7 +22,7 @@
 using namespace DebconfKde;
 
 DebconfText::DebconfText(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 }

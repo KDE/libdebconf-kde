@@ -25,7 +25,7 @@
 using namespace DebconfKde;
 
 DebconfBoolean::DebconfBoolean(const QString &name, QWidget *parent)
- : DebconfElement(name, parent)
+    : DebconfElement(name, parent)
 {
     setupUi(this);
 
@@ -49,9 +49,7 @@ QString DebconfBoolean::value() const
     return radioButtonYes->isChecked() ? QLatin1String("true") : QLatin1String("false");
 }
 
-void DebconfBoolean::setBoolean(const QString &extended_description,
-                                const QString &description,
-                                bool default_boolean)
+void DebconfBoolean::setBoolean(const QString &extended_description, const QString &description, bool default_boolean)
 {
     extendedDescriptionL->setText(extended_description);
     descriptionL->setText(description);
