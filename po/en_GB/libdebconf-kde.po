@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-05 12:39+0000\n"
+"POT-Creation-Date: 2024-12-11 01:50+0000\n"
 "PO-Revision-Date: 2018-06-30 13:25+0000\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English <kde-l10n-en_gb@kde.org>\n"
@@ -28,12 +28,12 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "andrew_coles@yahoo.co.uk, steve.allewell@gmail.com"
 
-#: src/DebconfGui.cpp:136
+#: src/DebconfGui.cpp:139
 #, kde-format
 msgid "Debconf on %1"
 msgstr "Debconf on %1"
 
-#: src/DebconfGui.cpp:229
+#: src/DebconfGui.cpp:215
 #, kde-format
 msgid ""
 "<b>Not implemented</b>: The input widget for data type '%1' is not "
