@@ -39,7 +39,7 @@ msgid ""
 "<b>Not implemented</b>: The input widget for data type '%1' is not "
 "implemented. Will use default of '%2'."
 msgstr ""
-"<b>غير منجز</b>: ودجة الدَّخْل لنوع البيانات '%1' لم تُنجز. سأستخدم الافتراضيّة "
+"<b>غير منجز</b>: ودجة الدَّخْل لنوع البيانات '%1' لم تُنجز. سأستخدم المبدئيّة "
 "'%2'."
 
 #: tools/main.cpp:82
