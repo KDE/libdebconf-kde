@@ -1,7 +1,7 @@
 add_executable(debconf-kde-helper main.cpp)
 target_link_libraries(debconf-kde-helper
-    KF${KF_MAJOR_VERSION}::CoreAddons
-    KF${KF_MAJOR_VERSION}::I18n
+    KF6::CoreAddons
+    KF6::I18n
     DebconfKDE::Main
 )
 
