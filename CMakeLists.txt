@@ -8,7 +8,7 @@ if (POLICY CMP0063)
   cmake_policy(SET CMP0063 NEW)
 endif()
 
-project(libdebconf-kde VERSION 1.1.1)
+project(libdebconf-kde VERSION 1.2.0)
 
 set(QT_MIN_VERSION "6.4.0")
 set(KF_MIN_VERSION "6.12.0")
