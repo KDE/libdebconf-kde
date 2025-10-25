@@ -39,7 +39,9 @@ target_link_libraries(debconf-kde
         KF6::TextWidgets
         KF6::WidgetsAddons
 )
-generate_export_header(debconf-kde)
+generate_export_header(debconf-kde
+    EXPORT_FILE_NAME
+        "${CMAKE_CURRENT_BINARY_DIR}/debconf-kde_export.h")
 
 target_include_directories(debconf-kde INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/DebconfKDE>")
 
@@ -50,5 +52,5 @@ set_target_properties(debconf-kde
         EXPORT_NAME Main)
 
 install(TARGETS debconf-kde EXPORT DebconfKDETargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES DebconfGui.h
+install(FILES DebconfGui.h "${CMAKE_CURRENT_BINARY_DIR}/debconf-kde_export.h"
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/DebconfKDE)
