@@ -68,7 +68,7 @@ const DebconfFrontend::Cmd DebconfFrontend::commands[] = {{"SET", &DebconfFronte
                                                           {"SETTITLE", &DebconfFrontend::cmd_title, 1},
                                                           {"DATA", &DebconfFrontend::cmd_data, 3},
                                                           {"SUBST", &DebconfFrontend::cmd_subst, 3},
-                                                          {"INPUT", &DebconfFrontend::cmd_input, 1},
+                                                          {"INPUT", &DebconfFrontend::cmd_input, 2},
                                                           {"GET", &DebconfFrontend::cmd_get, 1},
                                                           {"CAPB", &DebconfFrontend::cmd_capb, 1},
                                                           {"PROGRESS", &DebconfFrontend::cmd_progress, 1},
@@ -218,7 +218,8 @@ void DebconfFrontend::cmd_get(const QStringList &args)
 
 void DebconfFrontend::cmd_input(const QStringList &args)
 {
-    m_input.append(args[0]);
+    // INPUT priority question
+    m_input.append(args[1]);
     say(QLatin1String("0 will ask"));
 }
 
