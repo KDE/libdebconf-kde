@@ -5,7 +5,15 @@ target_link_libraries(debconf-kde-helper
     DebconfKDE::Main
 )
 
-# Clients should expect the helper in /usr/libexec when installed system-wide,
-# and most do. However for backwards-compatibility we install it in /usr/bin
-# even though it isn't a tool users usually would want to run.
-install(TARGETS debconf-kde-helper ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+# Clients expect the helper in /usr/libexec when installed system-wide, so we
+# deliberately do not use KDE_INSTALL_LIBEXECDIR (which may be multiarch).
+# For historic reasons and backwards-compatibility, we also provide a symlink
+# in /usr/bin.
+install(TARGETS debconf-kde-helper DESTINATION libexec)
+
+file(RELATIVE_PATH _helper_rel_path "${KDE_INSTALL_FULL_BINDIR}" "${CMAKE_INSTALL_PREFIX}/libexec/debconf-kde-helper")
+install(CODE "
+    file(MAKE_DIRECTORY \"\$ENV{DESTDIR}${KDE_INSTALL_FULL_BINDIR}\")
+    file(CREATE_LINK \"${_helper_rel_path}\" \"\$ENV{DESTDIR}${KDE_INSTALL_FULL_BINDIR}/debconf-kde-helper\" SYMBOLIC)
+    message(STATUS \"Installing: \$ENV{DESTDIR}${KDE_INSTALL_FULL_BINDIR}/debconf-kde-helper -> ${_helper_rel_path}\")
+")
